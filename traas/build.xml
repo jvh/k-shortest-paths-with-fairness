@@ -1,0 +1,54 @@
+<project name="TraaS" default="dist" basedir=".">
+	<description>
+		For making a TraaS-jar
+	</description>
+	
+	<property name="build" location="build"/>
+	<property name="dist"  location="dist"/>
+	<property name="src" location="."/>
+
+	<target name="init">
+	    <!-- create timestamp-->
+	    <tstamp/>
+	    <mkdir dir="${build}"/>
+		<mkdir dir="${dist}/lib/${DSTAMP}"/>
+	    <mkdir dir="${dist}/lib/latest"/>
+	    <mkdir dir="${dist}/doc/${DSTAMP}/${TSTAMP}"/>
+	    <mkdir dir="${dist}/doc/latest"/>
+		<mkdir dir="${dist}/doc/${DSTAMP}/${TSTAMP}"/>
+		<mkdir dir="${dist}/doc/latest"/>
+	</target>
+	
+    <target name="compile" depends="init">
+	    <javac srcdir="${src}" destdir="${build}"/>
+	</target>
+	
+	<target name="dist" depends="compile">
+	    <jar jarfile="${dist}/lib/${DSTAMP}/TraaS-${TSTAMP}.jar" basedir="${build}"/>
+	    <jar jarfile="${dist}/lib/${DSTAMP}/TraaS_sources-${TSTAMP}.jar" basedir="${src}" includes="**/*.java"/>
+	    <jar compress="true" destfile="${dist}/lib/${DSTAMP}/TraaS_javadoc-${TSTAMP}.jar" basedir="${dist}/doc/${DSTAMP}/${TSTAMP}" />
+
+		<!--- to latest -->
+		<copy todir="${dist}/doc/latest" >  
+    	    <fileset dir="${dist}/doc/${DSTAMP}/${TSTAMP}" includes="**"/>  
+	 	</copy>
+		<copy file="${dist}/lib/${DSTAMP}/TraaS-${TSTAMP}.jar" tofile="${dist}/lib/latest/TraaS.jar"/>
+		<copy file="${dist}/lib/${DSTAMP}/TraaS_sources-${TSTAMP}.jar" tofile="${dist}/lib/latest/TraaS_sources.jar"/>		
+	</target>
+	
+	<target name="javadoc" depends="init">
+	    <javadoc sourcepath="${src}" destdir="${dist}/doc/${DSTAMP}/${TSTAMP}"/>
+		<copy todir="${dist}/doc/latest" >  
+    	    <fileset dir="${dist}/doc/${DSTAMP}/${TSTAMP}" includes="**"/>  
+	 	</copy>
+		<jar compress="true" destfile="${dist}/lib/${DSTAMP}/TraaS_javadoc-${TSTAMP}.jar" basedir="${dist}/doc/${DSTAMP}/${TSTAMP}" />
+		
+		<!--- to latest -->
+		<copy file="${dist}/lib/${DSTAMP}/TraaS_javadoc-${TSTAMP}.jar" tofile="${dist}/lib/latest/TraaS_javadoc.jar"/>
+	</target>
+	<target name="clean" description="clean up" >
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${build}"/>
+	    <delete dir="${dist}"/>
+	  </target>
+</project>
