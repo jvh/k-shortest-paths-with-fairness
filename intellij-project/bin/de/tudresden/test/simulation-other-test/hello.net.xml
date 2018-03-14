@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 14/02/2018 21:20:37 by Netedit Version 0.31.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="hello.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="hello.net.xml"/>
+    </output>
+
+    <processing>
+        <no-turnarounds value="true"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+        <junctions.corner-detail value="0"/>
+        <rectangular-lane-cut value="false"/>
+        <walkingareas value="false"/>
+    </processing>
+
+    <visualisation>
+        <registry-viewport value="true"/>
+    </visualisation>
+
+</configuration>
+-->
+
+<net version="0.27" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="250.00,0.00" convBoundary="0.00,-71.61,501.00,0.00" origBoundary="-250.00,0.00,251.00,0.00" projParameter="!"/>
+
+    <edge id=":2_0" function="internal">
+        <lane id=":2_0_0" index="0" speed="13.90" length="0.10" shape="500.00,-1.65 500.00,-1.65"/>
+    </edge>
+
+    <edge id="1to2" from="1" to="2" priority="-1">
+        <lane id="1to2_0" index="0" speed="13.90" length="500.00" shape="0.00,-1.65 500.00,-1.65"/>
+    </edge>
+    <edge id="gneE0" from="gneJ0" to="gneJ1" priority="1">
+        <lane id="gneE0_0" index="0" speed="13.89" length="153.61" shape="227.09,-64.38 380.45,-73.25"/>
+    </edge>
+    <edge id="out" from="2" to="3" priority="-1">
+        <lane id="out_0" index="0" speed="13.90" length="1.00" shape="500.00,-1.65 501.00,-1.65"/>
+    </edge>
+
+    <junction id="1" type="dead_end" x="0.00" y="0.00" incLanes="" intLanes="" shape="0.00,-0.05 0.00,-3.25"/>
+    <junction id="2" type="priority" x="500.00" y="0.00" incLanes="1to2_0" intLanes=":2_0_0" shape="500.00,-0.05 500.00,-3.25 500.00,-0.05">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="3" type="dead_end" x="501.00" y="0.00" incLanes="out_0" intLanes="" shape="501.00,-3.25 501.00,-0.05"/>
+    <junction id="gneJ0" type="dead_end" x="227.19" y="-62.74" incLanes="" intLanes="" shape="227.18,-62.79 227.00,-65.98"/>
+    <junction id="gneJ1" type="dead_end" x="380.54" y="-71.61" incLanes="gneE0_0" intLanes="" shape="380.35,-74.85 380.54,-71.66"/>
+
+    <connection from="1to2" to="out" fromLane="0" toLane="0" via=":2_0_0" dir="s" state="M"/>
+
+    <connection from=":2_0" to="out" fromLane="0" toLane="0" dir="s" state="M"/>
+
+</net>
