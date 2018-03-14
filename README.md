@@ -1,4 +1,4 @@
-<center># Intelligent Congestion Management Incorporating Fair Re-Routing</center>
+# Intelligent Congestion Management Incorporating Fair Re-  Routing
 
 ### Abstract
 Traffic congestion in large cities is on the rise as urbanisation and economic growth
