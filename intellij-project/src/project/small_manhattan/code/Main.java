@@ -1,16 +1,15 @@
-package project.code;
+package project.southampton.code;
 
-import de.tudresden.sumo.cmd.Simulation;
-import de.tudresden.sumo.cmd.Vehicle;
 import it.polito.appeal.traci.SumoTraciConnection;
 
 public class Main {
 
     public static final String NORMAL_CONFIG = "src/project/configuration_files/config.cfg";
     public static final String LITE_CONFIG = "src/project/configuration_files/config_lite.cfg";
+    public static final String TEST_CONFIG = "src/project/configuration_files/config_test.cfg";
 
     static String sumo_bin = "D:/Program Files/SUMO/bin/sumo-gui.exe";
-    static final String config_file = NORMAL_CONFIG;
+    static final String config_file = TEST_CONFIG;
 
 
     public static void main(String[] args) {
@@ -29,8 +28,9 @@ public class Main {
             //load routes and initialize the simulation
             conn.do_timestep();
 
+//            Collection<Vehicle> vehicles = conn.
+
             for(int i=0; i<3600; i++){
-                System.out.println("hello");
                 conn.do_timestep();
             }
 
