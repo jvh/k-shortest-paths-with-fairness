@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2c0a784-a599-4127-8007-130952b18904" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/project/small_manhattan/code/Main.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/project/southampton/code/Main.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
@@ -141,10 +139,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/GitHub/PortableGit_63435a79518b44808827aa3194b76bea96231189/cmd/git.exe" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/Daybreak Game Company/Digests/id" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
@@ -284,6 +282,14 @@
       <option name="presentableId" value="Default" />
       <updated>1520974083987</updated>
     </task>
+    <task id="LOCAL-00001" summary="Removed Main.java duplicates">
+      <created>1521136389817</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1521136389817</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -338,6 +344,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Removed Main.java duplicates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed Main.java duplicates" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
