@@ -1,13 +1,16 @@
 package project.small_manhattan.code;
 
+import de.tudresden.sumo.cmd.Edge;
 import de.tudresden.sumo.cmd.Route;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.config.Constants;
 import de.tudresden.sumo.util.Sumo;
+import de.tudresden.ws.Traci;
 import de.tudresden.ws.container.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainSmallManhattan {
 
@@ -26,6 +29,8 @@ public class MainSmallManhattan {
 
         //set some options
         conn.addOption("step-length", "0.1"); //timestep 100 ms
+        conn.addOption("device.rerouting.probability", "1.0");
+        conn.addOption("routing-algorithm", "dijkstra");
 
         try{
 
@@ -35,19 +40,24 @@ public class MainSmallManhattan {
             //load routes and initialize the simulation
             conn.do_timestep();
 
-            SumoStringList hello = new SumoStringList();
-            ArrayList<String> als = new ArrayList<>();
+            Traci traci = new Traci();
 
-            als.add("452322756#0");
-            als.add("452322756#1");
-            als.add("452322756#2");
+            //Printing out all the edges in the simulation
+            SumoStringList edges = (SumoStringList) conn.do_job_get(Edge.getIDList());
+            for(String edge: edges) {
+                System.out.println("edge " + edge);
+            }
+            System.out.println("Edges " + conn.do_job_get(Edge.getIDList()));
 
-            hello.addAll(als);
+            SumoStringList listExample = new SumoStringList();
+            ArrayList<String> edgeList = new ArrayList<>();
 
-            conn.do_job_set();
+            edgeList.add("452322756#0");
+            edgeList.add("452322756#1");
+            edgeList.add("452322756#2");
+            listExample.addAll(edgeList);
 
-
-            conn.do_job_set(Route.add("test", hello));
+            conn.do_job_set(Route.add("test", listExample));
 
             System.out.println(conn.do_job_get(Route.getEdges("test")));
 
