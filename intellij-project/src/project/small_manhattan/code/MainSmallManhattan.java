@@ -1,7 +1,13 @@
 package project.small_manhattan.code;
 
+import de.tudresden.sumo.cmd.Route;
 import de.tudresden.sumo.cmd.Vehicle;
+import de.tudresden.sumo.config.Constants;
+import de.tudresden.sumo.util.Sumo;
+import de.tudresden.ws.container.SumoStringList;
 import it.polito.appeal.traci.SumoTraciConnection;
+
+import java.util.ArrayList;
 
 public class MainSmallManhattan {
 
@@ -29,8 +35,25 @@ public class MainSmallManhattan {
             //load routes and initialize the simulation
             conn.do_timestep();
 
+            SumoStringList hello = new SumoStringList();
+            ArrayList<String> als = new ArrayList<>();
 
-            conn.do_job_set(Vehicle.add("veh", "car", "s1", 0, 2, 1, (byte) 0));
+            als.add("452322756#0");
+            als.add("452322756#1");
+            als.add("452322756#2");
+
+            hello.addAll(als);
+
+            conn.do_job_set();
+
+
+            conn.do_job_set(Route.add("test", hello));
+
+            System.out.println(conn.do_job_get(Route.getEdges("test")));
+
+            conn.do_job_set(Vehicle.add("veh", "car", "test", 0, 2, 1, (byte) 0));
+
+            conn.do_job_set(Vehicle.add("veh2", "car", "s1", 0, 2, 1, (byte) 0));
             System.out.println(conn.do_job_get(Vehicle.getBestLanes("veh")));
 //            Collection<Vehicle> vehicles = conn.
 
