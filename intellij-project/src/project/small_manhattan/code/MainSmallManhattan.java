@@ -39,7 +39,7 @@ public class MainSmallManhattan {
 
             //load routes and initialize the simulation
             conn.do_timestep();
-
+            conn.do_timestep();
             Traci traci = new Traci();
 
             //Printing out all the edges in the simulation
@@ -63,7 +63,11 @@ public class MainSmallManhattan {
             conn.do_job_set(Vehicle.add("veh", "car", "test", 0, 2, 1, (byte) 0));
 
             conn.do_job_set(Vehicle.add("veh2", "car", "s1", 0, 2, 1, (byte) 0));
-            System.out.println(conn.do_job_get(Vehicle.getBestLanes("veh")));
+
+            conn.do_job_set(Vehicle.changeTarget("veh2", "458180191#1"));
+//            conn.do_job_set(Vehicle.rerouteEffort("veh2"));
+
+//            System.out.println(conn.do_job_get(Vehicle.getBestLanes("veh")));
 //            Collection<Vehicle> vehicles = conn.
 
 
