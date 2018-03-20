@@ -47,7 +47,6 @@ public class MainSmallManhattan {
             for(String edge: edges) {
                 System.out.println("edge " + edge);
             }
-            System.out.println("Edges " + conn.do_job_get(Edge.getIDList()));
 
             SumoStringList listExample = new SumoStringList();
             ArrayList<String> edgeList = new ArrayList<>();
