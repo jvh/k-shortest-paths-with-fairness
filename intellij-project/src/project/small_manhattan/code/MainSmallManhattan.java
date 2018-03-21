@@ -1,6 +1,7 @@
 package project.small_manhattan.code;
 
 import de.tudresden.sumo.cmd.Edge;
+import de.tudresden.sumo.cmd.Gui;
 import de.tudresden.sumo.cmd.Route;
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.config.Constants;
@@ -56,6 +57,8 @@ public class MainSmallManhattan {
             edgeList.add("452322756#2");
             listExample.addAll(edgeList);
 
+
+
             conn.do_job_set(Route.add("test", listExample));
 
             System.out.println(conn.do_job_get(Route.getEdges("test")));
@@ -64,7 +67,13 @@ public class MainSmallManhattan {
 
             conn.do_job_set(Vehicle.add("veh2", "car", "s1", 0, 2, 1, (byte) 0));
 
-            conn.do_job_set(Vehicle.changeTarget("veh2", "458180191#1"));
+            conn.do_job_set(Gui.trackVehicle("View #0", "veh2"));
+
+            conn.do_job_set(Vehicle.changeTarget("veh2", "569345537#3"));
+
+//            conn.do_job_set(Edge.setEffort("196116976#7", 1.343));
+            conn.do_job_set(Edge.setEffort("46538375#6", 1.343));
+
 //            conn.do_job_set(Vehicle.rerouteEffort("veh2"));
 
 //            System.out.println(conn.do_job_get(Vehicle.getBestLanes("veh")));
@@ -75,6 +84,8 @@ public class MainSmallManhattan {
             for(int i=0; i<3600; i++){
                 conn.do_timestep();
             }
+
+            System.out.println(conn.do_job_get(Edge.getEffort("196116976#7", 10)));
 
             //stop TraCI
             conn.close();
