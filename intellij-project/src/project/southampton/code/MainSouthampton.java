@@ -14,7 +14,7 @@ public class MainSouthampton {
 
     public static void main(String[] args) {
 
-        //start Simulation
+        //start SimulationMain
         SumoTraciConnection conn = new SumoTraciConnection(sumo_bin, config_file);
 
         //set some options

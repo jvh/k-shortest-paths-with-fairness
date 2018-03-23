@@ -1,5 +1,5 @@
 /****************************************************************************/
-// Eclipse SUMO, Simulation of Urban MObility; see https://eclipse.org/sumo
+// Eclipse SUMO, SimulationMain of Urban MObility; see https://eclipse.org/sumo
 // Copyright (C) 2017-2018 German Aerospace Center (DLR) and others.
 // TraaS module
 // Copyright (C) 2016-2017 Dresden University of Technology
@@ -928,155 +928,155 @@ public class Traci{
 		this.sumo.set_cmd(Vehicle.slowDown(vehID, speed, duration));
 	}
 
-	@WebMethod(action="Simulation: clearPending")
+	@WebMethod(action="SimulationMain: clearPending")
 	public void GUI_clearPending(@WebParam(name = "routeID") String routeID){
 		this.sumo.set_cmd(Simulation.clearPending(routeID));
 	}
 	
-	@WebMethod(action="Simulation: convert2D")
+	@WebMethod(action="SimulationMain: convert2D")
 	public SumoStringList Simulation_convert2D(@WebParam(name = "edgeID") String edgeID, @WebParam(name = "pos") double pos, @WebParam(name = "laneIndex") byte laneIndex, @WebParam(name = "toGeo") String toGeo){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.convert2D(edgeID, pos, laneIndex, toGeo)));
 	}
 
-	@WebMethod(action="Simulation: convert3D")
+	@WebMethod(action="SimulationMain: convert3D")
 	public SumoStringList Simulation_convert3D(@WebParam(name = "edgeID") String edgeID, @WebParam(name = "pos") double pos, @WebParam(name = "laneIndex") byte laneIndex, @WebParam(name = "toGeo") String toGeo){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.convert3D(edgeID, pos, laneIndex, toGeo)));
 	}
 	
-	@WebMethod(action="Simulation: convertGeo")
+	@WebMethod(action="SimulationMain: convertGeo")
 	public SumoStringList Simulation_convertGeo(@WebParam(name = "x") double x, @WebParam(name = "y") double y, @WebParam(name = "fromGeo") boolean fromGeo){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.convertGeo(x, y, fromGeo)));
 	}
 
-	@WebMethod(action="Simulation: convertRoad")
+	@WebMethod(action="SimulationMain: convertRoad")
 	public SumoPosition2D Simulation_convertRoad(@WebParam(name = "x") double x, @WebParam(name = "y") double y, @WebParam(name = "isGeo") String isGeo){
 		return this.helper.getPosition2D(this.sumo.get_cmd(Simulation.convertRoad(x, y, isGeo)));
 	}
 
-	@WebMethod(action="Simulation: getArrivedIDList")
+	@WebMethod(action="SimulationMain: getArrivedIDList")
 	public SumoStringList Simulation_getArrivedIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getArrivedIDList()));
 	}
 
-	@WebMethod(action="Simulation: getArrivedNumber")
+	@WebMethod(action="SimulationMain: getArrivedNumber")
 	public int Simulation_getArrivedNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getArrivedNumber()));
 	}
 
-	@WebMethod(action="Simulation: getCurrentTime")
+	@WebMethod(action="SimulationMain: getCurrentTime")
 	public int Simulation_getCurrentTime(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getCurrentTime()));
 	}
 
 	
-	@WebMethod(action="Simulation: getBusStopWaiting")
+	@WebMethod(action="SimulationMain: getBusStopWaiting")
 	public int Simulation_getBusStopWaiting(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getBusStopWaiting()));
 	}
 
-	@WebMethod(action="Simulation: getParkingEndingVehiclesIDList")
+	@WebMethod(action="SimulationMain: getParkingEndingVehiclesIDList")
 	public SumoStringList Simulation_getParkingEndingVehiclesIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getParkingEndingVehiclesIDList()));
 	}
 	
 	
-	@WebMethod(action="Simulation: getParkingEndingVehiclesNumber")
+	@WebMethod(action="SimulationMain: getParkingEndingVehiclesNumber")
 	public int Simulation_getParkingEndingVehiclesNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getParkingEndingVehiclesNumber()));
 	}
 	
-	@WebMethod(action="Simulation: getParkingStartingVehiclesIDList")
+	@WebMethod(action="SimulationMain: getParkingStartingVehiclesIDList")
 	public SumoStringList Simulation_getParkingStartingVehiclesIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getParkingStartingVehiclesIDList()));
 	}
 	
-	@WebMethod(action="Simulation: getParkingStartingVehiclesNumber")
+	@WebMethod(action="SimulationMain: getParkingStartingVehiclesNumber")
 	public int Simulation_getParkingStartingVehiclesNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getParkingStartingVehiclesNumber()));
 	}
 	
-	@WebMethod(action="Simulation: getStopEndingVehiclesIDList")
+	@WebMethod(action="SimulationMain: getStopEndingVehiclesIDList")
 	public SumoStringList Simulation_getStopEndingVehiclesIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getStopEndingVehiclesIDList()));
 	}
 	
-	@WebMethod(action="Simulation: getStopEndingVehiclesNumber")
+	@WebMethod(action="SimulationMain: getStopEndingVehiclesNumber")
 	public int Simulation_getStopEndingVehiclesNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getStopEndingVehiclesNumber()));
 	}
 	
-	@WebMethod(action="Simulation: getStopStartingVehiclesIDList")
+	@WebMethod(action="SimulationMain: getStopStartingVehiclesIDList")
 	public SumoStringList Simulation_getStopStartingVehiclesIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getStopStartingVehiclesIDList()));
 	}
 	
-	@WebMethod(action="Simulation: getStopStartingVehiclesNumber")
+	@WebMethod(action="SimulationMain: getStopStartingVehiclesNumber")
 	public int Simulation_getStopStartingVehiclesNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getStopStartingVehiclesNumber()));
 	}
 	
 	
-	@WebMethod(action="Simulation: getDeltaT")
+	@WebMethod(action="SimulationMain: getDeltaT")
 	public int Simulation_getDeltaT(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getDeltaT()));
 	}
 
-	@WebMethod(action="Simulation: getDepartedIDList")
+	@WebMethod(action="SimulationMain: getDepartedIDList")
 	public SumoStringList Simulation_getDepartedIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getDepartedIDList()));
 	}
 
-	@WebMethod(action="Simulation: getDepartedNumber")
+	@WebMethod(action="SimulationMain: getDepartedNumber")
 	public int Simulation_getDepartedNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getDepartedNumber()));
 	}
 
-	@WebMethod(action="Simulation: getDistance2D")
+	@WebMethod(action="SimulationMain: getDistance2D")
 	public double Simulation_getDistance2D(@WebParam(name = "x1") double x1, @WebParam(name = "y1") double y1, @WebParam(name = "x2") double x2, @WebParam(name = "y2") double y2, @WebParam(name = "isGeo") boolean isGeo, @WebParam(name = "isDriving") boolean isDriving){
 		return this.helper.getDouble(this.sumo.get_cmd(Simulation.getDistance2D(x1, y1, x2, y2, isGeo, isDriving)));
 	}
 
-	@WebMethod(action="Simulation: Returns the subscription results for the last time step.")
+	@WebMethod(action="SimulationMain: Returns the subscription results for the last time step.")
 	public double Simulation_getDistanceRoad(@WebParam(name = "edgeID1") String edgeID1, @WebParam(name = "pos1") double pos1, @WebParam(name = "edgeID2") String edgeID2, @WebParam(name = "pos2") double pos2, @WebParam(name = "isDriving") boolean isDriving){
 		return this.helper.getDouble(this.sumo.get_cmd(Simulation.getDistanceRoad(edgeID1, pos1, edgeID2, pos2, isDriving)));
 	}
 
-	@WebMethod(action="Simulation: getEndingTeleportIDList")
+	@WebMethod(action="SimulationMain: getEndingTeleportIDList")
 	public SumoStringList Simulation_getEndingTeleportIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getEndingTeleportIDList()));
 	}
 
-	@WebMethod(action="Simulation: getEndingTeleportNumber")
+	@WebMethod(action="SimulationMain: getEndingTeleportNumber")
 	public int Simulation_getEndingTeleportNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getEndingTeleportNumber()));
 	}
 
-	@WebMethod(action="Simulation: getLoadedIDList")
+	@WebMethod(action="SimulationMain: getLoadedIDList")
 	public SumoStringList Simulation_getLoadedIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getLoadedIDList()));
 	}
 
-	@WebMethod(action="Simulation: getLoadedNumber")
+	@WebMethod(action="SimulationMain: getLoadedNumber")
 	public int Simulation_getLoadedNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getLoadedNumber()));
 	}
 
-	@WebMethod(action="Simulation: getMinExpectedNumber")
+	@WebMethod(action="SimulationMain: getMinExpectedNumber")
 	public int Simulation_getMinExpectedNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getMinExpectedNumber()));
 	}
 
-	@WebMethod(action="Simulation: getNetBoundary")
+	@WebMethod(action="SimulationMain: getNetBoundary")
 	public SumoStringList Simulation_getNetBoundary(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getNetBoundary()));
 	}
 
-	@WebMethod(action="Simulation: getStartingTeleportIDList")
+	@WebMethod(action="SimulationMain: getStartingTeleportIDList")
 	public SumoStringList Simulation_getStartingTeleportIDList(){
 		return this.helper.getStringList(this.sumo.get_cmd(Simulation.getStartingTeleportIDList()));
 	}
 
-	@WebMethod(action="Simulation: getStartingTeleportNumber")
+	@WebMethod(action="SimulationMain: getStartingTeleportNumber")
 	public int Simulation_getStartingTeleportNumber(){
 		return this.helper.getInt(this.sumo.get_cmd(Simulation.getStartingTeleportNumber()));
 	}

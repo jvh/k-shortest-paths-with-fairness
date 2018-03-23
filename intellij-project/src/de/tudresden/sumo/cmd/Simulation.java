@@ -1,5 +1,5 @@
 /****************************************************************************/
-// Eclipse SUMO, Simulation of Urban MObility; see https://eclipse.org/sumo
+// Eclipse SUMO, SimulationMain of Urban MObility; see https://eclipse.org/sumo
 // Copyright (C) 2017-2018 German Aerospace Center (DLR) and others.
 // TraaS module
 // Copyright (C) 2016-2017 Dresden University of Technology
@@ -9,7 +9,7 @@
 // http://www.eclipse.org/legal/epl-v20.html
 // SPDX-License-Identifier: EPL-2.0
 /****************************************************************************/
-/// @file    Simulation.java
+/// @file    SimulationMain.java
 /// @author  Mario Krumnow
 /// @author  Evamarie Wiessner
 /// @date    2016

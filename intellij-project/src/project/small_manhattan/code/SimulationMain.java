@@ -1,18 +1,14 @@
 package project.small_manhattan.code;
 
-import de.tudresden.sumo.cmd.*;
-import de.tudresden.ws.container.SumoStringList;
+import de.tudresden.sumo.cmd.Simulation;
 import it.polito.appeal.traci.SumoTraciConnection;
-import sun.applet.Main;
 
-import java.util.ArrayList;
+public class SimulationMain {
 
-public class Simulation {
+    public static final String NORMAL_CONFIG = "src/project/small_manhattan/configuration_files/normal/config.cfg";
+    public static final String TEST_CONFIG = "src/project/small_manhattan/configuration_files/testing/config_test.cfg";
 
-    public static final String NORMAL_CONFIG = "src/project/small_manhattan/configuration_files/config.cfg";
-    public static final String TEST_CONFIG = "src/project/small_manhattan/configuration_files/config_test.cfg";
-
-    //Simulation start and end times
+    //SimulationMain start and end times
     public static final int START_TIME = 0;
     public static final int END_TIME = 100000;
     //Zoom factor for GUI
@@ -23,26 +19,32 @@ public class Simulation {
    //Is testing being done?
     public static final boolean TESTING = true;
 
-    private SumoTraciConnection conn;
+    private static SumoTraciConnection conn;
+
+    public SimulationMain(TestToRun ttr) {
+        try {
+            this.conn = ttr.getConn();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
-        Simulation sim = new Simulation();
-        SumoTraciConnection conn = sim.conn;
         Test test;
         DynamicShortestPath dsp;
         TestToRun ttr;
 
         if(TESTING) {
-            test = new Test(sim);
-            conn = test.getConn();
+            test = new Test();
             ttr = test;
         } else {
-            dsp = new DynamicShortestPath(sim);
-            conn = dsp.getConn();
+            dsp = new DynamicShortestPath();
             ttr = dsp;
         }
 
-        //Changing the timestep to be 0.1s
+        SimulationMain sim = new SimulationMain(ttr);
+
+        //Changing the timestep to be 0.1s (100ms)
         conn.addOption("step-length", "0.1");
         conn.addOption("device.rerouting.probability", "1.0");
         conn.addOption("routing-algorithm", "dijkstra");
@@ -75,9 +77,13 @@ public class Simulation {
         }
     }
 
+    protected void setConn(SumoTraciConnection conn) {
+        this.conn = conn;
+    }
+
     //Returns the current time of the simulation in ms
-    public int getCurrentTime() throws Exception {
-        return (Integer) conn.do_job_get(de.tudresden.sumo.cmd.Simulation.getCurrentTime());
+    public static int getCurrentTime() throws Exception {
+        return (Integer) conn.do_job_get(Simulation.getCurrentTime());
     }
 
 
