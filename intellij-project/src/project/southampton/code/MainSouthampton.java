@@ -28,7 +28,7 @@ public class MainSouthampton {
             //load routes and initialize the simulation
             conn.do_timestep();
 
-//            Collection<Vehicle> vehicles = conn.
+//            Collection<Vehicle> vehicles = CONN.
 
             for(int i=0; i<3600; i++){
                 conn.do_timestep();
