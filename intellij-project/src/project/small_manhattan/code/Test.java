@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Test extends TestToRun {
 
     //Keeps track of the method number that is being tested
-    public static final int TEST_NUMBER = 1;
+    public static final int TEST_NUMBER = 2;
 
     SumoTraciConnection conn;
     SimulationMain sim;
@@ -85,18 +85,28 @@ public class Test extends TestToRun {
         conn.do_timestep();
     }
 
-    protected void test2Before() {
-
+    protected void test2Before() throws Exception {
+        System.out.println(greenshieldsEstimatedRoadSpeed("46538375#8"));
     }
 
     protected void test2During(int i) throws Exception {
         //Every 10 seconds
         if(i%100 ==0 ) {
             for(String vehID: (SumoStringList)conn.do_job_get(Vehicle.getIDList())) {
-                System.out.println(vehID);
+//                conn.do_job_set(Vehicle.);
             }
         }
+
+        //Perform another timestep of the simulation
         conn.do_timestep();
+    }
+
+    protected  float greenshieldsEstimatedRoadSpeed(String edge) throws Exception {
+        //This is assumed to be the maximum road speed
+        float freeFlowSpeed = (Float) conn.do_job_get(Edge.getParameter(edge, "numLanes"));
+
+
+        return freeFlowSpeed;
     }
 
     protected SumoTraciConnection getConn() {
