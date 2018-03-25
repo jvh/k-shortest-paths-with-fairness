@@ -103,7 +103,7 @@ public class Test extends TestToRun {
 
     protected  float greenshieldsEstimatedRoadSpeed(String edge) throws Exception {
         //This is assumed to be the maximum road speed
-        float freeFlowSpeed = (Float) conn.do_job_get(Edge.getParameter(edge, "numLanes"));
+        float freeFlowSpeed = (Float) conn.do_job_get(Edge.getParameter(edge, "speed"));
 
 
         return freeFlowSpeed;
