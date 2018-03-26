@@ -26,7 +26,84 @@ class Testing:
             incEdgeList.append(edgeInc.getID())
         return incEdgeList
 
-    def recursiveIncomingEdges(self, edgeID="null", limit=0, edgeList=[], eg=[]):
+    # def recursiveIncomingEdges(self, edgeID, limit=0, edgeList=[]):
+    #     """ Recurses down the incoming edges of the edge defined to return a list of all of the incoming edges from x edges
+    #      away """
+    #     # CHECK IF THE EDGE IS AT THE EDGE OF THE MAP (USING SUMOLIB)
+    #     # ALSO, USE ++variable RATHER THAN variable += 1
+    #     if limit < 2:
+    #         edges = self.getIncomingEdges(edgeID)
+    #         for edge in edges:
+    #
+    #     else:
+    #         return edgeList
+
+    def recursiveIncomingEdgesNew(self, edgeID, firstTime, limit=0, edgeList=[], eg=["test"], edgeOrderList={}):
+        """ Recurses down the incoming edges of the edge defined to return a list of all of the incoming edges from x edges
+         away """
+        # CHECK IF THE EDGE IS AT THE EDGE OF THE MAP (USING SUMOLIB)
+        # ALSO, USE ++variable RATHER THAN variable += 1
+        if eg or limit < 2:
+            if eg == ["test"]:
+                eg.remove("test")
+            if edgeID != "" and limit < 2:
+
+
+
+                edges = self.getIncomingEdges(edgeID)
+                for edge in edges:
+                    print("edge {} and edges {}".format(edge, edges))
+                    edgeList.append(edge)
+                    eg.append(edge)
+            # for e in eg:
+            explore = eg.pop()
+            if limit < 2:
+                limit += 1
+                return self.recursiveIncomingEdges(explore, limit, edgeList, eg)
+            else:
+                return self.recursiveIncomingEdges(explore, 0, eg)
+        else:
+            return edgeList
+
+    def recursiveIncomingEdges(self, edgeID, firstTime=False, edgeList=[], edgesToSearch=["placeholder"], edgeOrderList={}, finished=False):
+        """ Recurses down the incoming edges of the edge defined to return a list of all of the incoming edges from x edges
+         away """
+        # CHECK IF THE EDGE IS AT THE EDGE OF THE MAP (USING SUMOLIB)
+        # ALSO, USE ++variable RATHER THAN variable += 1
+        if (edgesToSearch or edgeOrderList[edgeID] != sumo.EDGE_RECURSIONS) and not finished:
+            if firstTime:
+                edgeOrderList[edgeID] = 0
+                edgesToSearch.remove("placeholder")
+
+            edges = self.getIncomingEdges(edgeID)
+            for edge in edges:
+                print("edge {} and edges {}".format(edge, edges))
+                edgeList.append(edge)
+                edgeOrderList[edge] = edgeOrderList[edgeID] + 1
+                if edgeOrderList[edge] != sumo.EDGE_RECURSIONS:
+                    edgesToSearch.append(edge)
+
+            print("NOW HERE {}".format(edgeOrderList))
+
+            # There are still more edges to search
+            if edgesToSearch:
+                # Pop
+                edgeToTest = edgesToSearch.pop()
+                finished = False
+            # If there are no more edges to search
+            else:
+                finished = True
+                # Prevent an error as there are no more edges to test
+                edgeToTest = edgeID
+            return self.recursiveIncomingEdges(edgeToTest, finished=finished, edgeList=edgeList, edgesToSearch=edgesToSearch, edgeOrderList=edgeOrderList)
+        else:
+            return edgeList
+
+    def getMultiIncomingEdges(self, edgeID):
+        """ User friendly approach to getting the number of incoming edges from an edge """
+        return self.recursiveIncomingEdges(edgeID, firstTime=True)
+
+    def recursiveIncomingEdgeskajdl(self, edgeID="null", limit=0, edgeList=[], eg=[]):
         """ Recurses down the incoming edges of the edge defined to return a list of all of the incoming edges from x edges
          away """
         # CHECK IF THE EDGE IS AT THE EDGE OF THE MAP (USING SUMOLIB)
@@ -43,7 +120,28 @@ class Testing:
                 return self.recursiveIncomingEdges(edge, limit, edgeList, eg)
         else:
             if eg:
-                return self.recursiveIncomingEdges(limit=0, edgeList=edgeList, eg=eg)
+                return self.recursiveIncomingEdges(limit=0, edgeList=edgeList, edgesToSearch=eg)
+            else:
+                return edgeList
+
+    def recursiveIncomingEdges4(self, edgeID="null", limit=0, edgeList=[], eg=[]):
+        """ Recurses down the incoming edges of the edge defined to return a list of all of the incoming edges from x edges
+         away """
+        # CHECK IF THE EDGE IS AT THE EDGE OF THE MAP (USING SUMOLIB)
+        # ALSO, USE ++variable RATHER THAN variable += 1
+        if limit < 2:
+            edges = self.getIncomingEdges(edgeID)
+            if not eg:
+                eg = edges
+            for edge in eg:
+                print("edge {} and edges {}".format(edge, eg))
+                edgeList.append(edge)
+                eg.remove(edge)
+                limit += 1
+                return self.recursiveIncomingEdges(edge, limit, edgeList, eg)
+        else:
+            if eg:
+                return self.recursiveIncomingEdges(limit=0, edgeList=edgeList, edgesToSearch=eg)
             else:
                 return edgeList
 
@@ -147,7 +245,9 @@ class Testing:
             # Prints the incoming edges for 196116976#7
             print(self.getIncomingEdges("196116976#7"))
 
-            print("Recursive edges for 196116976#7 are: {}".format(self.recursiveIncomingEdges("196116976#7")))
+            # print("Recursive edges for 196116976#7 are: {}".format(self.recursiveIncomingEdges("196116976#7", firstTime=True)))
+            print("Recursive edges for 511924978#1 are: {}".format(self.getMultiIncomingEdges("511924978#1")))
+
 
             time.sleep(2)
 

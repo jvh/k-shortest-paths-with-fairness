@@ -11,6 +11,9 @@ START_TIME = 0
 END_TIME = 10000
 ZOOM_FACTOR = 12
 
+# This specifies the number of edges away from the current edge to search for vehicles
+EDGE_RECURSIONS = 3
+
 TESTING = True
 
 net = sumolib.net.readNet(NET_FILE_TESTING)
