@@ -1,10 +1,12 @@
 import traci
 import sumolib
+import os
 from src.project.small_manhattan.traci_code import RoutingAlgorithms as routing
 
 NORMAL_CONFIG = "project/small_manhattan/configuration_files/normal/config.cfg"
 TEST_CONFIG = "project/small_manhattan/configuration_files/testing/config_test.cfg"
-NET_FILE_TESTING = "project/small_manhattan/configuration_files/testing/small_manhattan.net.xml"
+NET_FILE_TESTING = "D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/" \
+                  "pycharm_project/src/project/small_manhattan/configuration_files/testing/small_manhattan.net.xml"
 SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
 
 START_TIME = 0
@@ -47,6 +49,7 @@ class Main:
 
 # The main method
 if __name__ == '__main__':
+    print(os.getcwd())
     main = Main()
     main.run()
 
