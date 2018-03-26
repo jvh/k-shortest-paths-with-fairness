@@ -1,0 +1,41 @@
+
+xpython:S100"WRename method "getIncomingEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ò¢Â’ùÿÿÿÿ8®€Ãü¥,
+gpython:S100"RRename method "test1Before" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Í­Ğ¸
+lpython:S100"RRename method "test1During" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(»˜¸›ÿÿÿÿÿ
+}python:S117"\Rename this local variable "incEdgeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(æÜâùÿÿÿÿ8Õéü¥,
+tpython:S117"XRename this local variable "edgeInc" to match the regular expression ^[_a-z][a-z0-9_]*$.(£Ğ8®€Ãü¥,
+vpython:S117"[Rename this parameter "internalCounter" to match the regular expression ^[_a-z][a-z0-9_]*$.(áØ~8èºÿ€¦,
+mpython:S117"QRename this parameter "vehID" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÿŸ†»8¦§áñ¥,
+xpython:S100"]Rename method "recursiveIncomingEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(íİ¸q8¬…¢ş¥,
+{python:S117"ZRename this local variable "meanSpeed" to match the regular expression ^[_a-z][a-z0-9_]*$.(şßŞÑÿÿÿÿÿ8üİœò¥,
+python:S100"eRename method "greenshieldsEstimatedRoadSpeed" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÿŸ†»8ìû…ñ¥,
+~python:S117"]Rename this local variable "laneMaxSpeed" to match the regular expression ^[_a-z][a-z0-9_]*$.(õÕ£Ñıÿÿÿÿ8üİœò¥,
+}python:S1542"`Rename function "recursiveIncomingEdges3" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ò´Êö8åì‚¦,
+Kpython:S1481")Remove the unused local variable "list2".(“´œ¡úÿÿÿÿ8èºÿ€¦,
+opython:S117"TRename this parameter "edgeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(íİ¸q8£Ò²ı¥,
+~python:S117"]Rename this local variable "vehicleEdges" to match the regular expression ^[_a-z][a-z0-9_]*$.(²£ö«ùÿÿÿÿ8¸¥Êú¥,
+|python:S1542"`Rename function "recursiveIncomingEdges2" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(áØ~8èºÿ€¦,
+spython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(ò¢Â’ùÿÿÿÿ8®€Ãü¥,
+npython:S117"SRename this parameter "oldList" to match the regular expression ^[_a-z][a-z0-9_]*$.(áØ~8èºÿ€¦,
+@python:S125"Remove this commented out code.(Æğ³øÿÿÿÿ8èºÿ€¦,
+opython:S117"TRename this parameter "edgeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(áØ~8èºÿ€¦,
+mpython:S100"QRename method "duringLoop" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(…œª²8ÊÖÕï¥,
+npython:S100"RRename method "test2Before" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(úø¹8ğ‹Óï¥,
+zpython:S117"^Rename this local variable "vehicleLaneID" to match the regular expression ^[_a-z][a-z0-9_]*$.(§Íóß8Ùƒâñ¥,
+mpython:S100"QRename method "beforeLoop" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(âÑ¯’8ÅÈï¥,
+npython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ò´Êö8æ®€¦,
+ppython:S117"TRename this parameter "edgeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ò´Êö8æ®€¦,
+ppython:S3776"TRefactor this function to reduce its Cognitive Complexity from 30 to the 15 allowed.(íİ¸q8İË™€¦,
+mpython:S100"RRename method "test2During" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÖÊÅq8¸ãİï¥,
+rpython:S117"QRename this parameter "vehID" to match the regular expression ^[_a-z][a-z0-9_]*$.(–Âúıÿÿÿÿ8¦§áñ¥,
+lpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(–Âúıÿÿÿÿ
+ƒpython:S117"gRename this local variable "currentNumberOfVehicle" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÂÀ¹‚8üİœò¥,
+€python:S117"dRename this local variable "estimatedTravelTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÌÙ¤ë8üİœò¥,
+mpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(áØ~8èºÿ€¦,
+npython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÿŸ†»8¦§áñ¥,
+upython:S100"[Rename method "testVehicleSetEffort" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(–Âúıÿÿÿÿ
+zpython:S117"YRename this local variable "maxSpeed" to match the regular expression ^[_a-z][a-z0-9_]*$.(¬©¥‰ûÿÿÿÿ8¸™»ñ¥,
+mpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(íİ¸q8÷˜ı¥,
+Rpython:S1481"0Remove the unused local variable "laneMaxSpeed".(õÕ£Ñıÿÿÿÿ8üİœò¥,
+vpython:S117"aRename this local variable "edgeEffortDouble" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ä²±ğ
+Wpython:S1481":Remove the unused local variable "currentNumberOfVehicle".(ÂÀ¹‚8üİœò¥,

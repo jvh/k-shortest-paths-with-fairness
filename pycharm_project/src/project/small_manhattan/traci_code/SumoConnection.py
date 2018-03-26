@@ -1,9 +1,10 @@
 import traci
-
+import sumolib
 from src.project.small_manhattan.traci_code import RoutingAlgorithms as routing
 
 NORMAL_CONFIG = "project/small_manhattan/configuration_files/normal/config.cfg"
 TEST_CONFIG = "project/small_manhattan/configuration_files/testing/config_test.cfg"
+NET_FILE_TESTING = "project/small_manhattan/configuration_files/testing/small_manhattan.net.xml"
 SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
 
 START_TIME = 0
@@ -12,6 +13,7 @@ ZOOM_FACTOR = 12
 
 TESTING = True
 
+net = sumolib.net.readNet(NET_FILE_TESTING)
 
 @staticmethod
 def getCurrentTime2():
