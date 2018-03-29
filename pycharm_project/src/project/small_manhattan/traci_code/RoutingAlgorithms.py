@@ -8,6 +8,17 @@ TESTING_NUMBER = 1
 
 class Testing:
 
+    def returnCongestionLevel(self, laneID):
+        """
+        Gives the congestion level of the road, laneID
+
+        Args:
+            laneID (str): The ID of the lane (road)
+         Return:
+             float: The occupancy (congestion) of the road, in percentage
+        """
+        return traci.lane.getLastStepOccupancy(laneID)
+
     def testVehicleSetEffort(self, vehID, edgeID):
         """
         Sets the effort of a vehicle for a given edge
@@ -106,7 +117,7 @@ class Testing:
         traci.vehicle.addFull("testVeh", "startNode", typeID="car")
 
         # GUI tracking vehicle and zoom
-        traci.gui.trackVehicle("View #0", "testVeh")
+        # traci.gui.trackVehicle("View #0", "testVeh")
         traci.gui.setZoom("View #0", traci.gui.getZoom() * sumo.ZOOM_FACTOR)
 
         # Changing the target of the vehicle to another edge
@@ -150,7 +161,32 @@ class Testing:
 
             print("Recursive edges for 511924978#1 are: {}".format(self.getMultiIncomingEdges("511924978#1")))
 
-            time.sleep(2)
+            print("The current congestion for lane {} is {}".format(lane, self.returnCongestionLevel(lane)))
+
+            # time.sleep(2)
+
+        print("i({}) % {} = {}".format(i, 10, i%10))
+
+
+        if i % 100 == 0 and i>=1:
+            print("hello")
+            for laneID in traci.lane.getIDList():
+                congestion = self.returnCongestionLevel(laneID)
+                if congestion > 0.5 and congestion < 0.9:
+                    edge = traci.lane.getEdgeID(laneID)
+                    # Removing the first character from edge (from the left) because for some reason .getEdgeID()
+                    # returns the edge with a ':' prepended
+                    edgeReFormat = edge[1:]
+                    print("Edge {}".format(edge))
+                    # Getting one of the nodes associated with that edge
+                    node = sumo.net.getEdge(edge).getFromNode().getID()
+                    # Getting the 2D coordinates for that node
+                    x,y = sumo.net.getNode(node).getCoord()
+                    print("Position {}, {}".format(x, y))
+                    traci.gui.setOffset("View #0", x, y)
+                    print("Lane {} has congestion level {}".format(laneID, self.returnCongestionLevel(laneID)))
+                    time.sleep(20)
+
 
         traci.simulationStep()
 
@@ -180,7 +216,8 @@ class DynamicShortestPath:
         # Vf - Free flow speed
         vehicleLaneID = traci.vehicle.getLaneID(vehID)
         laneMaxSpeed = traci.lane.getMaxSpeed(vehicleLaneID)
-        # Ki/Kjam = Ratio between current number of vehicles on the road over the maximum allowed number of vehicles on that road
+        # Ki/Kjam = Ratio between current number of vehicles on the road over the maximum allowed number of vehicles
+        # on that road
         currentNumberOfVehicle = traci.lane.getLastStepVehicleNumber(vehicleLaneID)
 
             # conn.do_job_get(Edge.getParameter(edge, "speed"));

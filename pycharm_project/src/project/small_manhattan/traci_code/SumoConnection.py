@@ -38,7 +38,7 @@ class Main:
         """ Starts the simulation """
 
         # Defines the command to start SUMO with
-        sumo = [SUMO_BINARY, '-c', TEST_CONFIG, '--step-length', '0.1']
+        sumo = [SUMO_BINARY, '-c', NORMAL_CONFIG, '--step-length', '0.1']
         # Establish the Traci connection and run SUMO command
         traci.start(sumo)
 
