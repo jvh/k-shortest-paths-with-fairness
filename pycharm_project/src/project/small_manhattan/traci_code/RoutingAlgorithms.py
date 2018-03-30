@@ -1,5 +1,6 @@
 import traci
 import time
+import collections
 
 from src.project.small_manhattan.traci_code import SumoConnection as sumo
 
@@ -50,6 +51,19 @@ class Testing:
             incEdgeList.append(edgeInc.getID())
         return incEdgeList
 
+    def getIncomingLanes(self, laneID):
+        """
+        Returns a list of all of the incoming lanes to the specified lane
+
+        Args:
+            laneID (str): The identification of the edge to collect incoming edges
+        Returns:
+            incEdgeList (str[]): The edges incoming to edgeID
+        """
+        incEdgeList = []
+        for edgeInc in sumo.net.getLane(laneID).getIncoming():
+            incEdgeList.append(edgeInc.getID())
+        return incEdgeList
 
     def recursiveIncomingEdges(self, edgeID, firstTime=False, edgeList=[], edgesToSearch=["placeholder"],
                                edgeOrderList={}, finished=False):
@@ -69,6 +83,9 @@ class Testing:
         """
         if (edgesToSearch or edgeOrderList[edgeID] != sumo.MAX_EDGE_RECURSIONS_RANGE) and not finished:
             if firstTime:
+                edgeOrderList={}
+                edgeList=[]
+                edgesToSearch=["placeholder"]
                 edgeOrderList[edgeID] = 0
                 # Remove the placeholder value from the edgesToSearch stack
                 edgesToSearch.remove("placeholder")
@@ -110,6 +127,44 @@ class Testing:
             str[]: The edges incoming to the initial edge up to MAX_EDGE_RECURSION_RANGE
         """
         return self.recursiveIncomingEdges(edgeID, firstTime=True)
+
+    def getLane2DCoordinates(self, laneID):
+        """
+        Gets the 2D coordinates of the 'from' node which connects to the lane
+
+        Args:
+            laneID (str): The lane
+        Returns:
+            (str, str): Returns the tuple (x, y)
+                Individual elements can be accessed by tuple.x and tuple.y
+        """
+        edge = traci.lane.getEdgeID(laneID)
+        # Getting them 'from' node associated with that edge
+        node = sumo.net.getEdge(edge).getFromNode().getID()
+        # Getting the 2D coordinates (x, y) for that node
+        x, y = sumo.net.getNode(node).getCoord()
+        # Changes the GUI offset to the coordinates of the node
+        traci.gui.setOffset("View #0", x, y)
+        print("Lane {} has congestion level {}".format(laneID, self.returnCongestionLevel(laneID)))
+
+        # Creating a named tuple to store (x, y) information
+        coord = collections.namedtuple('coord', ['x', 'y'])
+        c = coord(x=x, y=y)
+        return c
+
+    def selectVehiclesRerouting(self, edgeID):
+        """
+        Selects the vehicles to be rerouted
+
+        Args:
+            edgeID (str): The edge in which the congestion is occurring
+        Returns:
+            str: The vehicle ID associated to the vehicle to be rerouted
+        """
+        # The list of vehicles existing on the edges
+        vehiclesList = []
+        for edge in self.getMultiIncomingEdges(edgeID):
+            return
 
     def test1Before(self):
         # Adding vehicle and associated route
@@ -163,38 +218,41 @@ class Testing:
 
             print("The current congestion for lane {} is {}".format(lane, self.returnCongestionLevel(lane)))
 
-            # time.sleep(2)
-
-        print("i({}) % {} = {}".format(i, 10, i%10))
-
-
-        if i % 100 == 0 and i>=1:
-            print("hello")
-            for laneID in traci.lane.getIDList():
-                congestion = self.returnCongestionLevel(laneID)
-                if congestion > 0.5 and congestion < 0.9:
-                    edge = traci.lane.getEdgeID(laneID)
-                    # Removing the first character from edge (from the left) because for some reason .getEdgeID()
-                    # returns the edge with a ':' prepended
-                    edgeReFormat = edge[1:]
-                    print("Edge {}".format(edge))
-                    # Getting one of the nodes associated with that edge
-                    node = sumo.net.getEdge(edge).getFromNode().getID()
-                    # Getting the 2D coordinates for that node
-                    x,y = sumo.net.getNode(node).getCoord()
-                    print("Position {}, {}".format(x, y))
-                    traci.gui.setOffset("View #0", x, y)
-                    print("Lane {} has congestion level {}".format(laneID, self.returnCongestionLevel(laneID)))
-                    time.sleep(20)
-
-
         traci.simulationStep()
 
     def test2Before(self):
         pass
 
-    def test2During(self):
-        return
+    def test2During(self, i):
+
+        print("TEST LANE {}".format(self.getIncomingLanes("397795463_0")))
+        for lanes in sumo.net.getEdge("397795463").getLanes():
+            print("TEST EDGE LANE {}".format(lanes.getID()))
+        print("NEIGBOURS {}".format(sumo.net.getLane("397795463_0").getNeigh()))
+
+        # Every 1000 timesteps
+        if i % 1000 == 0 and i >= 1:
+            for laneID in traci.lane.getIDList():
+                # Special edges, i.e. connector or internal edges, have ':' prepended to them, don't consider these
+                # in rerouting.
+                # Additionally, only lanes which have length of at least 25m are considered in re-routing. This is due
+                # to small errors when using NetConvert (some road segements are still left broken up into extremely
+                # small sections, and other minor issues - for example, junctions may contain very small edges to
+                # connect to one another (one car could cause congestion on this entire segment)
+                # Furthermore, checks that the edges are not fringe edges (edges which have either no incoming or
+                # outgoing edges), this is because congestion cannot be managed on these (ultimately both departure
+                # and arrival point must remain the same)
+                edge = traci.lane.getEdgeID(laneID)
+                if laneID[:1] != ":" and traci.lane.getLength(laneID) > 25 and not \
+                        sumo.net.getEdge(edge).is_fringe():
+                    congestion = self.returnCongestionLevel(laneID)
+                    if congestion > 0.5:
+                        print(self.getLane2DCoordinates(laneID))
+
+                        print("Recursive edges for {} are: {}".format(edge, self.getMultiIncomingEdges(edge)))
+                        time.sleep(2)
+
+        traci.simulationStep()
 
     def beforeLoop(self):
         if TESTING_NUMBER == 1:

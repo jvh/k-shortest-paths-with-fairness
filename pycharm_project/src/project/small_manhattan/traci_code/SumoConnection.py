@@ -43,10 +43,10 @@ class Main:
         traci.start(sumo)
 
         test = routing.Testing()
-        test.test1Before()
+        # test.test1Before()
 
         for i in range(START_TIME, END_TIME):
-            test.test1During(i)
+            test.test2During(i)
             # print(traci.simulation.getCurrentTime())
 
         # Close the Sumo-Traci connection once the simulation has elapsed
