@@ -43,10 +43,11 @@ class Main:
         traci.start(sumo)
 
         test = routing.Testing()
-        # test.test1Before()
+        dsp = routing.DynamicShortestPath()
 
         for i in range(START_TIME, END_TIME):
-            test.test2During(i)
+            dsp.main(i)
+            # test.test2During(i)
             # print(traci.simulation.getCurrentTime())
 
         # Close the Sumo-Traci connection once the simulation has elapsed

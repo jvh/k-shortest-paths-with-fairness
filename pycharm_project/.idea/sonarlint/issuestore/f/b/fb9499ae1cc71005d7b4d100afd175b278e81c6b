@@ -1,3 +1,5 @@
 
 jpython:S100"URename method "getCurrentTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(œ§ÄÙ
 npython:S1542"XRename function "getCurrentTime2" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(âë›
+@python:S125"Remove this commented out code.(¹åÉüÿÿÿÿ8„™®É§,
+Epython:S1481"(Remove the unused local variable "test".(Ä…•Ì8„™®É§,
