@@ -1,1 +1,0 @@
-In de/tudresden/test there is a MainTest.java file, run it to check it all works

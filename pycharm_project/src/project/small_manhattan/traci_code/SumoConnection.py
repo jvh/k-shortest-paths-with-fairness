@@ -8,6 +8,8 @@ NORMAL_CONFIG = "project/small_manhattan/configuration_files/normal/config.cfg"
 TEST_CONFIG = "project/small_manhattan/configuration_files/testing/config_test.cfg"
 NET_FILE_TESTING = "D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/" \
                   "pycharm_project/src/project/small_manhattan/configuration_files/testing/small_manhattan.net.xml"
+NET_FILE_NEWARK= "D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/" \
+                  "pycharm_project/src/project/small_manhattan/configuration_files/normal/newark.net.xml"
 SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
 
 # SUMO settings
@@ -22,7 +24,7 @@ MAX_EDGE_RECURSIONS_RANGE = 3
 TESTING = True
 
 # Passes the network file into sumolib for analysis and use
-net = sumolib.net.readNet(NET_FILE_TESTING)
+net = sumolib.net.readNet(NET_FILE_NEWARK)
 
 @staticmethod
 def getCurrentTime2():
@@ -38,7 +40,12 @@ class Main:
         """ Starts the simulation """
 
         # Defines the command to start SUMO with
-        sumo = [SUMO_BINARY, '-c', NORMAL_CONFIG, '--step-length', '0.1']
+        #   --step-length: Defines the length of each timestep in seconds
+        #   --device.rerouting.probability: Defines the probability that a vehicle in the simulation will automatically
+        # reroute
+        #   --routing-algorithm: Defines the routing algorithm used by the vehicles
+        sumo = [SUMO_BINARY, '-c', NORMAL_CONFIG, '--step-length', '0.1',
+                '--routing-algorithm', 'dijkstra']
         # Establish the Traci connection and run SUMO command
         traci.start(sumo)
 

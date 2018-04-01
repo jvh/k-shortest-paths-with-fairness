@@ -80,8 +80,8 @@ def recursiveIncomingEdges(edgeID, firstTime=False, edgeList=[], edgesToSearch=[
             edgeList.append(edge)
             # The new edge has range of edgeOrderList[edgeID] + 1 away from the original edge
             edgeOrderList[edge] = edgeOrderList[edgeID] + 1
-            # If the range of the edge isn't the maximum range
-            if edgeOrderList[edge] != sumo.MAX_EDGE_RECURSIONS_RANGE:
+            # If the range of the edge is below the maximum range then continue searching down that edge
+            if edgeOrderList[edge] < sumo.MAX_EDGE_RECURSIONS_RANGE:
                 edgesToSearch.append(edge)
 
         # There are still more edges to search
@@ -158,7 +158,7 @@ class DynamicShortestPath:
             # Appending the list of vehicles from edge onto vehiclesList
             vehiclesList.extend(traci.edge.getLastStepVehicleIDs(edge))
 
-        traci.edge.adaptTraveltime(edgeID, 100)
+        # traci.edge.adaptTraveltime(edgeID, 100)
 
         # What vehicles have the edgeID
         for vehicle in vehiclesList:
@@ -193,29 +193,30 @@ class DynamicShortestPath:
         #     print("TEST EDGE LANE {}".format(lanes.getID()))
         # print("NEIGBOURS {}".format(sumo.net.getLane("397795463_0").getNeigh()))
 
-        if i == 1500:
-            print("These are the recursive edges for {}: {}".format("46538375#3", getMultiIncomingEdges("46538375#3")))
-            print("These are the vehicles which are on and are close to edge {}: {}".format("46538375#3", self.rerouteSelectedVehicles("46538375#3")))
-            # time.sleep(50)
+        # if i == 1500:
+        #     print("These are the recursive edges for {}: {}".format("46538375#3", getMultiIncomingEdges("46538375#3")))
+        #     print("These are the vehicles which are on and are close to edge {}: {}".format("46538375#3", self.rerouteSelectedVehicles("46538375#3")))
+        #     # time.sleep(50)
 
         # Every 1000 timesteps
         if i % 1000 == 0 and i >= 1:
             for laneID in traci.lane.getIDList():
                 edge = traci.lane.getEdgeID(laneID)
 
-                # Special edges, i.e. connector or internal edges, have ':' prepended to them, don't consider these
+                #   Special edges, i.e. connector or internal edges, have ':' prepended to them, don't consider these
                 # in rerouting.
-                # Additionally, only lanes which have length of at least 25m are considered in re-routing. This is due
+                #   Additionally, only lanes which have length of at least 25m are considered in re-routing. This is due
                 # to small errors when using NetConvert (some road segments are still left broken up into extremely
                 # small sections, and other minor issues - for example, junctions may contain very small edges to
                 # connect to one another (one car could cause congestion on this entire segment)
-                # Furthermore, checks that the edges are not fringe edges (edges which have either no incoming or
+                #   Furthermore, checks that the edges are not fringe edges (edges which have either no incoming or
                 # outgoing edges), this is because congestion cannot be managed on these (ultimately both departure
                 # and arrival point must remain the same)
                 if laneID[:1] != ":" and traci.lane.getLength(laneID) > 25 and not \
                         sumo.net.getEdge(edge).is_fringe():
                     congestion = returnCongestionLevel(laneID)
                     if congestion > 0.5:
+                        print(getLane2DCoordinates(laneID))
                         self.rerouteSelectedVehicles(edge)
                         # time.sleep(2)
 
