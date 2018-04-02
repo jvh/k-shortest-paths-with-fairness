@@ -1,5 +1,0 @@
-
-jpython:S100"URename method "getCurrentTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(œ§ÄÙ
->python:S1481"(Remove the unused local variable "test".(Ä…•Ì
-9python:S125"Remove this commented out code.(¹åÉüÿÿÿÿ
-npython:S1542"XRename function "getCurrentTime2" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(âë›
