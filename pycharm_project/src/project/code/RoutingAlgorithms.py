@@ -58,6 +58,7 @@ def recursiveIncomingEdges(edgeID, firstTime=False, edgeList=[], edgesToSearch=[
         firstTime (bool): If this is the first time running the module
         edgeList (str[]): The list holding all of the incoming edges from the original node up to
             MAX_EDGE_RECURSION_RANGE
+            In the format {edgeID: order}
         edgesToSearch (str[]): The list specifying the edges which are to be searched for incoming edges
         finished (bool): Specifies if the function has finished (all edges searched)
     Returns:
@@ -136,6 +137,47 @@ def getLane2DCoordinates(laneID):
     c = coord(x=x, y=y)
     return c
 
+def rerouteSelectedVehicles(edgeID):
+    """
+    Selects the vehicles to be rerouted from edgeID (the edge which is currently congested) and reroutes them based
+    on current estimated travel times
+
+    Args:
+        edgeID (str): The edge in which the congestion is occurring
+    Returns:
+        str[]: The list of vehicles to be rerouted
+    """
+    # The list of vehicles existing on the edges
+    vehiclesList = []
+    # The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
+    edgesList = {}
+
+    # Going through the incoming edges and identifying vehicles on them
+    for edge in getMultiIncomingEdges(edgeID):
+        vehiclesOnEdge = traci.edge.getLastStepVehicleIDs(edge)
+        # Appending the list of vehicles from edge onto vehiclesList
+        vehiclesList.extend(vehiclesOnEdge)
+
+        # If vehicles exist on that edge
+        if vehiclesOnEdge:
+            vehiclesOnEdge[edge] = vehiclesOnEdge
+
+    # What vehicles have the edgeID
+    for vehicle in vehiclesList:
+        # The old/current path of the vehicle
+        oldPath = traci.vehicle.getRoute(vehicle)
+        # If the edgeID exists in the vehicles current route then reroute them
+        if edgeID in traci.vehicle.getRoute(vehicle):
+            # Reroute vehicles based on current travel times
+            traci.vehicle.rerouteTraveltime(vehicle)
+
+            if edgeID not in traci.vehicle.getRoute(vehicle):
+                print("Vehicle {} heading towards edge {} has been rerouted.\n"
+                      "     Old route: {}\n"
+                      "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
+
+    return vehiclesList
+
 
 class DynamicShortestPath:
     """
@@ -145,45 +187,47 @@ class DynamicShortestPath:
     to reduce the global average travel time.
     """
 
-    def rerouteSelectedVehicles(self, edgeID):
+    def main(self, i):
         """
-        Selects the vehicles to be rerouted from edgeID (the edge which is currently congested) and reroutes them based
-        on current estimated travel times
+        The main programme run during the loop which progresses the simulation at every timestep
 
         Args:
-            edgeID (str): The edge in which the congestion is occurring
-        Returns:
-            str[]: The list of vehicles to be rerouted
+            i (int): The current timestep of the simulation
         """
-        # The list of vehicles existing on the edges
-        vehiclesList = []
-        # Going through the incoming edges and identifying vehicles on them
-        for edge in getMultiIncomingEdges(edgeID):
-            # Appending the list of vehicles from edge onto vehiclesList
-            vehiclesList.extend(traci.edge.getLastStepVehicleIDs(edge))
 
-        # traci.edge.adaptTraveltime(edgeID, 100)
+        # Every 100 timesteps
+        if i % 100 == 0 and i >= 1:
+            for laneID in traci.lane.getIDList():
+                edge = traci.lane.getEdgeID(laneID)
 
-        # What vehicles have the edgeID
-        for vehicle in vehiclesList:
-            # The old/current path of the vehicle
-            oldPath = traci.vehicle.getRoute(vehicle)
-            # If the edgeID exists in the vehicles current route then reroute them
-            if edgeID in traci.vehicle.getRoute(vehicle):
-                # Reroute vehicles based on current travel times
-                traci.vehicle.rerouteTraveltime(vehicle)
-                # print("Vehicle {} heading towards edge {} has been rerouted.\n"
-                #       "     Old route: {}\n"
-                #       "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
+                #   Special edges, i.e. connector or internal edges, have ':' prepended to them, don't consider these
+                # in rerouting.
+                #   Additionally, only lanes which have length of at least 25m are considered in re-routing. This is due
+                # to small errors when using NetConvert (some road segments are still left broken up into extremely
+                # small sections, and other minor issues - for example, junctions may contain very small edges to
+                # connect to one another (one car could cause congestion on this entire segment)
+                #   Furthermore, checks that the edges are not fringe edges (edges which have either no incoming or
+                # outgoing edges), this is because congestion cannot be managed on these (ultimately both departure
+                # and arrival point must remain the same)
+                if laneID[:1] != ":" and traci.lane.getLength(laneID) > 25 and not \
+                        sumo.net.getEdge(edge).is_fringe():
+                    congestion = returnCongestionLevel(laneID)
+                    if congestion > 0.5:
+                        print(getLane2DCoordinates(laneID))
+                        rerouteSelectedVehicles(edge)
+                        # time.sleep(2)
+
+        traci.simulationStep()
 
 
+class kShortestPaths:
+    """
+    Reroutes vehicles down a randomly selected path (up to k selections) upon detection congestion
+    """
 
-                if edgeID not in traci.vehicle.getRoute(vehicle):
-                    print("Vehicle {} heading towards edge {} has been rerouted.\n"
-                          "     Old route: {}\n"
-                          "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
-
-        return vehiclesList
+    # 1. Get a set of all of the edges which actually contain vehicles as returned by the recursiveEdges
+    # 2. For each edge collect up to k total different paths (find all the ways out)
+    # 3. For each vehicle randomly assign one of these
 
     def main(self, i):
         """
@@ -193,8 +237,8 @@ class DynamicShortestPath:
             i (int): The current timestep of the simulation
         """
 
-        # Every 1000 timesteps
-        if i % 1000 == 0 and i >= 1:
+        # Every 100 timesteps
+        if i % 100 == 0 and i >= 1:
             for laneID in traci.lane.getIDList():
                 edge = traci.lane.getEdgeID(laneID)
 
@@ -218,9 +262,25 @@ class DynamicShortestPath:
         traci.simulationStep()
 
 
+class DynamicReroutingWithFairness:
+    """
+    Reroutes vehicles upon detecting congestion with fairness as a requirement WITHOUT FUTURE PROOF
+    """
+
+    def main(self, i):
+        """
+        The main programme run during the loop which progresses the simulation at every timestep
+
+        Args:
+            i (int): The current timestep of the simulation
+        """
+
+        traci.simulationStep()
+
+
 class Testing:
     """
-    Functionality is tested in this class, with various measures to check that correct output is givne
+    Functionality is tested in this class, with various measures to check that correct output is given
     """
 
     # Specifies the test which shall be performed. E.g. '1' would perform 'test1Before', 'test1During', and

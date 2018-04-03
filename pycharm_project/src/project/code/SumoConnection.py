@@ -33,7 +33,7 @@ else:
 
 # SUMO settings
 START_TIME = 0
-END_TIME = 2000
+END_TIME = 1000000
 ZOOM_FACTOR = 12
 # Each step is 1 seconds
 STEP_LENGTH = '1.0'
@@ -45,15 +45,16 @@ MAX_EDGE_RECURSIONS_RANGE = 3
 #   0: Testing (small_manhattan)
 #   1: small_manhattan
 #   2: newark
-SCENARIO = 1
+SCENARIO = 2
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
-ALGORITHM = 0
+#
+ALGORITHM = 1
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
-OUTPUTS = False
+OUTPUTS = True
 #   --summary: Prints out a summary of the information
 SUMMARY_OUTPUT = True
 #   --full-output: Builds a file containing the full dump of various information regarding the positioning of vehicles
@@ -205,15 +206,11 @@ class Main:
 
         sumoConfig = self.configureSumo(sumoConfigInitial)
 
-        print("SUMOCONFIG {}".format("['D:/Program Files/SUMO/bin/sumo-gui.exe', '-c', 'D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/pycharm_project/src/project/configuration_files/newark/normal/newark_config.cfg', '--net-file', 'D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/pycharm_project/src/project/configuration_files/newark/normal/newark.net.xml', '--step-length', '1.0', '--additional-files', 'D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/pycharm_project/src/project/configuration_files/vehicles.xml', '--routing-algorithm', 'dijkstra', '--gui-settings-file', 'D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/pycharm_project/src/project/configuration_files/gui.settings.xml', '--device.rerouting.probability', '1.0']"))
-
-
-        print("SUMOCONFIE {}".format(sumoConfig))
-
         traci.start(sumoConfig)
 
         test = routing.Testing()
         dsp = routing.DynamicShortestPath()
+        drwf = routing.DynamicReroutingWithFairness()
 
         if SCENARIO == 0:
             test.beforeLoop()
@@ -229,6 +226,10 @@ class Main:
             elif ALGORITHM == 1:
                 for i in range(START_TIME, END_TIME):
                     dsp.main(i)
+            # Dynamic Rerouting with Fairness
+            elif ALGORITHM == 2:
+                for i in range(START_TIME, END_TIME):
+                    drwf.main(i)
 
         # Close the Sumo-Traci connection once the simulation has elapsed
         traci.close(False)
