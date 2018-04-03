@@ -145,7 +145,6 @@ class DynamicShortestPath:
     to reduce the global average travel time.
     """
 
-
     def rerouteSelectedVehicles(self, edgeID):
         """
         Selects the vehicles to be rerouted from edgeID (the edge which is currently congested) and reroutes them based
@@ -193,15 +192,6 @@ class DynamicShortestPath:
         Args:
             i (int): The current timestep of the simulation
         """
-        # print("TEST LANE {}".format(getIncomingLanes("397795463_0")))
-        # for lanes in sumo.net.getEdge("397795463").getLanes():
-        #     print("TEST EDGE LANE {}".format(lanes.getID()))
-        # print("NEIGBOURS {}".format(sumo.net.getLane("397795463_0").getNeigh()))
-
-        # if i == 1500:
-        #     print("These are the recursive edges for {}: {}".format("46538375#3", getMultiIncomingEdges("46538375#3")))
-        #     print("These are the vehicles which are on and are close to edge {}: {}".format("46538375#3", self.rerouteSelectedVehicles("46538375#3")))
-        #     # time.sleep(50)
 
         # Every 1000 timesteps
         if i % 1000 == 0 and i >= 1:
@@ -226,17 +216,6 @@ class DynamicShortestPath:
                         # time.sleep(2)
 
         traci.simulationStep()
-
-    # Greenshield's model to estimate the road speed of the current lane based on current traffic conditions
-    def greenshieldsEstimatedRoadSpeed(self, vehID, edgeID):
-        # Vf - Free flow speed
-        vehicleLaneID = traci.vehicle.getLaneID(vehID)
-        laneMaxSpeed = traci.lane.getMaxSpeed(vehicleLaneID)
-        # Ki/Kjam = Ratio between current number of vehicles on the road over the maximum allowed number of vehicles
-        # on that road
-        currentNumberOfVehicle = traci.lane.getLastStepVehicleNumber(vehicleLaneID)
-
-            # conn.do_job_get(Edge.getParameter(edge, "speed"));
 
 
 class Testing:
@@ -285,7 +264,8 @@ class Testing:
         if i == 10:
             self.testVehicleSetEffort("testVeh", "46538375#7")
             # Reroute based on effort
-            traci.vehicle.rerouteEffort("testVeh")
+            # traci.vehicle.rerouteTraveltime("testVeh")
+            # traci.vehicle.rerouteEffort("testVeh")
 
             # Gets the lane in which the test vehicle is currently on
             lane = traci.vehicle.getLaneID("testVeh")

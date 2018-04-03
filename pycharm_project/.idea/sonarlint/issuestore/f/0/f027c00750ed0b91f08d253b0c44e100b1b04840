@@ -1,15 +1,0 @@
-
-|python:S117"`Rename this local variable "currentDateTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(¥ÿñÒ8¿ÄÔš¨,
-Opython:S1481"-Remove the unused local variable "sumoWorks".(ÛÔ¾ıÿÿÿÿ8Ú›ªš¨,
-|python:S117"[Rename this local variable "sumoConfig" to match the regular expression ^[_a-z][a-z0-9_]*$.(…˜Ø©üÿÿÿÿ8âÂªš¨,
-{python:S117"ZRename this local variable "sumoWorks" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÛÔ¾ıÿÿÿÿ8Ú›ªš¨,
-|python:S117"`Rename this local variable "windowsDateTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(—ì¥ì8¿ÄÔš¨,
-xpython:S1542"VRename function "getSumolibNet" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(õó‚“úÿÿÿÿ8™æ’›¨,
-wpython:S117"VRename this parameter "sumoConfig" to match the regular expression ^[_a-z][a-z0-9_]*$.(¹›Ûüøÿÿÿÿ8ç‡È™¨,
-vpython:S117"[Rename this local variable "summaryOut" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÌŞÚ8·øñš¨,
-upython:S100"TRename method "configureSumo" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¹›Ûüøÿÿÿÿ8ÆÎ³š¨,
-ƒpython:S117"bRename this local variable "sumoConfigInitial" to match the regular expression ^[_a-z][a-z0-9_]*$.(É£ øÿÿÿÿ8ç‡È™¨,
-jpython:S100"URename method "getCurrentTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(œ§ÄÙ
-npython:S1542"XRename function "getCurrentTime2" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(âë›
-Jpython:S1481"(Remove the unused local variable "net2".(ôĞ”©üÿÿÿÿ8öã”›¨,
-Ipython:S1481"'Remove the unused local variable "dsp".(Ä·æ²üÿÿÿÿ8´á³¨,
