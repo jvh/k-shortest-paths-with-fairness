@@ -2,59 +2,79 @@ import traci
 import sumolib
 import os
 import datetime
+import sys
+
+import src.project.code.Testing
 from src.project.code import RoutingAlgorithms as routing
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
 COMPUTER = True
 
-# Main computer project configuration location
-MAIN_PROJECT = "D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/" \
-                  "pycharm_project/src/project/configuration_files/"
-# Laptop project location
-LAPTOP_PROJECT = "FILL ME"
-
+# Settings main working directory
 if COMPUTER:
+    # Main computer project configuration location
+    MAIN_PROJECT = "D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/sumo-project/" \
+                   "pycharm_project/src/project/configuration_files/"
     SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
-    # SUMO Configuration files
-    OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
-    SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
-    TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cfg"
-    NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
-    NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
-    NET_FILE_NEWARK = MAIN_PROJECT + "newark/normal/newark.net.xml"
-    VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
-    GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
 else:
-    SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
-    # SUMO Configuration files
-    NORMAL_CONFIG = LAPTOP_PROJECT + "configuration_files/small_manhattan/normal/config.cfg"
-    TEST_SMALL_MANHATTAN = LAPTOP_PROJECT + "configuration_files/small_manhattan/testing/config_test.cfg"
-    NET_FILE_NEWARK = LAPTOP_PROJECT + "configuration_files/small_manhattan/normal/newark.net.xml"
+    # Laptop project configuration location
+    MAIN_PROJECT = "FILL ME"
+    SUMO_BINARY = "FILL ME"
+
+# TODO
+# Remove the edges which are the insertions of the map to only facilitate at most one edge (so that vehicles don't pack
+#   up on that single edge
+# The simulation itself always runs on a single core. However, routing in SUMO or DUAROUTER can be parallelized by
+#   setting the option --device.rerouting.threads <INT> and --routing-threads <INT> respectively.
+# The python TraCI library allows controlling multiple simulations from a single script either by calling traci.connect
+#   and storing the returned connection object or by calling traci.start(label=...) and retrieving the connection object
+#   with traci.getConnection(label).
+# Change from dijkstras to a*
+# Think about subscriptions
+# Add in 'tau' into the vehicles.xml (driver's reaction time)
+
+# SUMO Configuration files
+OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
+SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
+TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cfg"
+NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
+TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
+NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
+NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark.net.xml"
+VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
+GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
+
+# Whether or not to calculate the A* distances for this map
+A_STAR_DISTANCES = True
 
 # SUMO settings
 START_TIME = 0
 END_TIME = 1000000
 ZOOM_FACTOR = 12
-# Each step is 1 seconds
+# Each step is 1 second
 STEP_LENGTH = '1.0'
 
 # This specifies the number of incoming edges away (the range) from the original edge to search
 MAX_EDGE_RECURSIONS_RANGE = 3
+# Specifies the number of up to k alternative routes
+K_MAX = 3
 
 # Specifies the scenario (map)
 #   0: Testing (small_manhattan)
 #   1: small_manhattan
 #   2: newark
-SCENARIO = 2
+#   3: Testing (newark)
+SCENARIO = 0
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
-#
-ALGORITHM = 1
+#   2: k-Shortest Path
+#   3: Dynamic Rerouting with Fairness
+ALGORITHM = 2
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
-OUTPUTS = True
+OUTPUTS = False
 #   --summary: Prints out a summary of the information
 SUMMARY_OUTPUT = True
 #   --full-output: Builds a file containing the full dump of various information regarding the positioning of vehicles
@@ -71,8 +91,11 @@ if SCENARIO == 0 or SCENARIO == 1:
     # Passes the network file into sumolib for analysis and use
     net = sumolib.net.readNet(NET_FILE_SM)
 # Newark
-else:
+elif SCENARIO == 2 or SCENARIO == 3:
     net = sumolib.net.readNet(NET_FILE_NEWARK)
+else:
+    sys.exit("Please enter a valid SCENARIO number")
+
 
 class Main:
     """
@@ -83,11 +106,11 @@ class Main:
     @staticmethod
     def getCurrentTime():
         """
-        Returns the current simulation time
+        Returns the current simulation time (also convert from ms to seconds)
         Return:
-            int: The current timestep of the simulation
+            int: The current time of the simulation in seconds
         """
-        return traci.simulation.getCurrentTime()
+        return int(traci.simulation.getCurrentTime()/1000)
 
     def configureSumo(self, sumoConfig):
         """
@@ -100,6 +123,9 @@ class Main:
         Return:
             str[]: The new configuration of SUMO based upon the options selected
         """
+        # Input validation
+        if (SCENARIO == 1 or SCENARIO == 2) and not (0 <= ALGORITHM <= 3):
+            sys.exit("Please enter a valid ALGORITHM number.")
 
         # Current date-time
         currentDateTime = "{}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -163,7 +189,7 @@ class Main:
                     sumoConfig.append(tripInfo.format('small_manhattan/normal', windowsDateTime))
 
         # Newark
-        else:
+        elif SCENARIO == 2:
             sumoConfig.insert(2, NEWARK_CONFIG)
             sumoConfig.insert(4, NET_FILE_NEWARK)
 
@@ -184,6 +210,29 @@ class Main:
                 if TRIPS_OUTPUT:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('newark/normal', windowsDateTime))
+
+        # Newark test
+        elif SCENARIO == 3:
+            sumoConfig.insert(2, TEST_NEWARK_CONFIG)
+            sumoConfig.insert(4, NET_FILE_NEWARK)
+
+            # Outputs
+            if OUTPUTS:
+                if SUMMARY_OUTPUT:
+                    sumoConfig.append("--summary")
+                    sumoConfig.append(summaryOut.format('newark/test', windowsDateTime))
+                if VEHICLE_FULL_OUTPUT:
+                    sumoConfig.append("--full-output")
+                    sumoConfig.append(vehiclefullOut.format('newark/test', windowsDateTime))
+                if VTK_OUTPUT:
+                    sumoConfig.append("--vtk-output")
+                    sumoConfig.append(vtkOut.format('newark/test', windowsDateTime))
+                if FLOATING_CAR_DATA_OUTPUT:
+                    sumoConfig.append("--fcd-output")
+                    sumoConfig.append(floatingCarData.format('newark/test', windowsDateTime))
+                if TRIPS_OUTPUT:
+                    sumoConfig.append("--tripinfo-output")
+                    sumoConfig.append(tripInfo.format('newark/test', windowsDateTime))
 
         return sumoConfig
 
@@ -208,11 +257,12 @@ class Main:
 
         traci.start(sumoConfig)
 
-        test = routing.Testing()
+        test = src.project.code.Testing.Testing()
         dsp = routing.DynamicShortestPath()
         drwf = routing.DynamicReroutingWithFairness()
+        ksp = routing.kShortestPaths()
 
-        if SCENARIO == 0:
+        if SCENARIO == 0 or SCENARIO == 3:
             test.beforeLoop()
 
             for i in range(START_TIME, END_TIME):
@@ -226,8 +276,12 @@ class Main:
             elif ALGORITHM == 1:
                 for i in range(START_TIME, END_TIME):
                     dsp.main(i)
-            # Dynamic Rerouting with Fairness
+            # k-shortest paths
             elif ALGORITHM == 2:
+                for i in range(START_TIME, END_TIME):
+                    ksp.main(i)
+            # Dynamic Rerouting with Fairness
+            elif ALGORITHM == 3:
                 for i in range(START_TIME, END_TIME):
                     drwf.main(i)
 
