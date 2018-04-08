@@ -70,7 +70,7 @@ SCENARIO = 0
 #   1: Dynamic shortest path (DSP)
 #   2: k-Shortest Path
 #   3: Dynamic Rerouting with Fairness
-ALGORITHM = 2
+ALGORITHM = 1
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
@@ -249,9 +249,10 @@ class Main:
         #   --gui-settings-file: Allows for the GUI to be manipulated
         #   --device.rerouting.probability: Defines the probability that a vehicle in the simulation will automatically
         # reroute
+        #   --device.rerouting.threads: The number of threads used for rerouting purposes
         sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
                              VEHICLES_FILE, '--routing-algorithm', 'dijkstra', '--gui-settings-file', GUI_SETTINGS,
-                             '--device.rerouting.probability', '1.0']
+                             '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
 
         sumoConfig = self.configureSumo(sumoConfigInitial)
 

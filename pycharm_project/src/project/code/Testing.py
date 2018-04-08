@@ -1,6 +1,7 @@
 import sys
 
 import traci
+import time
 
 from src.project.code import SumoConnection as sumo
 from src.project.code import HelperFunctions as func
@@ -139,16 +140,10 @@ class Testing:
         self.setupGenericCarSM()
 
     def test3DuringSM(self, i):
+
+
         if i == 2:
             func.kPaths("testVeh")
-            # traci.vehicle.rerouteTraveltime("testVeh")
-
-        if i == 3:
-            print("This is the edge for 3 {}".format(traci.vehicle.getAdaptedTraveltime("testVeh", edgeID="196116976#7", time=sumo.Main.getCurrentTime())))
-            traci.vehicle.rerouteTraveltime("testVeh", currentTravelTimes=False)
-
-        if i == 101:
-            print("This is the edge for 101 {}".format(traci.vehicle.getAdaptedTraveltime("testVeh", edgeID="196116976#7", time=sumo.Main.getCurrentTime())))
 
         traci.simulationStep()
 

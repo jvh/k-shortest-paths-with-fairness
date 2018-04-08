@@ -22,10 +22,6 @@ class DynamicShortestPath:
         Args:
             i (int): The current timestep of the simulation
         """
-
-        if i ==10:
-            print("The outgoing edges for {} are: {}".format("-11622114#5", func.getOutgoingEdges("-11622114#5")))
-
         # Every 100 timesteps
         if i % 100 == 0 and i >= 1:
             for laneID in traci.lane.getIDList():

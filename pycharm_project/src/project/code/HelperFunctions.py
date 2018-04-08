@@ -1,9 +1,45 @@
 import collections
 import traci
+import random
 
 from src.project.code import SumoConnection as sumo
 from src.project.code import RoutingAlgorithms as algo
 
+# This describes the penalisation given to the edge weights
+PENALISATION = 2
+
+# Stores the edge and their corresponding estimated travel time
+edgeSpeedGlobal = {}
+# Stores the entire road network, with {edge: [lanes]}
+roadNetwork = {}
+
+def loadMap():
+    """
+    This loads the map into a dictionary (of edges) which contains a list of lanes for each edge. This has been
+    implemented for efficiency purposes as many calls to SUMO through traci causes major slowdown.
+
+    Return:
+        {edge: [lanes]}: The edge with its corresponding lanes
+    """
+    for lane in traci.lane.getIDList():
+        edge = traci.lane.getEdgeID(lane)
+        if lane[:1] != ":":
+            lanesBelongingToEdge = roadNetwork[edge].extend(lane)
+            roadNetwork[edge] = lanesBelongingToEdge
+
+
+    # for edge in traci.edge.getIDList:
+    #     for lane in traci.lane.
+    #     roadNetwork[edge]
+
+def getGlobalEdgeWeights():
+    """
+    Populates the global edge weight variable, which stores the edge and corresponding estimated travel time
+    """
+    # Clears the mapping for this timestep
+    edgeSpeedGlobal.clear()
+    for edge in traci.edge.getIDList():
+        edgeSpeedGlobal[edge] = traci.edge.getTraveltime(edge)
 
 def returnCongestionLevel(laneID):
     """
@@ -11,7 +47,7 @@ def returnCongestionLevel(laneID):
 
     Args:
         laneID (str): The ID of the lane (road)
-     Return:
+    Return:
          float: The occupancy (congestion) of the road, in percentage
     """
     return traci.lane.getLastStepOccupancy(laneID)
@@ -200,19 +236,16 @@ def rerouteSelectedVehicles(edgeID):
         # The old/current path of the vehicle
         oldPath = traci.vehicle.getRoute(vehicle)
         # If the edgeID exists in the vehicles current route then reroute them
-        if edgeID in traci.vehicle.getRoute(vehicle):
+        if edgeID in oldPath:
             # Reroute vehicles based on current travel times
             traci.vehicle.rerouteTraveltime(vehicle)
 
-            if edgeID not in traci.vehicle.getRoute(vehicle):
+            if edgeID not in oldPath:
                 print("Vehicle {} heading towards edge {} has been rerouted.\n"
                       "     Old route: {}\n"
                       "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
 
     # if sumo.ALGORITHM == 2:
-    #     kPathsVehiclesList(edgesList)
-
-    # print("MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP")
 
     return vehiclesList
 
@@ -229,9 +262,8 @@ def penalisePathTime(veh, route):
     for edge in route:
         # Sets an adapted travel time for an edge (specifically for that vehicle)
         currentAdaptedTime = traci.vehicle.getAdaptedTraveltime(vehID=veh, edgeID=edge, time=currentSysTime)
-        # Penalise the travel time by 2
-        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=currentAdaptedTime*200, begTime=currentSysTime,
-                                           endTime=currentSysTime + 1)
+        # Penalise the travel time by a multiplication of 2
+        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=(currentAdaptedTime*PENALISATION))
 
     # print("This is the current time {}".format(currentSysTime))
     # print("EDGE 46538375#6 PENALISED {}".format(traci.vehicle.getAdaptedTraveltime("testVeh", time=currentSysTime, edgeID="46538375#6")))
@@ -243,11 +275,13 @@ def getRoutePathTime(veh, route="null"):
 
     Args:
         veh (str): The vehicle with the route to test
+        route (str[]): The route the vehicle is taking
     Returns:
-        int: The estimated route times
+        int: The estimated route time for veh (for defined route, otherwise current)
     """
     currentTime = sumo.Main.getCurrentTime()
     totalEstimatedTime = 0
+    # If route has not been defined, set route to the current vehicle route
     if route == "null":
         route = traci.vehicle.getRoute(veh)
 
@@ -257,56 +291,157 @@ def getRoutePathTime(veh, route="null"):
         # If adapted travel time has not been set
         if vehAdaptedTime == -1001.0:
             # Setting the vehicle's internal edge travel time to be the same as the global edge travel time
-            vehAdaptedTime = traci.edge.getTraveltime(edge)
+            vehAdaptedTime = edgeSpeedGlobal[edge]
         totalEstimatedTime += vehAdaptedTime
-        # Sets the vehicle's internal travel time for that edge for the duration of 1 second
-        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=vehAdaptedTime, begTime=currentTime,
-                                           endTime=currentTime + 1)
-
-    # print("This is the current time {}".format(currentTime))
-    # print("EDGE 46538375#6 NOT {}".format(traci.vehicle.getAdaptedTraveltime(veh, time=currentTime, edgeID="46538375#6")))
-
+        # Sets the vehicle's internal travel time for that edge
+        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=vehAdaptedTime)
 
     return totalEstimatedTime
 
+def getGlobalRoutePathTime(route):
+    """
+    Calculates the total path time on a global scale, not specific to a vehicle
+
+    Args:
+        route (str): The route across the road network
+    Returns:
+        int: The estimated route times
+    """
+    totalEstimatedTime = 0
+    for edge in route:
+        totalEstimatedTime += edgeSpeedGlobal[edge]
+
+    return totalEstimatedTime
 
 def aStar(edgeID):
     pass
 
 
 def kPaths(veh):
+    """
+    Selects k shortest paths for the vehicle and randomly selects one
+
+    Args:
+        veh (str): The vehicle which needs rerouting
+    Returns:
+        FILL IN
+    """
+    # Getting the edge weights of the entire scenario for the current time step
+    getGlobalEdgeWeights()
+
     # Contains a list of the routes (where each route consists of a list of edges)
     routeList = []
     # A list of all of the edges
     # Counter
-    k = 0
+    k = 1
+
+    edgesSet = set()
+
+    # Finding the best possible route for the vehicle
+    traci.vehicle.rerouteTraveltime(veh)
     # The vehicle's current route
     currentRoute = traci.vehicle.getRoute(veh)
+    # The best possible routes time taken
+    bestTime = getGlobalRoutePathTime(currentRoute)
     print("Not penalised {}".format(getRoutePathTime(veh, currentRoute)))
-    # penalisePathTime(veh, currentRoute)
-    # print("Penalised {}".format(getRoutePathTime(veh, currentRoute)))
-    # routeList.append(currentRoute)
 
-
-    print(sumo.Main.getCurrentTime() + 100)
-    # traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID="196116976#7", time=999999999, begTime=sumo.Main.getCurrentTime(), endTime=sumo.Main.getCurrentTime() + 200)
-
-    # traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=True)
-    # rou = traci.vehicle.getRoute(veh)
-    #
-    # print("This is the old route {}".format(currentRoute))
-    # print("This is the new route {}".format(rou))
+    # Populating lists with the best route
+    routeList.append(currentRoute)
+    edgesSet.update(currentRoute)
 
     # Creating up to k-1 additional routes
-    # while k < sumo.K_MAX:
-    #     traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=True)
-    #     newRoute = traci.vehicle.getRoute(veh)
-    #     print("This is the routeList {}".format(routeList))
-    #     k += 1
-    #     print("This is the route time {}".format(getRoutePathTime(veh, newRoute)))
-    #     print("rou1 {}".format(newRoute))
-    #     print("rou2 {}".format(currentRoute))
-    #     # Ensuring the new route and current route are not exactly identical
-    #     if newRoute != currentRoute:
-    #         print("good")
+    while k < sumo.K_MAX:
+        print()
+        print("This is the current route time {}".format(getRoutePathTime(veh, currentRoute)))
+        print("This is the global route times {}".format(getGlobalRoutePathTime(currentRoute)))
+        penalisePathTime(veh, currentRoute)
 
+        traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=True)
+        newRoute = traci.vehicle.getRoute(veh)
+        newRouteTime = getGlobalRoutePathTime(newRoute)
+
+        currentRoute = newRoute
+        # Ensuring the route doesn't exist within the routeList
+        if currentRoute not in routeList:
+            # New route's estimated time doesn't exceed >20% of the optimal route time
+            if newRouteTime <= bestTime*10.2:
+                routeList.append(currentRoute)
+                edgesSet.update(currentRoute)
+                k += 1
+            else:
+                break
+
+    randomNum = random.randint(0, sumo.K_MAX - 1)
+    # Selecting a random route
+    routeSelection = routeList[randomNum]
+
+    print(randomNum)
+    print("The route selected is {}".format(routeSelection))
+
+    traci.vehicle.setRoute(vehID=veh, edgeList=routeSelection)
+
+    print()
+    print("This is the routeList {}".format(routeList))
+    print("This is the edgesSet {}".format(edgesSet))
+
+
+    # Settings the vehicle's internal edge travel time back to the global edge travel time
+    for edge in edgesSet:
+        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=edgeSpeedGlobal[edge])
+
+
+def k3Paths(veh):
+    """
+    Generates k-shortest paths for the vehicle and randomly selects one
+
+    Args:
+        veh (str): The vehicle which needs rerouting
+    """
+    # Getting the edge weights of the entire scenario for the current time step
+    getGlobalEdgeWeights()
+
+    # Set of all of the edges in which the vehicle's routes consist
+    edgesSet = set()
+    # A list containing the routes the vehicle can take
+    routeList = []
+    # Counter
+    k = 1
+
+    # Finding the best possible route for the vehicle
+    traci.vehicle.rerouteTraveltime(veh)
+    currentRoute = traci.vehicle.getRoute(veh)
+    # The best possible routes time taken
+    bestTime = getGlobalRoutePathTime(currentRoute)
+
+    # Populating lists with the best route
+    routeList.append(currentRoute)
+    edgesSet.update(currentRoute)
+
+    # Creating up to k-1 additional routes
+    while k < sumo.K_MAX:
+        # Penalising the currentRoute
+        penalisePathTime(veh, currentRoute)
+
+        # Generating new route
+        traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=True)
+        currentRoute = traci.vehicle.getRoute(veh)
+        newRouteTime = getGlobalRoutePathTime(currentRoute)
+
+        # Ensuring the route doesn't exist within the routeList
+        if currentRoute not in routeList:
+            # New route's estimated time doesn't exceed >20% of the optimal route time
+            if newRouteTime <= bestTime*1.2:
+                routeList.append(currentRoute)
+                edgesSet.update(currentRoute)
+                k += 1
+            else:
+                break
+
+    # Selecting a random route
+    randomNum = random.randint(0, sumo.K_MAX - 1)
+    routeSelection = routeList[randomNum]
+    traci.vehicle.setRoute(vehID=veh, edgeList=routeSelection)
+
+    # Settings the vehicle's internal edge travel time back to the global edge travel time
+    for edge in edgesSet:
+        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=edgeSpeedGlobal[edge])
