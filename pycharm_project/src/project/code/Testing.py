@@ -13,7 +13,7 @@ class Testing:
     """
 
     # Specifies the test which shall be performed. E.g. '1' would perform 'test1BeforeX' and 'test1DuringX'
-    TESTING_NUMBER = 3
+    TESTING_NUMBER = 2
 
     def setupGenericCarSM(self):
         """
@@ -92,7 +92,7 @@ class Testing:
             print("Recursive edges for 511924978#1 are: {}".format(
                 func.getMultiIncomingEdges("511924978#1")))
 
-            print("The current congestion for lane {} is {}".format(lane, func.returnCongestionLevel(lane)))
+            print("The current congestion for lane {} is {}".format(lane, func.returnCongestionLevelLane(lane)))
 
         traci.simulationStep()
 
@@ -138,12 +138,24 @@ class Testing:
 
     def test3BeforeSM(self):
         self.setupGenericCarSM()
+        # func.loadMap()
+        print(func.edgesNetwork)
+
+        # Testing to ensure fringeEdges() only returns edges which actually exist on the fringe
+        for edge in func.fringeEdges:
+            if not sumo.net.getEdge(edge).is_fringe():
+                print("NOT FRINGE")
+        print("These are the lane lengths {}".format(func.laneLengths))
+        print("These are the edge lengths {}".format(func.edgeLengths))
 
     def test3DuringSM(self, i):
 
 
         if i == 2:
             func.kPaths("testVeh")
+
+        if i == 20:
+            func.endSim(i)
 
         traci.simulationStep()
 
@@ -165,6 +177,28 @@ class Testing:
 
     def test1DuringNW(self, i):
         traci.simulationStep()
+
+    def test2BeforeNW(self):
+        print("This is the entire road network {}".format(func.edgesNetwork))
+        print("These are all of the lanes {}".format(func.lanesNetwork))
+        print()
+        print("This is the directed lane graph {}".format(func.directedGraphLanes))
+        print()
+
+        print(sumo.net.getLane(""))
+
+        #
+        # for edgeOut in sumo.net.getEdge("-11613734#0").getOutgoing():
+        #     print(edgeOut)
+        #
+        # print()
+
+        for laneOut in sumo.net.getLane("277181763#0_1").getOutgoing():
+            print(laneOut.getToLane().getID())
+
+    def test2DuringNW(self, i):
+        pass
+        # traci.simulationStep()
 
     def beforeLoop(self):
         """
@@ -188,6 +222,9 @@ class Testing:
             if self.TESTING_NUMBER == 1:
                 print("******* TEST 1 RUNNING ON NEWARK *******")
                 self.test1BeforeNW()
+            if self.TESTING_NUMBER == 2:
+                print("******* TEST 2 RUNNING ON NEWARK *******")
+                self.test2BeforeNW()
 
     def duringLoop(self, i):
         """
@@ -205,3 +242,5 @@ class Testing:
         elif sumo.SCENARIO == 3:
             if self.TESTING_NUMBER == 1:
                 self.test1DuringNW(i)
+            if self.TESTING_NUMBER == 2:
+                self.test2DuringNW(i)

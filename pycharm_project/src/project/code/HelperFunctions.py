@@ -1,6 +1,8 @@
 import collections
 import traci
 import random
+import time
+import sys
 
 from src.project.code import SumoConnection as sumo
 from src.project.code import RoutingAlgorithms as algo
@@ -10,27 +12,93 @@ PENALISATION = 2
 
 # Stores the edge and their corresponding estimated travel time
 edgeSpeedGlobal = {}
+
 # Stores the entire road network, with {edge: [lanes]}
-roadNetwork = {}
+edgesNetwork = {}
+# Contains the laneID along with the corresponding edgeID in the format {laneID: edgeID}
+lanesNetwork = {}
+# Stores the edges which are on the fringe of the network (fringe edges)
+fringeEdges = set()
+# Stores the lengths of each lane in the format {laneID: length}
+laneLengths = {}
+# Stores the lengths of each edge in the format {edgeID: length}
+edgeLengths = {}
+# Stores the directed graph in terms of the lanes in the format {originLane: [outgoingLanes]}
+directedGraphLanes = {}
+# Stores the directed graph in terms of the edges in the format {originEdge: [outgoingEdges]}
+directedGraphEdges = {}
+
+
+def initialisation():
+    """
+    This initialises the simulation with settings which are relevant to all scenarios
+    """
+    loadMap()
+    createDirectedRoadNetwork()
+    sumo.timerStart = time.clock()
+
+def endSim(i, manual = True):
+    """
+    Ends the simulation and prints the time taken
+
+    Args:
+        i (int): The timestep of the simulation
+        manual (bool): Specifies if the simulation has been ended manually or at the point of simulation finish
+    """
+    sumo.timerEnd = time.clock()
+    if manual:
+        sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
+                                                                                         sumo.timerStart))
+    else:
+        sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
+                                                                                         sumo.timerStart))
 
 def loadMap():
     """
     This loads the map into a dictionary (of edges) which contains a list of lanes for each edge. This has been
     implemented for efficiency purposes as many calls to SUMO through traci causes major slowdown.
 
-    Return:
-        {edge: [lanes]}: The edge with its corresponding lanes
+    edgesNetwork is in the form {edge: [lanes]}: The edge with its corresponding lanes
     """
+
+    # Populating all non-special edges
+    for edgeID in traci.edge.getIDList():
+        # Special edges, i.e. connector or internal edges, have ':' prepended to them, don't consider these in rerouting
+        if edgeID[:1] != ":":
+            edgesNetwork[edgeID] = []
+            edgeLengths[edgeID] = sumo.net.getEdge(edgeID).getLength()
+            # Finding edges on the fringe of the network
+            populateFringeEdges(edgeID)
+
+    # Populating edges with their corresponding non-special lanes
     for lane in traci.lane.getIDList():
-        edge = traci.lane.getEdgeID(lane)
+        # Remove any special lanes
         if lane[:1] != ":":
-            lanesBelongingToEdge = roadNetwork[edge].extend(lane)
-            roadNetwork[edge] = lanesBelongingToEdge
+            laneLengths[lane] = traci.lane.getLength(lane)
+            edge = traci.lane.getEdgeID(lane)
+            lanesNetwork[lane] = edge
+            edgesNetwork[edge].append(lane)
+
+def createDirectedRoadNetwork():
+    """
+    This stores the road network into a directed graph in terms of both lanes (directedGraphLanes) and edges
+    (directedGraphEdges) for easy access
+    """
+    # Lane directed graph
+    for lane in lanesNetwork.keys():
+        directedGraphLanes[lane] = getOutgoingLanes(lane)
+
+    # Edge directed Graph
+    for edge in edgesNetwork.keys():
+        directedGraphEdges[edge] = getOutgoingEdges(edge)
 
 
-    # for edge in traci.edge.getIDList:
-    #     for lane in traci.lane.
-    #     roadNetwork[edge]
+def populateFringeEdges(edge):
+    """
+    Populates the fringeEdges variable with the edges which exist on the fringe of the network
+    """
+    if sumo.net.getEdge(edge).is_fringe():
+        fringeEdges.update(edge)
 
 def getGlobalEdgeWeights():
     """
@@ -41,7 +109,7 @@ def getGlobalEdgeWeights():
     for edge in traci.edge.getIDList():
         edgeSpeedGlobal[edge] = traci.edge.getTraveltime(edge)
 
-def returnCongestionLevel(laneID):
+def returnCongestionLevelLane(laneID):
     """
     Gives the congestion level of the road, laneID
 
@@ -52,6 +120,16 @@ def returnCongestionLevel(laneID):
     """
     return traci.lane.getLastStepOccupancy(laneID)
 
+def returnCongestionLevelEdge(edgeID):
+    """
+    Gives the congestion level of the edge
+
+    Args:
+        edgeID (str): The ID of the edge
+    Return:
+         float: The occupancy (congestion) of the road, in percentage
+    """
+    return traci.edge.getLastStepOccupancy(edgeID)
 
 def getIncomingEdges(edgeID):
     """
@@ -157,18 +235,27 @@ def getLane2DCoordinates(laneID):
 
     Args:
         laneID (str): The lane
+    """
+    edge = traci.lane.getEdgeID(laneID)
+    getEdge2DCoordinates(edge)
+
+def getEdge2DCoordinates(edge):
+    """
+    Gets the 2D coordinates of the 'from' node which connects to the lane
+
+    Args:
+        edge (str): The edge to teleport to
     Returns:
         (str, str): Returns the tuple (x, y)
             Individual elements can be accessed by tuple.x and tuple.y
     """
-    edge = traci.lane.getEdgeID(laneID)
     # Getting them 'from' node associated with that edge
     node = sumo.net.getEdge(edge).getFromNode().getID()
     # Getting the 2D coordinates (x, y) for that node
     x, y = sumo.net.getNode(node).getCoord()
     # Changes the GUI offset to the coordinates of the node
     traci.gui.setOffset("View #0", x, y)
-    print("Lane {} has congestion level {}".format(laneID, returnCongestionLevel(laneID)))
+    print("Edge {} has congestion level {}".format(edge, returnCongestionLevelEdge(edge)))
 
     # Creating a named tuple to store (x, y) information
     coord = collections.namedtuple('coord', ['x', 'y'])
@@ -190,6 +277,19 @@ def getOutgoingEdges(edgeID):
         outgoingEdgeList.append(edgeOut.getID())
     return outgoingEdgeList
 
+def getOutgoingLanes(laneID):
+    """
+    Returns a list of all of the outgoing lanes to the specified lane
+
+    Args:
+        laneID (str): The identification of the lane to collect outgoing lanes
+    Returns:
+        outgoingLaneList (str[]): The outgoing lanes
+    """
+    outgoingLaneList = []
+    for laneOut in sumo.net.getLane(laneID).getOutgoing():
+        outgoingLaneList.append(laneOut.getToLane().getID())
+    return outgoingLaneList
 
 def kPathsVehiclesList(edgesVehicleList):
     """
@@ -204,7 +304,7 @@ def kPathsVehiclesList(edgesVehicleList):
         print("edge {} outgoing {}".format(edge, getOutgoingEdges(edge)))
 
 
-def rerouteSelectedVehicles(edgeID):
+def rerouteSelectedVehiclesEdge(edgeID):
     """
     Selects the vehicles to be rerouted from edgeID (the edge which is currently congested) and reroutes them based
     on current estimated travel times
@@ -229,21 +329,79 @@ def rerouteSelectedVehicles(edgeID):
         if vehiclesOnEdge:
             edgesList[edge] = vehiclesOnEdge
 
-    print(edgesList)
+    # print(edgesList)
 
     # What vehicles have the edgeID
     for vehicle in vehiclesList:
         # The old/current path of the vehicle
-        oldPath = traci.vehicle.getRoute(vehicle)
+        oldPath = set(traci.vehicle.getRoute(vehicle))
         # If the edgeID exists in the vehicles current route then reroute them
         if edgeID in oldPath:
             # Reroute vehicles based on current travel times
             traci.vehicle.rerouteTraveltime(vehicle)
 
-            if edgeID not in oldPath:
-                print("Vehicle {} heading towards edge {} has been rerouted.\n"
-                      "     Old route: {}\n"
-                      "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
+            # if edgeID not in oldPath:
+            #     print("Vehicle {} heading towards edge {} has been rerouted.\n"
+            #           "     Old route: {}\n"
+            #           "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
+
+    # if sumo.ALGORITHM == 2:
+
+    return vehiclesList
+
+def rerouteSelectedVehiclesLane(edgeID, laneID):
+    """
+    Selects the vehicles to be rerouted from edgeID (the edge which is currently congested) and reroutes them based
+    on current estimated travel times
+
+    Args:
+        edgeID (str): The edge in which the congestion is occurring
+    Returns:
+        str[]: The list of vehicles to be rerouted
+    """
+    # The list of vehicles existing on the edges
+    vehiclesList = []
+    # The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
+    edgesList = {}
+
+    # Going through the incoming edges and identifying vehicles on them
+    for edge in getMultiIncomingEdges(edgeID):
+        vehiclesOnEdge = traci.edge.getLastStepVehicleIDs(edge)
+        # Appending the list of vehicles from edge onto vehiclesList
+        vehiclesList.extend(vehiclesOnEdge)
+
+        # If vehicles exist on that edge
+        if vehiclesOnEdge:
+            edgesList[edge] = vehiclesOnEdge
+
+    # print(edgesList)
+
+    # What vehicles have the edgeID
+    for vehicle in vehiclesList:
+        # The old/current path of the vehicle
+        oldPath = set(traci.vehicle.getRoute(vehicle))
+        # If the edgeID exists in the vehicles current route then reroute them
+        if edgeID in oldPath:
+            congestionIndex = oldPath.index(edgeID)
+            nextEdge = oldPath[congestionIndex + 1]
+            congestedEdge = edgeID
+
+            print("Congested lane {} on edge {}".format(laneID, congestedEdge))
+            print(oldPath)
+            print(nextEdge)
+            print(edgesNetwork[edgeID])
+            print()
+
+
+            # time.sleep(10)
+
+            # Reroute vehicles based on current travel times
+            traci.vehicle.rerouteTraveltime(vehicle)
+
+            # if edgeID not in oldPath:
+            #     print("Vehicle {} heading towards edge {} has been rerouted.\n"
+            #           "     Old route: {}\n"
+            #           "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
 
     # if sumo.ALGORITHM == 2:
 

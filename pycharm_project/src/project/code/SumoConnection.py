@@ -6,9 +6,15 @@ import sys
 
 import src.project.code.Testing
 from src.project.code import RoutingAlgorithms as routing
+from src.project.code import HelperFunctions as func
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
 COMPUTER = True
+
+# These are the times between the simulation start and end, delay MUST be set at 0ms for this to be comparable to other
+# results
+timerStart = 0
+timerEnd = 0
 
 # Settings main working directory
 if COMPUTER:
@@ -32,6 +38,14 @@ else:
 # Change from dijkstras to a*
 # Think about subscriptions
 # Add in 'tau' into the vehicles.xml (driver's reaction time)
+# Edges might not be the best solution when choosing where congestion occurs because an edge can contain a number of
+# lanes which go to certain intersections, for example a left edge may invite a left turn, whereas a right edge may
+# invite a right turn. This means that a single lane on an edge may be congested whereas the other lane may not be. See
+# img1.png for a good representation of this exact thing
+# Write about using sets over lists for some things (NOT OWN WORDS BELOW)
+#           * since the in operator is O(n) on a list but O(1) on a set
+#           * Sets are significantly faster when it comes to determining if an object is present in the set (as in x in
+#             s), but are slower than lists when it comes to iterating over their contents.
 
 # SUMO Configuration files
 OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
@@ -64,7 +78,7 @@ K_MAX = 3
 #   1: small_manhattan
 #   2: newark
 #   3: Testing (newark)
-SCENARIO = 0
+SCENARIO = 2
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
@@ -262,6 +276,8 @@ class Main:
         dsp = routing.DynamicShortestPath()
         drwf = routing.DynamicReroutingWithFairness()
         ksp = routing.kShortestPaths()
+
+        func.initialisation()
 
         if SCENARIO == 0 or SCENARIO == 3:
             test.beforeLoop()
