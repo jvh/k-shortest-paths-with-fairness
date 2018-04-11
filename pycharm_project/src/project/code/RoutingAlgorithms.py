@@ -5,6 +5,8 @@ from src.project.code import HelperFunctions as func
 
 # This is the period in seconds in which rerouting happens
 ROUTE_PERIOD = 200
+# The threshold in which congestion is considered to have occurred
+CONGESTION_THRESHOLD = 0.5
 
 
 class DynamicShortestPath:
@@ -25,7 +27,7 @@ class DynamicShortestPath:
 
         # Every 100 timesteps
         if i % 100 == 0 and i >= 1:
-            print("This is the number {}".format(i/100))
+            print("Number of times rerouting algorithm has ran {}".format(i/100))
             for laneID in traci.lane.getIDList():
                 edge = traci.lane.getEdgeID(laneID)
 
@@ -89,22 +91,46 @@ class DynamicShortestPath:
         #                 func.rerouteSelectedVehiclesEdge(edge)
 
         if i % 100 == 0 and i >= 1:
-            # This list stores lanes which still need to be searched for congestion
-            searchLanes = func.lanesNetwork.keys()
-            print("This is the number {}".format(i/100))
-            for lane in searchLanes:
-                edge = func.lanesNetwork[lane]
-
-                # Removing lanes belonging to the same edge if the edge only has a single destination (therefore, all of
-                # the lanes also share only a single destination)
-                if len(func.directedGraphEdges[edge]) == 1:
+            test = "test"
 
 
-                if func.laneLengths[lane] >= 25 and edge not in func.fringeEdges:
-                    congestion = func.returnCongestionLevelLane(lane)
-                    if congestion > 0.5:
-                        func.getLane2DCoordinates(lane)
-                        func.rerouteSelectedVehiclesLane(edge, lane)
+            # Processing the lanes existing on edges with multiple outgoing edges
+            for lane in func.reroutingLanes:
+                congestion = func.returnCongestionLevelLane(lane)
+                if congestion >= CONGESTION_THRESHOLD:
+                    print("\n***** LANE {} REROUTE ********\n".format(lane))
+                    edge = func.lanesNetwork[lane]
+                    func.getEdge2DCoordinates(edge)
+                    func.rerouteSelectedVehiclesLane(edge, lane)
+
+            test = "test"
+
+            # Processing those edges which only have a single outgoing edge (all lanes lead to the same position
+            for edge in func.singleOutgoingEdges:
+                congestion = func.returnCongestionLevelEdge(edge)
+                if congestion >= CONGESTION_THRESHOLD:
+                    print("\n***** EDGE {} REROUTE ********\n".format(edge))
+                    func.getEdge2DCoordinates(edge)
+                    func.rerouteSelectedVehiclesEdge(edge)
+
+            test = "test"
+
+
+                    # # This list stores lanes which still need to be searched for congestion
+            # searchLanes = func.lanesNetwork.keys()
+            # print("This is the number {}".format(i/100))
+            # for lane in searchLanes:
+            #     edge = func.lanesNetwork[lane]
+            #
+            #
+            #     if len(func.directedGraphEdges[edge]) == 1:
+            #         print(edge)
+            #
+            #     if func.laneLengths[lane] >= 25 and edge not in func.fringeEdges:
+            #         congestion = func.returnCongestionLevelLane(lane)
+            #         if congestion > 0.5:
+            #             func.getLane2DCoordinates(lane)
+            #             func.rerouteSelectedVehiclesLane(edge, lane)
 
         traci.simulationStep()
 

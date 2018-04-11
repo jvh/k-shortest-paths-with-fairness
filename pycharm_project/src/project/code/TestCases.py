@@ -36,6 +36,9 @@ class MyUnitTests(unittest.TestCase):
         output = test.getMultiIncomingEdges("464516471#2")
         self.assertEqual(output, ['420494981#0', '464516471#1', '464516471#0', '5670124#0', '46482602#4', '46482602#3'])
 
+    # def test_singlOutgoingEdges(self):
+
+
 if __name__=="__main__":
 
     unittest.main(exit=False)

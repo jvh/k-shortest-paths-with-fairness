@@ -1,0 +1,9 @@
+
+Epython:S1481"(Remove the unused local variable "test".(‘¿Æ8Úä›”«,
+qpython:S117"WRename this local variable "laneID" to match the regular expression ^[_a-z][a-z0-9_]*$.(æëêİúÿÿÿÿ
+qpython:S117"WRename this local variable "laneID" to match the regular expression ^[_a-z][a-z0-9_]*$.(æëêİúÿÿÿÿ
+fpython:S100"LRename method "mainB" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ğ°¹¨ûÿÿÿÿ
+Epython:S1481"(Remove the unused local variable "test".(‘¿Æ8Ûı›”«,
+Epython:S1481"(Remove the unused local variable "test".(‘¿Æ8˜›”«,
+hpython:S101"SRename class "kShortestPaths" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.(ˆƒ
+9python:S125"Remove this commented out code.(í’ˆ¡øÿÿÿÿ

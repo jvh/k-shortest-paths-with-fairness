@@ -9,6 +9,8 @@ from src.project.code import RoutingAlgorithms as algo
 
 # This describes the penalisation given to the edge weights
 PENALISATION = 2
+# This is the minimum edge/lane length to be considered for possible rerouting
+MIN_EDGE_LENGTH = 25
 
 # Stores the edge and their corresponding estimated travel time
 edgeSpeedGlobal = {}
@@ -28,6 +30,11 @@ directedGraphLanes = {}
 # Stores the directed graph in terms of the edges in the format {originEdge: [outgoingEdges]}
 directedGraphEdges = {}
 
+# These are the edges which only nave a single outgoing connection (there is only a single edge outgoing)
+singleOutgoingEdges = set()
+# These are the lanes which share an edge which has at least 2 outgoing edges from it
+reroutingLanes = set()
+
 
 def initialisation():
     """
@@ -35,6 +42,18 @@ def initialisation():
     """
     loadMap()
     createDirectedRoadNetwork()
+    collectEdgesWithSingleOutgoing()
+    collectEdgesWithMultiOutgoing()
+
+    # for edge in fringeEdges:
+    #     if edge in singleOutgoingEdges:
+    #         print("NO EDGES")
+    #
+    # for lane in reroutingLanes:
+    #     edge = lanesNetwork[lane]
+    #     if edge in fringeEdges:
+    #         print("NO LANE")
+
     sumo.timerStart = time.clock()
 
 def endSim(i, manual = True):
@@ -92,13 +111,42 @@ def createDirectedRoadNetwork():
     for edge in edgesNetwork.keys():
         directedGraphEdges[edge] = getOutgoingEdges(edge)
 
+def collectEdgesWithSingleOutgoing():
+    """
+    Generates a list of all of the edges with at most 1 outgoing edge.
+
+    The lanes existing on a edge with only a single outgoing edge will also only have a single outgoing lane (a single
+    destination).
+
+    This function only considers lanes which do not belong to a fringe edge and only accounts for lanes larger than
+    MIN_EDGE_LENGTH
+    """
+    for edge in edgesNetwork.keys():
+        if len(directedGraphEdges[edge]) == 1 and edge not in fringeEdges and edgeLengths[edge] >= MIN_EDGE_LENGTH:
+            singleOutgoingEdges.add(edge)
+
+def collectEdgesWithMultiOutgoing():
+    """
+    Generates a list of all of the edges with at least 2 outgoing edges.
+
+    The lanes which exist on this edge may lead to different possible turns (i.e. a right hand lane may afford a right
+    hand turn, whereas a left hand lane may afford a left hand turn). These lanes should be considered separately during
+    rerouting as they may lead different directions with other lanes which share the same edge.
+
+    This function only considers edges which do not belong to a fringe edge and only accounts for edges larger than
+    MIN_EDGE_LENGTH
+    """
+    for edge in edgesNetwork.keys():
+        if len(directedGraphEdges[edge]) >= 2 and edge not in fringeEdges and edgeLengths[edge] >= MIN_EDGE_LENGTH:
+            for lane in edgesNetwork[edge]:
+                reroutingLanes.add(lane)
 
 def populateFringeEdges(edge):
     """
     Populates the fringeEdges variable with the edges which exist on the fringe of the network
     """
     if sumo.net.getEdge(edge).is_fringe():
-        fringeEdges.update(edge)
+        fringeEdges.add(edge)
 
 def getGlobalEdgeWeights():
     """
@@ -228,17 +276,6 @@ def getMultiIncomingEdges(edgeID):
     """
     return recursiveIncomingEdges(edgeID, firstTime=True)
 
-
-def getLane2DCoordinates(laneID):
-    """
-    Gets the 2D coordinates of the 'from' node which connects to the lane
-
-    Args:
-        laneID (str): The lane
-    """
-    edge = traci.lane.getEdgeID(laneID)
-    getEdge2DCoordinates(edge)
-
 def getEdge2DCoordinates(edge):
     """
     Gets the 2D coordinates of the 'from' node which connects to the lane
@@ -359,6 +396,9 @@ def rerouteSelectedVehiclesLane(edgeID, laneID):
     Returns:
         str[]: The list of vehicles to be rerouted
     """
+    totalTime = 0
+    startTime = time.clock()
+
     # The list of vehicles existing on the edges
     vehiclesList = []
     # The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
@@ -376,27 +416,41 @@ def rerouteSelectedVehiclesLane(edgeID, laneID):
 
     # print(edgesList)
 
+    # Effectively, we are testing if the vehicles need to occupy this specific lane to continue their journey, or if
+    # another lane on the edge could instead be used/is necessary
+    outgoingLanes = directedGraphLanes[laneID]
+
+
     # What vehicles have the edgeID
     for vehicle in vehiclesList:
         # The old/current path of the vehicle
-        oldPath = set(traci.vehicle.getRoute(vehicle))
+        oldPath = traci.vehicle.getRoute(vehicle)
         # If the edgeID exists in the vehicles current route then reroute them
         if edgeID in oldPath:
             congestionIndex = oldPath.index(edgeID)
+            # The edge intended to be taken by the vehicle directly after they have left the congested edge
             nextEdge = oldPath[congestionIndex + 1]
-            congestedEdge = edgeID
+            lanesInNextEdge = edgesNetwork[nextEdge]
 
-            print("Congested lane {} on edge {}".format(laneID, congestedEdge))
-            print(oldPath)
-            print(nextEdge)
-            print(edgesNetwork[edgeID])
-            print()
+            # Testing if lanes present in the next edge (of the vehicle's route) are any of the outgoing lanes from the
+            # congested lane
+            if any(lane in lanesInNextEdge for lane in outgoingLanes):
+                # Reroute vehicles based on current travel times
+                traci.vehicle.rerouteTraveltime(vehicle)
+                ok = "ok"
+            else:
+                meep = "meep"
+
+            # print("Congested lane {} on edge {}".format(laneID, congestedEdge))
+            # print(oldPath)
+            # print(nextEdge)
+            # print(edgesNetwork[edgeID])
+            # print()
 
 
             # time.sleep(10)
 
-            # Reroute vehicles based on current travel times
-            traci.vehicle.rerouteTraveltime(vehicle)
+
 
             # if edgeID not in oldPath:
             #     print("Vehicle {} heading towards edge {} has been rerouted.\n"
@@ -404,6 +458,10 @@ def rerouteSelectedVehiclesLane(edgeID, laneID):
             #           "     New route: {}".format(vehicle, edgeID, oldPath, traci.vehicle.getRoute(vehicle)))
 
     # if sumo.ALGORITHM == 2:
+
+    print()
+    print("TIMER {}".format(time.clock() - startTime))
+    print()
 
     return vehiclesList
 
@@ -489,10 +547,9 @@ def kPaths(veh):
 
     # Contains a list of the routes (where each route consists of a list of edges)
     routeList = []
-    # A list of all of the edges
     # Counter
     k = 1
-
+    # A set of all of the edges
     edgesSet = set()
 
     # Finding the best possible route for the vehicle
@@ -541,7 +598,6 @@ def kPaths(veh):
     print()
     print("This is the routeList {}".format(routeList))
     print("This is the edgesSet {}".format(edgesSet))
-
 
     # Settings the vehicle's internal edge travel time back to the global edge travel time
     for edge in edgesSet:

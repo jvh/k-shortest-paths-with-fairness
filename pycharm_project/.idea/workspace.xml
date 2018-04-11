@@ -17,11 +17,9 @@
       <file leaf-file-name="SumoConnection.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="44" column="73" lean-forward="false" selection-start-line="44" selection-start-column="73" selection-end-line="44" selection-end-column="73" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -29,8 +27,8 @@
       <file leaf-file-name="HelperFunctions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="500" column="29" lean-forward="false" selection-start-line="500" selection-start-column="29" selection-end-line="500" selection-end-column="29" />
+            <state relative-caret-position="329">
+              <caret line="441" column="0" lean-forward="false" selection-start-line="441" selection-start-column="0" selection-end-line="441" selection-end-column="0" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -38,10 +36,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="pydevd.py" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="553">
+              <caret line="1598" column="0" lean-forward="false" selection-start-line="1598" selection-start-column="0" selection-end-line="1598" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Testing.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3179">
+            <state relative-caret-position="805">
               <caret line="187" column="32" lean-forward="false" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
@@ -53,8 +61,8 @@
       <file leaf-file-name="RoutingAlgorithms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="102" column="72" lean-forward="true" selection-start-line="102" selection-start-column="72" selection-end-line="102" selection-end-column="72" />
+            <state relative-caret-position="116">
+              <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -66,8 +74,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getid</find>
-      <find>self.</find>
       <find>262807673</find>
       <find>small_</find>
       <find>reroute</find>
@@ -96,6 +102,8 @@
       <find>outgoing</find>
       <find>-11621452#0</find>
       <find>in</find>
+      <find>***** edg</find>
+      <find>this is the number</find>
     </findStrings>
     <replaceStrings>
       <replace>func</replace>
@@ -115,9 +123,11 @@
         <option value="$PROJECT_DIR$/src/project/small_manhattan/code/RoutingAlgorithms.py" />
         <option value="$PROJECT_DIR$/src/project/small_manhattan/code/SumoConnection.py" />
         <option value="$PROJECT_DIR$/src/project/code/Testing.py" />
-        <option value="$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py" />
         <option value="$PROJECT_DIR$/src/project/code/SumoConnection.py" />
+        <option value="$PROJECT_DIR$/src/project/code/Test.py" />
+        <option value="$PROJECT_DIR$/src/project/code/TestCases.py" />
         <option value="$PROJECT_DIR$/src/project/code/HelperFunctions.py" />
+        <option value="$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py" />
       </list>
     </option>
   </component>
@@ -160,6 +170,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -189,8 +201,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -218,6 +228,23 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
+    <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm_project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/project/code/Test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="Unittests in TestCases.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -249,13 +276,15 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.main" />
       <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Test" />
     </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py" />
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Python.Test" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py" />
       </list>
     </recent_temporary>
   </component>
@@ -309,7 +338,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2018419" sideWeight="0.440625" order="7" side_tool="true" content_ui="tabs" />
@@ -370,24 +398,30 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
-          <line>398</line>
-          <option name="timeStamp" value="203" />
+          <line>441</line>
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py</url>
+          <line>93</line>
+          <option name="timeStamp" value="219" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py</url>
+          <line>105</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py</url>
+          <line>115</line>
+          <option name="timeStamp" value="221" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="204" />
+      <option name="time" value="222" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/RoutingAlgorithms.py" />
-    <entry file="file://D:/Program Files/SUMO/doc/tutorial/traci_pedestrian_crossing/runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2601">
-          <caret line="160" column="70" lean-forward="false" selection-start-line="160" selection-start-column="70" selection-end-line="160" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/SumoConnection.py" />
     <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/RoutingAlgorithms.py" />
     <entry file="file://D:/Program Files/SUMO/doc/tutorial/traci_pedestrian_crossing/runner.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -536,13 +570,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26537">
-          <caret line="1598" column="0" lean-forward="false" selection-start-line="1598" selection-start-column="0" selection-end-line="1598" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/TestCases.py" />
     <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/RoutingAlgorithms.py" />
     <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/SumoConnection.py" />
@@ -576,29 +603,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/os.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="102" column="72" lean-forward="true" selection-start-line="102" selection-start-column="72" selection-end-line="102" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="11322">
+          <caret line="668" column="0" lean-forward="false" selection-start-line="668" selection-start-column="0" selection-end-line="668" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
+    <entry file="file://$PROJECT_DIR$/src/project/code/Test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="73" lean-forward="false" selection-start-line="44" selection-start-column="73" selection-end-line="44" selection-end-column="73" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="374">
+          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="60" lean-forward="false" selection-start-line="7" selection-start-column="60" selection-end-line="7" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="553">
+          <caret line="1598" column="0" lean-forward="false" selection-start-line="1598" selection-start-column="0" selection-end-line="1598" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3179">
+        <state relative-caret-position="805">
           <caret line="187" column="32" lean-forward="false" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
@@ -606,10 +645,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="500" column="29" lean-forward="false" selection-start-line="500" selection-start-column="29" selection-end-line="500" selection-end-column="29" />
+        <state relative-caret-position="329">
+          <caret line="441" column="0" lean-forward="false" selection-start-line="441" selection-start-column="0" selection-end-line="441" selection-end-column="0" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
