@@ -17,31 +17,11 @@
       <file leaf-file-name="SumoConnection.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HelperFunctions.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="441" column="0" lean-forward="false" selection-start-line="441" selection-start-column="0" selection-end-line="441" selection-end-column="0" />
+            <state relative-caret-position="869">
+              <caret line="315" column="70" lean-forward="false" selection-start-line="315" selection-start-column="70" selection-end-line="315" selection-end-column="70" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#12#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pydevd.py" pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="553">
-              <caret line="1598" column="0" lean-forward="false" selection-start-line="1598" selection-start-column="0" selection-end-line="1598" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -49,10 +29,22 @@
       <file leaf-file-name="Testing.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="805">
-              <caret line="187" column="32" lean-forward="false" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
+            <state relative-caret-position="571">
+              <caret line="153" column="17" lean-forward="false" selection-start-line="153" selection-start-column="17" selection-end-line="153" selection-end-column="17" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HelperFunctions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="341" column="4" lean-forward="true" selection-start-line="341" selection-start-column="4" selection-end-line="341" selection-end-column="4" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -61,10 +53,22 @@
       <file leaf-file-name="RoutingAlgorithms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+            <state relative-caret-position="1071">
+              <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestCases.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1026">
+              <caret line="131" column="31" lean-forward="false" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -74,14 +78,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>262807673</find>
-      <find>small_</find>
-      <find>reroute</find>
-      <find>vehicle</find>
-      <find>please enter</find>
-      <find>sys.</find>
-      <find>sys.exi</find>
-      <find>penalise</find>
       <find>#6 not</find>
       <find>&lt;=</find>
       <find>please ent</find>
@@ -96,7 +92,6 @@
       <find>167922071_0</find>
       <find>452322757</find>
       <find>167922073#0</find>
-      <find>print</find>
       <find>-11619775#6</find>
       <find>-11619775#6_0</find>
       <find>outgoing</find>
@@ -104,9 +99,19 @@
       <find>in</find>
       <find>***** edg</find>
       <find>this is the number</find>
+      <find>print</find>
+      <find>multiincoming</find>
+      <find>testing_nu</find>
+      <find>self.TESTING_NUMBER</find>
+      <find>getoutgoinglanes</find>
+      <find>getoutgoing</find>
+      <find>edgespeedglobal</find>
+      <find>traci</find>
+      <find>getglobaledge</find>
     </findStrings>
     <replaceStrings>
       <replace>func</replace>
+      <replace>TESTING_NUMBER</replace>
     </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -122,12 +127,12 @@
         <option value="$PROJECT_DIR$/src/project/small_manhattan/traci_code/SumoConnection.py" />
         <option value="$PROJECT_DIR$/src/project/small_manhattan/code/RoutingAlgorithms.py" />
         <option value="$PROJECT_DIR$/src/project/small_manhattan/code/SumoConnection.py" />
+        <option value="$PROJECT_DIR$/src/project/code/Test.py" />
         <option value="$PROJECT_DIR$/src/project/code/Testing.py" />
         <option value="$PROJECT_DIR$/src/project/code/SumoConnection.py" />
-        <option value="$PROJECT_DIR$/src/project/code/Test.py" />
-        <option value="$PROJECT_DIR$/src/project/code/TestCases.py" />
         <option value="$PROJECT_DIR$/src/project/code/HelperFunctions.py" />
         <option value="$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py" />
+        <option value="$PROJECT_DIR$/src/project/code/TestCases.py" />
       </list>
     </option>
   </component>
@@ -170,8 +175,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -201,10 +204,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/project/code/HelperFunctions.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/project/code/TestCases.py" />
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="PyDebuggerOptionsProvider">
@@ -227,7 +232,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python tests.Unittests in TestCases.py (1)">
     <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -245,7 +250,21 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="Unittests in TestCases.py" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+    <configuration name="Unittests in TestCases.py (1)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm_project" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/project/code/TestCases.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+    </configuration>
+    <configuration name="Unittests in TestCases.py" type="tests" factoryName="Unittests" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -255,8 +274,9 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pycharm_project" />
+      <option name="_new_pattern" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/project/small_manhattan/traci_code/TestCases.py&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/project/code/TestCases.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
     </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python">
@@ -276,15 +296,16 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Python.main" />
       <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py" />
       <item index="2" class="java.lang.String" itemvalue="Python.Test" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py (1)" />
     </list>
     <recent_temporary>
       <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python.Test" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Test" />
       </list>
     </recent_temporary>
   </component>
@@ -305,52 +326,53 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.26 at 23h 44m 24s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 27m 01s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.26 at 23h 44m 33s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 30m 01s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.26 at 23h 45m 15s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 39m 27s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.26 at 23h 45m 30s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 41m 57s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.26 at 23h 46m 19s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 42m 49s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.26 at 23h 46m 25s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 46m 10s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.27 at 00h 03m 19s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 13m 37s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.27 at 00h 23m 50s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 19m 32s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.29 at 23h 35m 31s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 25m 51s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py - 2018.03.29 at 23h 36m 02s.xml">
-      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 27m 22s.xml">
+      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2018419" sideWeight="0.440625" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2018419" sideWeight="0.559375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2018419" sideWeight="0.559375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292402" sideWeight="0.4984375" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="SonarLint" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847276" sideWeight="0.4875" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3998465" sideWeight="0.4921875" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -397,39 +419,26 @@
           <option name="timeStamp" value="124" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
-          <line>441</line>
-          <option name="timeStamp" value="213" />
+          <url>file://$PROJECT_DIR$/src/project/code/SumoConnection.py</url>
+          <line>325</line>
+          <option name="timeStamp" value="228" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py</url>
-          <line>93</line>
-          <option name="timeStamp" value="219" />
+          <url>file://$PROJECT_DIR$/src/project/code/SumoConnection.py</url>
+          <line>327</line>
+          <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py</url>
-          <line>105</line>
-          <option name="timeStamp" value="220" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py</url>
-          <line>115</line>
-          <option name="timeStamp" value="221" />
+          <url>file://$PROJECT_DIR$/src/project/code/SumoConnection.py</url>
+          <line>326</line>
+          <option name="timeStamp" value="232" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="222" />
+      <option name="time" value="234" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/project/small_manhattan/traci_code/RoutingAlgorithms.py" />
-    <entry file="file://D:/Program Files/SUMO/doc/tutorial/traci_pedestrian_crossing/runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SumoConnection.py" />
     <entry file="file://D:/Program Files/SUMO/doc/tutorial/traci_tls/runner.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -582,13 +591,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/subprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16490">
-          <caret line="970" column="0" lean-forward="false" selection-start-line="970" selection-start-column="0" selection-end-line="970" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Program Files/SUMO/tools/traci/_vehicle.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
@@ -607,38 +609,45 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11322">
           <caret line="668" column="0" lean-forward="false" selection-start-line="668" selection-start-column="0" selection-end-line="668" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/code/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="60" lean-forward="false" selection-start-line="7" selection-start-column="60" selection-end-line="7" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/project/code/Test.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
+        <state relative-caret-position="26537">
           <caret line="1598" column="0" lean-forward="false" selection-start-line="1598" selection-start-column="0" selection-end-line="1598" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Program Files/SUMO/tools/traci/_lane.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="154" column="0" lean-forward="false" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Program Files/SUMO/tools/traci/domain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="765" column="0" lean-forward="false" selection-start-line="765" selection-start-column="0" selection-end-line="765" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="805">
-          <caret line="187" column="32" lean-forward="false" selection-start-line="187" selection-start-column="32" selection-end-line="187" selection-end-column="32" />
+        <state relative-caret-position="571">
+          <caret line="153" column="17" lean-forward="false" selection-start-line="153" selection-start-column="17" selection-end-line="153" selection-end-column="17" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
@@ -647,16 +656,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="869">
+          <caret line="315" column="70" lean-forward="false" selection-start-line="315" selection-start-column="70" selection-end-line="315" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+        <state relative-caret-position="1071">
+          <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -665,10 +676,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="441" column="0" lean-forward="false" selection-start-line="441" selection-start-column="0" selection-end-line="441" selection-end-column="0" />
+        <state relative-caret-position="238">
+          <caret line="341" column="4" lean-forward="true" selection-start-line="341" selection-start-column="4" selection-end-line="341" selection-end-column="4" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="131" column="31" lean-forward="false" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

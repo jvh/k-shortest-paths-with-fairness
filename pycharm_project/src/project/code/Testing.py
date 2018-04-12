@@ -6,14 +6,13 @@ import time
 from src.project.code import SumoConnection as sumo
 from src.project.code import HelperFunctions as func
 
+# Specifies the test which shall be performed. E.g. '1' would perform 'test1BeforeX' and 'test1DuringX'
+TESTING_NUMBER = 1
 
 class Testing:
     """
     Functionality is tested in this class, with various measures to check that correct output is given
     """
-
-    # Specifies the test which shall be performed. E.g. '1' would perform 'test1BeforeX' and 'test1DuringX'
-    TESTING_NUMBER = 2
 
     def setupGenericCarSM(self):
         """
@@ -205,24 +204,28 @@ class Testing:
         This is the testing stage which is ran before the main loop of the program begins
         """
         # Input validation
-        if not 1 <= self.TESTING_NUMBER <= 3:
+        if not 0 <= TESTING_NUMBER <= 3:
             sys.exit("Please enter a valid TESTING_NUMBER")
 
         if sumo.SCENARIO == 0:
-            if self.TESTING_NUMBER == 1:
-                print("******* TEST 1 RUNNING ON SOUTHAMPTON_SMALL *******")
+            if TESTING_NUMBER == 0:
+                print("******* TEST CASES BEING RAN ON SMALL_MANHATTAN *******")
+            elif TESTING_NUMBER == 1:
+                print("******* TEST 1 RUNNING ON SMALL_MANHATTAN *******")
                 self.test1BeforeSM()
-            elif self.TESTING_NUMBER == 2:
-                print("******* TEST 2 RUNNING ON SOUTHAMPTON_SMALL *******")
+            elif TESTING_NUMBER == 2:
+                print("******* TEST 2 RUNNING ON SMALL_MANHATTAN *******")
                 self.test2BeforeSM()
-            elif self.TESTING_NUMBER == 3:
-                print("******* TEST 3 RUNNING ON SOUTHAMPTON_SMALL *******")
+            elif TESTING_NUMBER == 3:
+                print("******* TEST 3 RUNNING ON SMALL_MANHATTAN *******")
                 self.test3BeforeSM()
         elif sumo.SCENARIO == 3:
-            if self.TESTING_NUMBER == 1:
+            if TESTING_NUMBER == 0:
+                print("******* TEST CASES BEING RAN ON NEWARK *******")
+            elif TESTING_NUMBER == 1:
                 print("******* TEST 1 RUNNING ON NEWARK *******")
                 self.test1BeforeNW()
-            if self.TESTING_NUMBER == 2:
+            elif TESTING_NUMBER == 2:
                 print("******* TEST 2 RUNNING ON NEWARK *******")
                 self.test2BeforeNW()
 
@@ -233,14 +236,18 @@ class Testing:
             i (int): This is the number of timesteps
         """
         if sumo.SCENARIO == 0:
-            if self.TESTING_NUMBER == 1:
+            if TESTING_NUMBER == 0:
+                pass
+            elif TESTING_NUMBER == 1:
                 self.test1DuringSM(i)
-            elif self.TESTING_NUMBER == 2:
+            elif TESTING_NUMBER == 2:
                 self.test2DuringSM(i)
-            elif self.TESTING_NUMBER == 3:
+            elif TESTING_NUMBER == 3:
                 self.test3DuringSM(i)
         elif sumo.SCENARIO == 3:
-            if self.TESTING_NUMBER == 1:
+            if TESTING_NUMBER == 0:
+                pass
+            elif TESTING_NUMBER == 1:
                 self.test1DuringNW(i)
-            if self.TESTING_NUMBER == 2:
+            elif TESTING_NUMBER == 2:
                 self.test2DuringNW(i)

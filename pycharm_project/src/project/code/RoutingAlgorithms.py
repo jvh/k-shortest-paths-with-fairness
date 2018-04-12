@@ -1,4 +1,5 @@
 import traci
+import time
 
 from src.project.code import SumoConnection as sumo
 from src.project.code import HelperFunctions as func
@@ -91,8 +92,7 @@ class DynamicShortestPath:
         #                 func.rerouteSelectedVehiclesEdge(edge)
 
         if i % 100 == 0 and i >= 1:
-            test = "test"
-
+            timeTakenStart = time.clock()
 
             # Processing the lanes existing on edges with multiple outgoing edges
             for lane in func.reroutingLanes:
@@ -103,7 +103,9 @@ class DynamicShortestPath:
                     func.getEdge2DCoordinates(edge)
                     func.rerouteSelectedVehiclesLane(edge, lane)
 
-            test = "test"
+            timeTakenEnd = time.clock()
+
+            totalTime = timeTakenEnd - timeTakenStart
 
             # Processing those edges which only have a single outgoing edge (all lanes lead to the same position
             for edge in func.singleOutgoingEdges:
@@ -112,8 +114,6 @@ class DynamicShortestPath:
                     print("\n***** EDGE {} REROUTE ********\n".format(edge))
                     func.getEdge2DCoordinates(edge)
                     func.rerouteSelectedVehiclesEdge(edge)
-
-            test = "test"
 
 
                     # # This list stores lanes which still need to be searched for congestion

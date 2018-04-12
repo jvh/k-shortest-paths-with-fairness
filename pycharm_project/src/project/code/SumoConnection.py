@@ -78,7 +78,7 @@ K_MAX = 3
 #   1: small_manhattan
 #   2: newark
 #   3: Testing (newark)
-SCENARIO = 2
+SCENARIO = 0
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
@@ -250,9 +250,14 @@ class Main:
 
         return sumoConfig
 
-    def run(self):
+    def run(self, testCase, instantStart, quitOnEnd):
         """
         Starts the simulation and Traci
+
+        Args:
+            testCase (bool): True if test cases are being ran, closing traci only when prompted
+            instantStart (bool): True if the simulation is required to be instantly started
+            quitOnEnd (bool): True if the GUI should quit at the end of the simulation
         """
         # Defines the command to start SUMO with
         #   --net-file: The SUMO network file to be used (.net.xml)
@@ -267,6 +272,12 @@ class Main:
         sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
                              VEHICLES_FILE, '--routing-algorithm', 'dijkstra', '--gui-settings-file', GUI_SETTINGS,
                              '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
+
+        if instantStart:
+            sumoConfigInitial.append('--start')
+
+        if quitOnEnd:
+            sumoConfigInitial.extend(['--quit-on-end', 'True'])
 
         sumoConfig = self.configureSumo(sumoConfigInitial)
 
@@ -302,8 +313,10 @@ class Main:
                 for i in range(START_TIME, END_TIME):
                     drwf.main(i)
 
-        # Close the Sumo-Traci connection once the simulation has elapsed
-        traci.close(False)
+        # If not running test cases close when the END_TIME is reached
+        if not testCase:
+            # Close the Sumo-Traci connection once the simulation has elapsed
+            traci.close(False)
 
 
 if __name__ == '__main__':
@@ -312,6 +325,6 @@ if __name__ == '__main__':
     """
     print("This is the current working directory: {})".format(os.getcwd()))
     main = Main()
-    main.run()
+    main.run(False, False, False)
 
 

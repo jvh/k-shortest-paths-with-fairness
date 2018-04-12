@@ -1,15 +1,0 @@
-
-opython:S3776"TRefactor this function to reduce its Cognitive Complexity from 75 to the 15 allowed.(¹›Ûüøÿÿÿÿ
-jpython:S3776"TRefactor this function to reduce its Cognitive Complexity from 22 to the 15 allowed.(¯Œåò
-jpython:S100"URename method "getCurrentTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(œ§ÄÙ
-npython:S100"TRename method "configureSumo" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¹›Ûüøÿÿÿÿ
-ppython:S117"VRename this parameter "sumoConfig" to match the regular expression ^[_a-z][a-z0-9_]*$.(¹›Ûüøÿÿÿÿ
-upython:S117"`Rename this local variable "currentDateTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(¥ÿñÒ
-upython:S117"`Rename this local variable "windowsDateTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(—ì¥ì
-opython:S117"[Rename this local variable "summaryOut" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÌŞÚ
-ypython:S117"_Rename this local variable "vehiclefullOut" to match the regular expression ^[_a-z][a-z0-9_]*$.(î€çÌşÿÿÿÿ
-lpython:S117"WRename this local variable "vtkOut" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÀÁï©
-upython:S117"`Rename this local variable "floatingCarData" to match the regular expression ^[_a-z][a-z0-9_]*$.(â†³ï
-spython:S117"YRename this local variable "tripInfo" to match the regular expression ^[_a-z][a-z0-9_]*$.(ßú¬øÿÿÿÿ
-|python:S117"bRename this local variable "sumoConfigInitial" to match the regular expression ^[_a-z][a-z0-9_]*$.(ê¬—ºøÿÿÿÿ
-upython:S117"[Rename this local variable "sumoConfig" to match the regular expression ^[_a-z][a-z0-9_]*$.(…˜Ø©üÿÿÿÿ
