@@ -5,6 +5,7 @@ import time
 
 from src.project.code import SumoConnection as sumo
 from src.project.code import HelperFunctions as func
+from src.project.code import InitialMapHelperFunctions as initialFunc
 
 # Specifies the test which shall be performed. E.g. '1' would perform 'test1BeforeX' and 'test1DuringX'
 TESTING_NUMBER = 1
@@ -14,7 +15,8 @@ class Testing:
     Functionality is tested in this class, with various measures to check that correct output is given
     """
 
-    def setupGenericCarSM(self):
+    @staticmethod
+    def setupGenericCarSM():
         """
         Sets up a generic vehicle on the road network with a route (only to be used on small manhattan)
         """
@@ -84,12 +86,12 @@ class Testing:
                     print("Edge 46538375#12 is in {}'s route".format(veh))
 
             # Prints the incoming edges for 46538375#5
-            print(func.getIncomingEdges("46538375#5"))
+            print(initialFunc.getIncomingEdges("46538375#5"))
             # Prints the incoming edges for 196116976#7
-            print(func.getIncomingEdges("196116976#7"))
+            print(initialFunc.getIncomingEdges("196116976#7"))
 
             print("Recursive edges for 511924978#1 are: {}".format(
-                func.getMultiIncomingEdges("511924978#1")))
+                initialFunc.getMultiIncomingEdges("511924978#1")))
 
             print("The current congestion for lane {} is {}".format(lane, func.returnCongestionLevelLane(lane)))
 
@@ -97,23 +99,24 @@ class Testing:
 
     def test2BeforeSM(self):
         self.setupGenericCarSM()
+        traci.simulationStep()
 
         traci.vehicle.rerouteTraveltime("testVeh")
 
         edge = "46538375#5"
-        outgoingEdges = func.getOutgoingEdges(edge)
+        outgoingEdges = initialFunc.getOutgoingEdges(edge)
         print("These are the outgoing edges for edge {}: {}".format(edge, outgoingEdges))
 
-        print("Estimated route path time: {}".format(func.getRoutePathTime("testVeh")))
+        print("Estimated route path time: {}".format(func.getRoutePathTimeVehicle("testVeh")))
         routes = traci.vehicle.getRoute("testVeh")
         print("This is the route: {}".format(routes))
-        func.penalisePathTime("testVeh", routes)
-        print("This is the adjusted route time {}".format(func.getRoutePathTime("testVeh")))
+        func.penalisePathTimeVehicle("testVeh", routes)
+        print("This is the adjusted route time {}".format(func.getRoutePathTimeVehicle("testVeh")))
 
         traci.vehicle.rerouteTraveltime("testVeh", currentTravelTimes=True)
         print("This is the route {}".format(traci.vehicle.getRoute("testVeh")))
         print("This is the route after rerouting {}".format(
-            func.getRoutePathTime("testVeh")))
+            func.getRoutePathTimeVehicle("testVeh")))
 
     def test2DuringSM(self, i):
         if i == 4:
@@ -131,21 +134,21 @@ class Testing:
             print("meeeppp")
             print("This is the route {}".format(traci.vehicle.getRoute("testVeh")))
             print("This is the route after rerouting {}".format(
-                func.getRoutePathTime("testVeh")))
+                func.getRoutePathTimeVehicle("testVeh")))
 
         traci.simulationStep()
 
     def test3BeforeSM(self):
         self.setupGenericCarSM()
         # func.loadMap()
-        print(func.edgesNetwork)
+        print(initialFunc.edgesNetwork)
 
         # Testing to ensure fringeEdges() only returns edges which actually exist on the fringe
-        for edge in func.fringeEdges:
+        for edge in initialFunc.fringeEdges:
             if not sumo.net.getEdge(edge).is_fringe():
                 print("NOT FRINGE")
-        print("These are the lane lengths {}".format(func.laneLengths))
-        print("These are the edge lengths {}".format(func.edgeLengths))
+        print("These are the lane lengths {}".format(initialFunc.laneLengths))
+        print("These are the edge lengths {}".format(initialFunc.edgeLengths))
 
     def test3DuringSM(self, i):
 
@@ -154,7 +157,7 @@ class Testing:
             func.kPaths("testVeh")
 
         if i == 20:
-            func.endSim(i)
+            initialFunc.endSim(i)
 
         traci.simulationStep()
 
@@ -178,10 +181,11 @@ class Testing:
         traci.simulationStep()
 
     def test2BeforeNW(self):
-        print("This is the entire road network {}".format(func.edgesNetwork))
-        print("These are all of the lanes {}".format(func.lanesNetwork))
+        print("This is the entire road network {}".format(initialFunc.edgesNetwork))
+        print("These are all of the lanes {}".format(initialFunc.lanesNetwork))
         print()
-        print("This is the directed lane graph {}".format(func.directedGraphLanes))
+        print("This is the directed lane graph {}".format(
+            initialFunc.directedGraphLanes))
         print()
 
         print(sumo.net.getLane(""))

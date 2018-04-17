@@ -7,6 +7,7 @@ import sys
 import src.project.code.Testing
 from src.project.code import RoutingAlgorithms as routing
 from src.project.code import HelperFunctions as func
+from src.project.code import InitialMapHelperFunctions as initialFunc
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
 COMPUTER = True
@@ -250,7 +251,7 @@ class Main:
 
         return sumoConfig
 
-    def run(self, testCase, instantStart, quitOnEnd):
+    def run(self, testCase, instantStart, quitOnEnd, routeFile = ""):
         """
         Starts the simulation and Traci
 
@@ -258,6 +259,7 @@ class Main:
             testCase (bool): True if test cases are being ran, closing traci only when prompted
             instantStart (bool): True if the simulation is required to be instantly started
             quitOnEnd (bool): True if the GUI should quit at the end of the simulation
+            routeFile (str): The route file to use for execution
         """
         # Defines the command to start SUMO with
         #   --net-file: The SUMO network file to be used (.net.xml)
@@ -279,6 +281,9 @@ class Main:
         if quitOnEnd:
             sumoConfigInitial.extend(['--quit-on-end', 'True'])
 
+        if routeFile != "":
+            sumoConfigInitial.extend(['-r', routeFile])
+
         sumoConfig = self.configureSumo(sumoConfigInitial)
 
         traci.start(sumoConfig)
@@ -288,7 +293,7 @@ class Main:
         drwf = routing.DynamicReroutingWithFairness()
         ksp = routing.kShortestPaths()
 
-        func.initialisation()
+        initialFunc.initialisation()
 
         if SCENARIO == 0 or SCENARIO == 3:
             test.beforeLoop()

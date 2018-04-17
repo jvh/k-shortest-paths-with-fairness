@@ -2,6 +2,7 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py" />
+    <bookmark url="file://$PROJECT_DIR$/src/project/code/TestCases.py" line="248" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c7416223-8dde-4c11-96f2-4c411330d4f7" name="Default" comment="" />
@@ -17,8 +18,8 @@
       <file leaf-file-name="SumoConnection.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="869">
-              <caret line="315" column="70" lean-forward="false" selection-start-line="315" selection-start-column="70" selection-end-line="315" selection-end-column="70" />
+            <state relative-caret-position="1068">
+              <caret line="330" column="0" lean-forward="false" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -29,8 +30,20 @@
       <file leaf-file-name="Testing.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="571">
-              <caret line="153" column="17" lean-forward="false" selection-start-line="153" selection-start-column="17" selection-end-line="153" selection-end-column="17" />
+            <state relative-caret-position="340">
+              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="31" selection-end-column="60" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InitialMapHelperFunctions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/project/code/InitialMapHelperFunctions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="3" lean-forward="true" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -41,8 +54,8 @@
       <file leaf-file-name="HelperFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="341" column="4" lean-forward="true" selection-start-line="341" selection-start-column="4" selection-end-line="341" selection-end-column="4" />
+            <state relative-caret-position="399">
+              <caret line="379" column="23" lean-forward="false" selection-start-line="379" selection-start-column="23" selection-end-line="379" selection-end-column="23" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -53,8 +66,8 @@
       <file leaf-file-name="RoutingAlgorithms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1071">
-              <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+            <state relative-caret-position="374">
+              <caret line="112" column="0" lean-forward="true" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -65,8 +78,8 @@
       <file leaf-file-name="TestCases.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1026">
-              <caret line="131" column="31" lean-forward="false" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
+            <state relative-caret-position="204">
+              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -78,26 +91,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>#6 not</find>
-      <find>&lt;=</find>
-      <find>please ent</find>
-      <find>please en</find>
-      <find>src.project.code.HelperFunctions</find>
-      <find>kpaths</find>
-      <find>46538375#6</find>
-      <find>46538375#5</find>
-      <find>lane</find>
-      <find>569345540#0</find>
-      <find>':1</find>
-      <find>167922071_0</find>
-      <find>452322757</find>
-      <find>167922073#0</find>
-      <find>-11619775#6</find>
-      <find>-11619775#6_0</find>
-      <find>outgoing</find>
-      <find>-11621452#0</find>
-      <find>in</find>
-      <find>***** edg</find>
       <find>this is the number</find>
       <find>print</find>
       <find>multiincoming</find>
@@ -108,10 +101,33 @@
       <find>edgespeedglobal</find>
       <find>traci</find>
       <find>getglobaledge</find>
+      <find>464516471#9</find>
+      <find>self.setupGenericCarSM()</find>
+      <find>penalisepathtime</find>
+      <find>this is</find>
+      <find>getmulti</find>
+      <find>look at</find>
+      <find>look at me</find>
+      <find>LOOK AT ME 1</find>
+      <find>look at me 1</find>
+      <find>penalisepath</find>
+      <find>generate</find>
+      <find>getoutgoingedges</find>
+      <find>g</find>
+      <find>penalise</find>
+      <find>*</find>
+      <find>func.</find>
+      <find>src.project.code.HelperFunctions.</find>
+      <find>src.project.code.InitialMapHelperFunctions.</find>
+      <find>deep</find>
+      <find>this is the global</find>
     </findStrings>
     <replaceStrings>
       <replace>func</replace>
       <replace>TESTING_NUMBER</replace>
+      <replace>setupGenericCarSM()</replace>
+      <replace>initialFunc.</replace>
+      <replace>func.</replace>
     </replaceStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -128,10 +144,12 @@
         <option value="$PROJECT_DIR$/src/project/small_manhattan/code/RoutingAlgorithms.py" />
         <option value="$PROJECT_DIR$/src/project/small_manhattan/code/SumoConnection.py" />
         <option value="$PROJECT_DIR$/src/project/code/Test.py" />
+        <option value="$PROJECT_DIR$/src/project/code/MapHelperFunctions.py" />
+        <option value="$PROJECT_DIR$/src/project/code/InitialMapHelperFunctions.py" />
         <option value="$PROJECT_DIR$/src/project/code/Testing.py" />
         <option value="$PROJECT_DIR$/src/project/code/SumoConnection.py" />
-        <option value="$PROJECT_DIR$/src/project/code/HelperFunctions.py" />
         <option value="$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py" />
+        <option value="$PROJECT_DIR$/src/project/code/HelperFunctions.py" />
         <option value="$PROJECT_DIR$/src/project/code/TestCases.py" />
       </list>
     </option>
@@ -204,12 +222,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/project/code/TestCases.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/project/code/InitialMapHelperFunctions.py" />
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="PyDebuggerOptionsProvider">
@@ -232,25 +250,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in TestCases.py (1)">
-    <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pycharm_project" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/project/code/Test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="Unittests in TestCases.py (1)" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes">
+    <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_lessThanMaxSelection" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -261,15 +262,71 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pycharm_project" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/src/project/code/TestCases.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <option name="_new_target" value="&quot;TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_lessThanMaxSelection&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_routeSelection2" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm_project" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_routeSelection2&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm_project" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <configuration name="Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_routeSelection" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm_project" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_routeSelection&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <configuration name="Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_singlePathAvailable" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm_project" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_singlePathAvailable&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
     </configuration>
     <configuration name="Unittests in TestCases.py" type="tests" factoryName="Unittests" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/small_manhattan/traci_code" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/project/code" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -296,16 +353,22 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <list size="4">
+    <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Python.main" />
       <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Test" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py (1)" />
+      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_routeSelection" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_routeSelection2" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_lessThanMaxSelection" />
+      <item index="5" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_singlePathAvailable" />
+      <item index="6" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestCases.py (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Test" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_singlePathAvailable" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_lessThanMaxSelection" />
+        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_kPaths_routeSelection2" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_routeSelection" />
       </list>
     </recent_temporary>
   </component>
@@ -326,35 +389,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 27m 01s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_for_TestCases_SmallSouthamptonTestsRoute_test_smallManhattan_manualTravelTimes - 2018.04.17 at 03h 05m 44s.xml">
+      <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 30m 01s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_for_TestCases_SmallSouthamptonTestsRoute_test_smallManhattan_manualTravelTimes - 2018.04.17 at 03h 05m 59s.xml">
+      <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 39m 27s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_for_TestCases_SmallSouthamptonTestsRoute_test_smallManhattan_manualTravelTimes - 2018.04.17 at 03h 11m 04s.xml">
+      <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 41m 57s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_for_TestCases_SmallSouthamptonTestsRoute_test_smallManhattan_manualTravelTimes - 2018.04.17 at 03h 14m 35s.xml">
+      <configuration name="Unittests for TestCases.SmallSouthamptonTestsRoute.test_smallManhattan_manualTravelTimes" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 42m 49s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_for_TestCases_SmallSouthamptonTests_test_smallManhattan_kPaths_singlePathAvailable - 2018.04.17 at 03h 00m 04s.xml">
+      <configuration name="Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_singlePathAvailable" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 22h 46m 10s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_for_TestCases_SmallSouthamptonTests_test_smallManhattan_kPaths_singlePathAvailable - 2018.04.17 at 03h 03m 51s.xml">
+      <configuration name="Unittests for TestCases.SmallSouthamptonTests.test_smallManhattan_kPaths_singlePathAvailable" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 13m 37s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py - 2018.04.17 at 03h 05m 12s.xml">
+      <configuration name="Unittests in TestCases.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 19m 32s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py - 2018.04.17 at 03h 08m 35s.xml">
+      <configuration name="Unittests in TestCases.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 25m 51s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py - 2018.04.17 at 03h 10m 04s.xml">
+      <configuration name="Unittests in TestCases.py" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestCases_py_(1) - 2018.04.12 at 23h 27m 22s.xml">
-      <configuration name="Unittests in TestCases.py (1)" configurationId="tests" />
+    <history-entry file="Unittests_in_TestCases_py - 2018.04.17 at 03h 13m 09s.xml">
+      <configuration name="Unittests in TestCases.py" configurationId="tests" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -363,16 +426,16 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2018419" sideWeight="0.440625" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2018419" sideWeight="0.559375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3353799" sideWeight="0.559375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292402" sideWeight="0.4984375" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="SonarLint" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32847276" sideWeight="0.4875" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3998465" sideWeight="0.4921875" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3998465" sideWeight="0.4921875" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -420,33 +483,80 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/project/code/SumoConnection.py</url>
-          <line>325</line>
+          <line>330</line>
           <option name="timeStamp" value="228" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/project/code/SumoConnection.py</url>
-          <line>327</line>
+          <line>332</line>
           <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/project/code/SumoConnection.py</url>
-          <line>326</line>
+          <line>331</line>
           <option name="timeStamp" value="232" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>315</line>
+          <option name="timeStamp" value="259" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>314</line>
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>307</line>
+          <option name="timeStamp" value="261" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>308</line>
+          <option name="timeStamp" value="262" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>366</line>
+          <option name="timeStamp" value="263" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>368</line>
+          <option name="timeStamp" value="264" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>370</line>
+          <option name="timeStamp" value="265" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>372</line>
+          <option name="timeStamp" value="266" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>378</line>
+          <option name="timeStamp" value="268" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>381</line>
+          <option name="timeStamp" value="269" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/project/code/HelperFunctions.py</url>
+          <line>376</line>
+          <option name="timeStamp" value="270" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="234" />
+      <option name="time" value="272" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/SumoConnection.py" />
-    <entry file="file://D:/Program Files/SUMO/doc/tutorial/traci_tls/runner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2074">
-          <caret line="129" column="56" lean-forward="true" selection-start-line="129" selection-start-column="4" selection-end-line="129" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main" />
     <entry file="file://$PROJECT_DIR$/SumoConnection.py" />
     <entry file="file://D:/Program Files/SUMO/doc/tutorial/traci_tls/runner.py">
@@ -624,7 +734,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="154" column="0" lean-forward="false" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -632,42 +741,48 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="114" column="0" lean-forward="false" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/unittest/loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/subprocess.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
+        <state relative-caret-position="280">
           <caret line="765" column="0" lean-forward="false" selection-start-line="765" selection-start-column="0" selection-end-line="765" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
+    <entry file="file://$PROJECT_DIR$/src/project/code/InitialMapHelperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="153" column="17" lean-forward="false" selection-start-line="153" selection-start-column="17" selection-end-line="153" selection-end-column="17" />
+        <state relative-caret-position="255">
+          <caret line="15" column="3" lean-forward="true" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
+    <entry file="file://$PROJECT_DIR$/src/project/code/Testing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="869">
-          <caret line="315" column="70" lean-forward="false" selection-start-line="315" selection-start-column="70" selection-end-line="315" selection-end-column="70" />
+        <state relative-caret-position="340">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="31" selection-end-column="60" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/RoutingAlgorithms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="105" column="21" lean-forward="false" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
+        <state relative-caret-position="374">
+          <caret line="112" column="0" lean-forward="true" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -676,18 +791,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/HelperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="341" column="4" lean-forward="true" selection-start-line="341" selection-start-column="4" selection-end-line="341" selection-end-column="4" />
+        <state relative-caret-position="399">
+          <caret line="379" column="23" lean-forward="false" selection-start-line="379" selection-start-column="23" selection-end-line="379" selection-end-column="23" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/project/code/SumoConnection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1068">
+          <caret line="330" column="0" lean-forward="false" selection-start-line="330" selection-start-column="0" selection-end-line="330" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="131" column="31" lean-forward="false" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
+        <state relative-caret-position="204">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
