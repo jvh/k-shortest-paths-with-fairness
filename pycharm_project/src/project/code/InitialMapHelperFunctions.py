@@ -4,7 +4,11 @@ import time
 import traci
 
 from src.project.code import SumoConnection as sumo
-from src.project.code import HelperFunctions as helpFunc
+from src.project.code import RoutingFunctions as func
+from src.project.code import Database as db
+from src.project.code import SimulationFunctions as sim
+
+__author__ = "Jonathan Harper"
 
 """
 This particular file deals with all of the information regarding the map, particularly the generation of the map into 
@@ -40,16 +44,24 @@ reroutingLanes = set()
 # Stores the edge and the corresponding incoming edges up to MAX_EDGE_RECURSION_RANGE away
 multiIncomingEdges = {}
 
+# This stores the free-flow speeds of all of the edges, {edge: freeFlowSpeed}
+freeFlowSpeed = {}
 
-def endSim(i, manual = True):
+def endSim(i, manual = True, database=False):
     """
-    Ends the simulation and prints the time taken
+    Ends the simulation, prints the time taken, and updates the database with information about the simulation
 
     Args:
         i (int): The timestep of the simulation
         manual (bool): Specifies if the simulation has been ended manually or at the point of simulation finish
+        database (bool): True if results of the simulation should be output into the database
     """
     sumo.timerEnd = time.clock()
+
+    if database:
+        database = db.Database()
+        database.populateDBVehicleTable()
+
     if manual:
         sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
                                                                                          sumo.timerStart))
@@ -57,16 +69,49 @@ def endSim(i, manual = True):
         sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
                                                                                          sumo.timerStart))
 
+def endSimWithError(error):
+    """
+    Ends the simulation and prints an error message
+
+    Args:
+        error (str): The error message
+    """
+    sumo.timerEnd = time.clock()
+    sys.exit(error)
+
 def initialisation():
     """
     This initialises the simulation with settings which are relevant to all scenarios
     """
+    # Puts the map into memory so that access to SUMO through traci is not necessary for building other map
+    # initialisation variables
     loadMap()
     createDirectedRoadNetwork()
     collectEdgesWithSingleOutgoing()
     collectEdgesWithMultiOutgoing()
     generateRecursiveIncomingEdges()
+
+    # Fairness metrics being loaded into respective variables for use during the simulation
+    loadFairnessMetrics()
+
+    # Start the clock (for total simulation runtime)
     sumo.timerStart = time.clock()
+
+def loadFairnessMetrics():
+    """
+    Collects the fairness metrics (for each vehicle) from the database and deposits them into the relevant variables
+    for use during simulation
+    """
+    database = db.Database()
+    fairnessMetrics = database.fairnessMetricsIntoDictionary()
+
+    for key in fairnessMetrics:
+        # Keys must be as strings due to the nature in which they're inserted during runtime (updating during runtime
+        # with the vehicle numbers)
+        func.vehicleReroutedAmount[str(key)] = fairnessMetrics[key][0]
+        func.cumulativeExtraTime[str(key)] = fairnessMetrics[key][1]
+        sim.timeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
+        sim.initialTimeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
 
 def loadMap():
     """
@@ -83,6 +128,9 @@ def loadMap():
             edgeLengths[edgeID] = sumo.net.getEdge(edgeID).getLength()
             # Finding edges on the fringe of the network
             populateFringeEdges(edgeID)
+        # This puts the free-flow travel time of the network into memory
+        freeFlowSpeed[edgeID] = traci.edge.getTraveltime(edgeID)
+
 
     # Populating edges with their corresponding non-special lanes
     for lane in traci.lane.getIDList():
@@ -92,7 +140,6 @@ def loadMap():
             edge = traci.lane.getEdgeID(lane)
             lanesNetwork[lane] = edge
             edgesNetwork[edge].append(lane)
-
 
 def createDirectedRoadNetwork():
     """
@@ -121,6 +168,10 @@ def collectEdgesWithSingleOutgoing():
     for edge in edgesNetwork.keys():
         if len(directedGraphEdges[edge]) == 1 and edge not in fringeEdges and edgeLengths[edge] >= MIN_EDGE_LENGTH:
             singleOutgoingEdges.add(edge)
+
+    if sumo.PRINT:
+        print("\nThese are the single outgoing edges: {}".format(singleOutgoingEdges))
+
 
 
 def collectEdgesWithMultiOutgoing():

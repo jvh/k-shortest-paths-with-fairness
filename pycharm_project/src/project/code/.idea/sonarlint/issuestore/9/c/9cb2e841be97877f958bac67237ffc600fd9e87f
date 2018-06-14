@@ -1,0 +1,8 @@
+
+fpython:S100"LRename method "mainB" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ğ°¹¨ûÿÿÿÿ
+hpython:S101"SRename class "kShortestPaths" to match the regular expression ^[A-Z_][a-zA-Z0-9]+$.(ˆƒ
+Cpython:S1481"-Remove the unused local variable "totalTime".(¾ÇüÍ
+qpython:S117"WRename this local variable "laneID" to match the regular expression ^[_a-z][a-z0-9_]*$.(æëêİúÿÿÿÿ
+spython:S117"_Rename this local variable "timeTakenStart" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÜÜ¶
+rpython:S117"]Rename this local variable "timeTakenEnd" to match the regular expression ^[_a-z][a-z0-9_]*$.(ıİ¥€
+opython:S117"ZRename this local variable "totalTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(¾ÇüÍ

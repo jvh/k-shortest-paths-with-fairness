@@ -1,0 +1,59 @@
+
+9python:S125"Remove this commented out code.(õóˆ¤úÿÿÿÿ
+Bpython:S1481"-Remove the unused local variable "totalTime".(’šÜ4
+Cpython:S1481"-Remove the unused local variable "startTime".(ø‡ÙÀ
+lpython:S117"RRename this parameter "laneID" to match the regular expression ^[_a-z][a-z0-9_]*$.(ËÒÏ“øÿÿÿÿ
+gpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ì’µ°
+vpython:S117"\Rename this parameter "edgesVehicleList" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÿš¬Ëúÿÿÿÿ
+lpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(ŒÖÿıÿÿÿÿ
+wpython:S117"]Rename this local variable "vehiclesList" to match the regular expression ^[_a-z][a-z0-9_]*$.(›ÕÇ´ÿÿÿÿÿ
+opython:S117"ZRename this local variable "edgesList" to match the regular expression ^[_a-z][a-z0-9_]*$.(„ŒáÁ
+rpython:S117"]Rename this local variable "reroutedList" to match the regular expression ^[_a-z][a-z0-9_]*$.(¯»Í
+ypython:S117"_Rename this local variable "vehiclesOnEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.(Œ›¿üøÿÿÿÿ
+rpython:S117"XRename this local variable "oldPath" to match the regular expression ^[_a-z][a-z0-9_]*$.(åò½ıÿÿÿÿ
+lpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ûí¶×ıÿÿÿÿ
+lpython:S117"RRename this parameter "laneID" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ûí¶×ıÿÿÿÿ
+npython:S117"ZRename this local variable "totalTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(’šÜ4
+opython:S117"ZRename this local variable "startTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ø‡ÙÀ
+wpython:S117"]Rename this local variable "vehiclesList" to match the regular expression ^[_a-z][a-z0-9_]*$.(›ÕÇ´ÿÿÿÿÿ
+opython:S117"ZRename this local variable "edgesList" to match the regular expression ^[_a-z][a-z0-9_]*$.(„ŒáÁ
+rpython:S117"]Rename this local variable "reroutedList" to match the regular expression ^[_a-z][a-z0-9_]*$.(¯»Í
+ypython:S117"_Rename this local variable "vehiclesOnEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.(Œ›¿üøÿÿÿÿ
+rpython:S117"^Rename this local variable "outgoingLanes" to match the regular expression ^[_a-z][a-z0-9_]*$.(ê£ğ
+rpython:S117"XRename this local variable "oldPath" to match the regular expression ^[_a-z][a-z0-9_]*$.(åò½ıÿÿÿÿ
+zpython:S117"`Rename this local variable "congestionIndex" to match the regular expression ^[_a-z][a-z0-9_]*$.(©Ûüõÿÿÿÿÿ
+spython:S117"YRename this local variable "nextEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.( ‡“Ÿüÿÿÿÿ
+zpython:S117"`Rename this local variable "lanesInNextEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.(‘†´ııÿÿÿÿ
+qpython:S117"\Rename this local variable "currentTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(­®ûÚ
+xpython:S117"cRename this local variable "totalEstimatedTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(÷İÒ
+tpython:S117"_Rename this local variable "vehAdaptedTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÊÈÄç
+ipython:S117"TRename this parameter "realTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÛÍ¨
+xpython:S117"cRename this local variable "totalEstimatedTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(÷İÒ
+wpython:S117"]Rename this local variable "edgeRealtime" to match the regular expression ^[_a-z][a-z0-9_]*$.(®ëæÍıÿÿÿÿ
+fpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(¹âé"
+opython:S117"ZRename this local variable "routeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(×–àö
+npython:S117"YRename this local variable "edgesSet" to match the regular expression ^[_a-z][a-z0-9_]*$.(–éî‰
+rpython:S117"]Rename this local variable "currentRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(í¡ÖÈ
+npython:S117"YRename this local variable "bestTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(İ“‡Ø
+mpython:S117"XRename this local variable "timeOut" to match the regular expression ^[_a-z][a-z0-9_]*$.(”ó¡Æ
+npython:S117"YRename this local variable "newRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(Œê‰¸
+wpython:S117"]Rename this local variable "newRouteTime" to match the regular expression ^[_a-z][a-z0-9_]*$.( —´§ıÿÿÿÿ
+opython:S117"ZRename this local variable "randomNum" to match the regular expression ^[_a-z][a-z0-9_]*$.(ï–éê
+tpython:S117"_Rename this local variable "routeSelection" to match the regular expression ^[_a-z][a-z0-9_]*$.(ãÈù’
+ypython:S117"_Rename this local variable "currentSysTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(”ªñÿÿÿÿÿ
+}python:S117"cRename this local variable "currentAdaptedTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(óà‰Åÿÿÿÿÿ
+xpython:S117"cRename this local variable "currentAdaptedTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(õêÁ„
+ppython:S117"[Rename this local variable "travelTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ñÄü›
+}python:S1542"bRename function "returnCongestionLevelLane" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ËÒÏ“øÿÿÿÿ
+xpython:S1542"bRename function "returnCongestionLevelEdge" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ì’µ°
+spython:S1542"]Rename function "getEdge2DCoordinates" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(»ºÊ–
+vpython:S1542"[Rename function "kPathsVehiclesList" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÿš¬Ëúÿÿÿÿ
+python:S1542"dRename function "rerouteSelectedVehiclesEdge" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ŒÖÿıÿÿÿÿ
+python:S1542"dRename function "rerouteSelectedVehiclesLane" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ûí¶×ıÿÿÿÿ
+vpython:S1542"`Rename function "getRoutePathTimeVehicle" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(“âû”
+upython:S1542"_Rename function "getGlobalRoutePathTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÛÍ¨
+cpython:S1542"NRename function "aStar" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¹âé"
+epython:S1542"ORename function "kPaths" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ùõúì
+upython:S1542"`Rename function "penalisePathTimeVehicle" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(®Îæ
+npython:S1542"YRename function "penalisePathTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(—ô©*
+spython:S1542"]Rename function "getGlobalEdgeWeights" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(º€Â

@@ -4,8 +4,15 @@ import traci
 import time
 
 from src.project.code import SumoConnection as sumo
-from src.project.code import HelperFunctions as func
+from src.project.code import RoutingFunctions as func
 from src.project.code import InitialMapHelperFunctions as initialFunc
+from src.project.code import SimulationFunctions as sim
+
+__author__ = "Jonathan Harper"
+
+"""
+Used to test various scenarios during the runtime of TraCI and seeing how the simulation reacts in accordance to these.
+"""
 
 # Specifies the test which shall be performed. E.g. '1' would perform 'test1BeforeX' and 'test1DuringX'
 TESTING_NUMBER = 1
@@ -16,20 +23,36 @@ class Testing:
     """
 
     @staticmethod
-    def setupGenericCarSM():
+    def setupGenericCarSM(name="testVeh", startPos=["46538375#5"], target="569345537#2", zoom=True,
+                          routeName="startNode", initialise=False):
         """
         Sets up a generic vehicle on the road network with a route (only to be used on small manhattan)
+
+        Args:
+            name (str): Specifies the name of the vehicle input
+            startPos  [str]: The original starting position/route of the vehicle
+            target (str): The target in which the vehicle shall be rerouted to
+            zoom (bool): True if the camera should be panned to this vehicle
+            routeName (str): The name of the route in which the vehicle shall be taking
+            initialise (bool): Whether or not fairness values should be initialised with the vehicle
         """
         # Adding vehicle and associated route
-        traci.route.add("startNode", ["46538375#5"])
-        traci.vehicle.addFull("testVeh", "startNode", typeID="car")
+        traci.route.add(routeName, startPos)
+        traci.vehicle.addFull(name, routeName, typeID="car")
 
-        # GUI tracking vehicle and zoom
-        traci.gui.trackVehicle("View #0", "testVeh")
-        traci.gui.setZoom("View #0", traci.gui.getZoom() * sumo.ZOOM_FACTOR)
+        if zoom:
+            # GUI tracking vehicle and zoom
+            traci.gui.trackVehicle("View #0", name)
+            traci.gui.setZoom("View #0", traci.gui.getZoom() * sumo.ZOOM_FACTOR)
 
         # Changing the target of the vehicle to another edge
-        traci.vehicle.changeTarget("testVeh", "569345537#2")
+        traci.vehicle.changeTarget(name, target)
+
+        if initialise:
+            func.vehicleReroutedAmount[name] = 0
+            func.cumulativeExtraTime[name] = 0
+            sim.timeSpentInNetwork[name] = 0
+            sim.timeSpentStopped[name] = 0
 
     def testVehicleSetEffort(self, vehID, edgeID):
         """
@@ -93,7 +116,7 @@ class Testing:
             print("Recursive edges for 511924978#1 are: {}".format(
                 initialFunc.getMultiIncomingEdges("511924978#1")))
 
-            print("The current congestion for lane {} is {}".format(lane, func.returnCongestionLevelLane(lane)))
+            print("The current congestion for lane {} is {}".format(lane, sim.returnCongestionLevelLane(lane)))
 
         traci.simulationStep()
 
@@ -107,16 +130,18 @@ class Testing:
         outgoingEdges = initialFunc.getOutgoingEdges(edge)
         print("These are the outgoing edges for edge {}: {}".format(edge, outgoingEdges))
 
-        print("Estimated route path time: {}".format(func.getRoutePathTimeVehicle("testVeh")))
+        print("Estimated route path time: {}".format(
+            sim.getRoutePathTimeVehicle("testVeh")))
         routes = traci.vehicle.getRoute("testVeh")
         print("This is the route: {}".format(routes))
         func.penalisePathTimeVehicle("testVeh", routes)
-        print("This is the adjusted route time {}".format(func.getRoutePathTimeVehicle("testVeh")))
+        print("This is the adjusted route time {}".format(
+            sim.getRoutePathTimeVehicle("testVeh")))
 
         traci.vehicle.rerouteTraveltime("testVeh", currentTravelTimes=True)
         print("This is the route {}".format(traci.vehicle.getRoute("testVeh")))
         print("This is the route after rerouting {}".format(
-            func.getRoutePathTimeVehicle("testVeh")))
+            sim.getRoutePathTimeVehicle("testVeh")))
 
     def test2DuringSM(self, i):
         if i == 4:
@@ -134,7 +159,7 @@ class Testing:
             print("meeeppp")
             print("This is the route {}".format(traci.vehicle.getRoute("testVeh")))
             print("This is the route after rerouting {}".format(
-                func.getRoutePathTimeVehicle("testVeh")))
+                sim.getRoutePathTimeVehicle("testVeh")))
 
         traci.simulationStep()
 
@@ -203,9 +228,12 @@ class Testing:
         pass
         # traci.simulationStep()
 
-    def beforeLoop(self):
+    def beforeLoop(self, functionName=""):
         """
         This is the testing stage which is ran before the main loop of the program begins
+
+        Args:
+            functionName (str): The name of the function which called this
         """
         # Input validation
         if not 0 <= TESTING_NUMBER <= 3:
@@ -213,7 +241,10 @@ class Testing:
 
         if sumo.SCENARIO == 0:
             if TESTING_NUMBER == 0:
-                print("******* TEST CASES BEING RAN ON SMALL_MANHATTAN *******")
+                if functionName != "":
+                    print("******* TEST CASE " + functionName + " BEING RAN *******")
+                else:
+                    print("******* TEST CASES BEING RAN ON SMALL_MANHATTAN *******")
             elif TESTING_NUMBER == 1:
                 print("******* TEST 1 RUNNING ON SMALL_MANHATTAN *******")
                 self.test1BeforeSM()
@@ -225,7 +256,10 @@ class Testing:
                 self.test3BeforeSM()
         elif sumo.SCENARIO == 3:
             if TESTING_NUMBER == 0:
-                print("******* TEST CASES BEING RAN ON NEWARK *******")
+                if functionName != "":
+                    print("******* TEST CASE " + functionName + " BEING RAN *******")
+                else:
+                    print("******* TEST CASES BEING RAN ON NEWARK *******")
             elif TESTING_NUMBER == 1:
                 print("******* TEST 1 RUNNING ON NEWARK *******")
                 self.test1BeforeNW()
