@@ -6,7 +6,7 @@ import numpy as np
 import sys
 import traci
 
-from pycharm_project.src.project.code import SumoConnection
+from src.project.code import SumoConnection
 
 SumoConnection
 from src.project.code import SumoConnection as sumo

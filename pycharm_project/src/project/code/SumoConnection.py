@@ -1,3 +1,11 @@
+import sys
+## Inserts SUMO tools into the PATH (or PYTHONPATH)
+sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+import os
+
+## This sets the environment variable 'SUMO_HOME'
+os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
 import traci
 import sumolib
 import os
@@ -19,7 +27,7 @@ states.
 """
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
-COMPUTER = True
+COMPUTER = False
 
 # These are the times between the simulation start and end, delay MUST be set at 0ms for this to be comparable to other
 # results
@@ -31,18 +39,19 @@ PRINT = True
 
 # Settings main working directory
 if COMPUTER:
+    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/sumo-project/pycharm_project/src/project/configuration_files/"
+    SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
+
     # Main computer project configuration location
-    MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/project/configuration_files/"
-    SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
+    # MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/project/configuration_files/"
+    # SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
     OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
-    DATABASE_LOCATION = "D:/Nina/Documents/google_drive/sumo/database/output_database.sqlite"
+    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
 else:
-    # Laptop project configuration location
-    MAIN_PROJECT = "C:/Users/Jonat/Documents/comp3200-code/sumo-project-bitbucket/pycharm_project/src/project/" \
-                   "configuration_files/"
-    SUMO_BINARY = "C:/Program Files (x86)/DLR/Sumo/bin/sumo-gui.exe"
-    # FILL IN OUTPUT_DIRECTORY
-    # FILL IN DATABASE_LOCATION
+    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/sumo-project/pycharm_project/src/project/configuration_files/"
+    SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
+    OUTPUT_DIRECTORY = "/Users/jonathan/Documents/comp3200/sumo_output/"
+    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
 
 # TODO
 # Remove the edges which are the insertions of the map to only facilitate at most one edge (so that vehicles don't pack
@@ -116,7 +125,7 @@ SCENARIO = 2
 ALGORITHM = 2
 
 # The runtime of the simulation in timesteps
-RUNTIME = 2100
+RUNTIME = 300
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated

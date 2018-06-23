@@ -1,6 +1,16 @@
+import sys
+## Inserts SUMO tools into the PATH (or PYTHONPATH)
+sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+import os
+
+## This sets the environment variable 'SUMO_HOME'
+os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
 import random
 import unittest
 import warnings
+
+
 
 import sumolib
 import os
