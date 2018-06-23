@@ -4,10 +4,10 @@ import time
 import sys
 import traci
 
-from src.project.code import InitialMapHelperFunctions as initialFunc
-from src.project.code import SimulationFunctions as sim
-from src.project.code import SumoConnection as sumo
-from src.project.code.SimulationFunctions import selectVehiclesBasedOnFairness
+from src.code import InitialMapHelperFunctions as initialFunc
+from src.code import SimulationFunctions as sim
+from src.code import SumoConnection as sumo
+from src.code.SimulationFunctions import selectVehiclesBasedOnFairness
 
 __author__ = "Jonathan Harper"
 

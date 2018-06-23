@@ -6,9 +6,9 @@ import numpy as np
 import sys
 import traci
 
-from src.project.code import SumoConnection as sumo
-from src.project.code import RoutingFunctions as func
-from src.project.code import InitialMapHelperFunctions as initialFunc
+from src.code import SumoConnection as sumo
+from src.code import RoutingFunctions as func
+from src.code import InitialMapHelperFunctions as initialFunc
 
 __author__ = "Jonathan Harper"
 

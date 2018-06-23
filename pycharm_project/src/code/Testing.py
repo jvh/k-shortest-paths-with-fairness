@@ -3,10 +3,10 @@ import sys
 import traci
 import time
 
-from src.project.code import SumoConnection as sumo
-from src.project.code import RoutingFunctions as func
-from src.project.code import InitialMapHelperFunctions as initialFunc
-from src.project.code import SimulationFunctions as sim
+from src.code import SumoConnection as sumo
+from src.code import RoutingFunctions as func
+from src.code import InitialMapHelperFunctions as initialFunc
+from src.code import SimulationFunctions as sim
 
 __author__ = "Jonathan Harper"
 
