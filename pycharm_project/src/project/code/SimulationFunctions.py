@@ -8,7 +8,6 @@ import traci
 
 from src.project.code import SumoConnection
 
-SumoConnection
 from src.project.code import SumoConnection as sumo
 from src.project.code import RoutingFunctions as func
 from src.project.code import InitialMapHelperFunctions as initialFunc
