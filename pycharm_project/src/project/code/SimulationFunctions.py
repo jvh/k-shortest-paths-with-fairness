@@ -6,8 +6,6 @@ import numpy as np
 import sys
 import traci
 
-from src.project.code import SumoConnection
-
 from src.project.code import SumoConnection as sumo
 from src.project.code import RoutingFunctions as func
 from src.project.code import InitialMapHelperFunctions as initialFunc
@@ -38,9 +36,6 @@ arrivalTime = {}
 departureTime = {}
 # Stores a list of all vehicles in network currently
 vehiclesInNetwork = []
-
-# The maximum amount an edge can vary from the free flow travel time speed until considered an issue
-FREE_FLOW_TRAVEL_TIME_MAXIMUM = 5
 
 def returnCongestionLevelEdge(edgeID):
     """
@@ -179,8 +174,8 @@ def getGlobalEdgeWeights():
         have a huge negative impact on the travel times for the road network. So, I decided to bound edges to 15x 
         their free-flow travel speed conditions in an attempt to alleviate this.
         """
-        if travelTime > (initialFunc.freeFlowSpeed[edge] * FREE_FLOW_TRAVEL_TIME_MAXIMUM):
-            travelTime = initialFunc.freeFlowSpeed[edge] * FREE_FLOW_TRAVEL_TIME_MAXIMUM
+        if travelTime > (initialFunc.freeFlowSpeed[edge] * 15):
+            travelTime = initialFunc.freeFlowSpeed[edge] * 15
 
         func.edgeSpeedGlobal[edge] = travelTime
         func.adjustedEdgeSpeedGlobal[edge] = travelTime
@@ -197,7 +192,7 @@ def fairnessIndex():
     fairness of the system as a whole
 
     Returns:
-        fairness (float): This is the fairness index, F
+        fairnessIndex (float): This is the fairness index, F
         standardDeviation (float): This is the standard deviation of the QOEs
     """
     global vehiclesInNetwork
@@ -215,12 +210,12 @@ def fairnessIndex():
 
     standardDeviation = np.nanstd(np.where(np.isclose(qoeValues, 0), np.nan, qoeValues))
 
-    fairness = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
-
     print(standardDeviation)
-    print(fairness)
+    print(highestQOE)
 
-    return fairness, standardDeviation
+    fairnessIndex = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
+
+    return fairnessIndex, standardDeviation
 
 
 def updateVehicleTotalEstimatedTimeSpentInSystem(period=0):
@@ -436,8 +431,5 @@ def selectVehiclesBasedOnFairness(reroutedList):
 
         # List containing the vehicles with qoe's >= qoePercentile (those which shall be rerouted)
         reroutedFairly = [k for k, v in qoe.items() if v >= qoePercentile]
-
-    largestQOE = largestQOE / 10
-    smallestQOE = smallestQOE / 10
 
     return reroutedFairly, qoe, largestQOE, smallestQOE

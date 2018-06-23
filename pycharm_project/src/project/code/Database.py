@@ -107,7 +107,8 @@ class Database:
             sd (float): The standard deviations of the QOE's
             simulationIndex (str): The index of the simulation (number and corresponding type)
         """
-        simIndex = str(simulationIndex + "_" + str(i))
+        simIndex = str(simulationIndex + str(i))
+        print(simIndex)
 
         Database.cursor.execute(
             "INSERT OR REPLACE INTO {table} (simIndexTimestep, fairnessIndex, standardDeviationQOE) VALUES "

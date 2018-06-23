@@ -1,9 +1,8 @@
 import sys
-## Inserts SUMO tools into the PATH (or PYTHONPATH)
-sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
 import os
-
-## This sets the environment variable 'SUMO_HOME'
+# Inserts SUMO tools into the PATH (or PYTHONPATH)
+sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+# This sets the environment variable 'SUMO_HOME'
 os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 
 import traci
@@ -17,6 +16,8 @@ from src.project.code import RoutingAlgorithms as routing
 from src.project.code import RoutingFunctions as func
 from src.project.code import InitialMapHelperFunctions as initialFunc
 from src.project.code import Database as db
+
+
 
 __author__ = "Jonathan Harper"
 
@@ -39,14 +40,11 @@ PRINT = True
 
 # Settings main working directory
 if COMPUTER:
-    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/sumo-project/pycharm_project/src/project/configuration_files/"
-    SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
-
     # Main computer project configuration location
-    # MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/project/configuration_files/"
-    # SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
+    MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/project/configuration_files/"
+    SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
     OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
-    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
+    DATABASE_LOCATION = "D:/Nina/Documents/google_drive/sumo/database/output_database.sqlite"
 else:
     MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/sumo-project/pycharm_project/src/project/configuration_files/"
     SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
@@ -96,7 +94,7 @@ GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
 A_STAR_DISTANCES = True
 
 # This is the unique reference for the simulation in progress
-SIMULATION_REFERENCE = "4"
+SIMULATION_REFERENCE = "kPathsFair5"
 
 # SUMO settings
 START_TIME = 0
@@ -124,9 +122,6 @@ SCENARIO = 2
 #   4: k-Shortest Path with fairness
 ALGORITHM = 2
 
-# The runtime of the simulation in timesteps
-RUNTIME = 300
-
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
 OUTPUTS = True
@@ -140,9 +135,6 @@ VTK_OUTPUT = False
 FLOATING_CAR_DATA_OUTPUT = False
 #   --tripinfo-output: Generates information about the vehicle trips
 TRIPS_OUTPUT = True
-
-# This is when the congestion on a road network is shown by changing the position of the camera
-CHANGE_CAMERA = False
 
 try:
     # Small manhattan

@@ -1,16 +1,10 @@
 import sys
-## Inserts SUMO tools into the PATH (or PYTHONPATH)
-sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
 import os
-
-## This sets the environment variable 'SUMO_HOME'
+sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
 os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
-
 import random
 import unittest
 import warnings
-
-
 
 import sumolib
 import os
@@ -28,6 +22,8 @@ from src.project.code import Testing as testing
 from src.project.code import InitialMapHelperFunctions as initialFunc
 from src.project.code import SimulationFunctions as sim
 from src.project.code import Database as db
+
+
 
 __author__ = "Jonathan Harper"
 
@@ -1970,11 +1966,11 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         # Vehicle should be only 1 edge away from this point (and has the edge in it's route) so should be selected
         # based on this
-        returned, _, _ = func.selectVehiclesForRerouting('46538375#6')
+        returned, _, _, _ = func.selectVehiclesForRerouting('46538375#6')
         self.assertEqual(returned, ['testVeh'])
 
         #  Vehicle is nowhere near this edge, should return an empty list
-        returned, _, _ = func.selectVehiclesForRerouting('5672118#2')
+        returned, _, _, _ = func.selectVehiclesForRerouting('5672118#2')
         self.assertEqual(returned, [])
 
     def test_smallManhattan_multiIncomingEdges(self):

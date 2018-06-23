@@ -121,9 +121,12 @@ class kShortestPaths:
 
 
         traci.simulationStep()
-
         # Checks for vehicle departure and arrival into the simulation
         sim.vehiclesDepartedAndArrived(i)
+
+        # After 30 minutes have elapsed
+        if i == 1800:
+            initialFunc.endSim(i)
 
         # Every REROUTING_PERIOD
         if i % func.REROUTING_PERIOD == 0 and i >= 1:
@@ -149,8 +152,7 @@ class kShortestPaths:
                         congestionBool = True
                     print("\n***** LANE {} REROUTE ********\n".format(lane))
                     edge = initialFunc.lanesNetwork[lane]
-                    if sumo.CHANGE_CAMERA:
-                        sim.getEdge2DCoordinates(edge)
+                    sim.getEdge2DCoordinates(edge)
 
                     func.rerouteSelectedVehicles(lane, kPathsBool=True, fairness=False)
 
@@ -163,26 +165,19 @@ class kShortestPaths:
                         sim.getGlobalEdgeWeights()
                         congestionBool = True
                     print("\n***** EDGE {} REROUTE ********\n".format(edge))
-                    if sumo.CHANGE_CAMERA:
-                        sim.getEdge2DCoordinates(edge)
+                    sim.getEdge2DCoordinates(edge)
 
                     func.rerouteSelectedVehicles(edge, kPathsBool=True, fairness=False)
-
-            sim.vehiclesInNetwork = traci.vehicle.getIDList()
 
             # Working out fairness index + standard deviation of QOE values
             fairnessIndex, standardDeviation = sim.fairnessIndex()
 
             # Update the database with the up-to-date values
-            database.populateDBVehicleTable()
             database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE)
+            database.populateDBVehicleTable()
 
             # Reset
             sim.vehiclesInNetwork = []
-
-        # After RUNTIME has elapsed
-        if i == sumo.RUNTIME:
-            initialFunc.endSim(i)
 
 
 class kShortestPathsFairness:
@@ -206,8 +201,8 @@ class kShortestPathsFairness:
         # Checks for vehicle departure and arrival into the simulation
         sim.vehiclesDepartedAndArrived(i)
 
-        # After RUNTIME has elapsed
-        if i == sumo.RUNTIME:
+        # After 20 minutes have elapsed
+        if i == 1800:
             initialFunc.endSim(i)
 
         # Every REROUTING_PERIOD
@@ -251,14 +246,12 @@ class kShortestPathsFairness:
 
                     func.rerouteSelectedVehicles(edge, kPathsBool=True, fairness=True)
 
-            sim.vehiclesInNetwork = traci.vehicle.getIDList()
-
             # Working out fairness index + standard deviation of QOE values
             fairnessIndex, standardDeviation = sim.fairnessIndex()
 
             # Update the database with the up-to-date values
-            database.populateDBVehicleTable()
             database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE)
+            database.populateDBVehicleTable()
 
             # Reset
             sim.vehiclesInNetwork = []

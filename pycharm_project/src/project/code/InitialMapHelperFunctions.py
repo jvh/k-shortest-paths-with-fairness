@@ -128,7 +128,7 @@ def loadMap():
             edgeLengths[edgeID] = sumo.net.getEdge(edgeID).getLength()
             # Finding edges on the fringe of the network
             populateFringeEdges(edgeID)
-        # This puts the free-flow travel time of the network into memory
+        # This puts the free-flow travel speed of the network into memory
         freeFlowSpeed[edgeID] = traci.edge.getTraveltime(edgeID)
 
 
