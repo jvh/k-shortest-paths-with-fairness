@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Wed Jul 25 19:11:12 2018 by Eclipse SUMO od2trips Version UNKNOWN
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/od2tripsConfiguration.xsd">
+
+    <input>
+        <taz-files value="districts.taz.xml"/>
+        <od-amitran-files value="demand.xml"/>
+    </input>
+
+    <output>
+        <output-file value="trips.trips.xml"/>
+    </output>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <trip id="5" depart="2507.60" from="-28274780#8" to="224940624#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="88" depart="2546.34" from="-224940713" to="-11619280#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="35" depart="3463.84" from="11622274#2" to="11618099#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="19" depart="5845.72" from="-424975233#7" to="-11620852#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="49" depart="5863.86" from="11620471#14" to="-11623644#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="42" depart="6597.24" from="-424975233#7" to="-11613734#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="99" depart="8894.75" from="11620873#1" to="422873497#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="91" depart="9792.05" from="-268206221#3" to="198251054#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="43" depart="10210.68" from="425432958#8" to="-11616476#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="29" depart="11752.06" from="-268206344#1" to="11616607#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="65" depart="12768.92" from="-268206223#1" to="11618800#12" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="60" depart="13284.93" from="576623873#1" to="11615292#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="70" depart="15023.71" from="-11617879#5" to="420815288" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="4" depart="16216.19" from="-268206223#1" to="-11619725#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="15" depart="17646.82" from="425434491#1" to="60787539#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="13" depart="18817.18" from="-11622589" to="11622137#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="36" depart="19136.46" from="11622593#1" to="11623014#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="63" depart="19630.83" from="425431901#8" to="-28929125#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="20" depart="19958.81" from="-11623680#1" to="-230388293#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="12" depart="21883.54" from="426412565#2" to="-421305945#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="31" depart="23914.09" from="224940712#1" to="-422873497#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="92" depart="24225.88" from="268206256#1" to="-132500828" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="81" depart="27052.68" from="-576623906" to="-49200096#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="96" depart="27582.43" from="11619130" to="-11623489" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="75" depart="28245.39" from="11621970" to="-420818183" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="53" depart="30143.11" from="11617418#5" to="-261713325" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="56" depart="30415.06" from="-11617851" to="262807660#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="51" depart="31044.33" from="-11625095#13" to="-262807534#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="58" depart="31497.52" from="11620575#1" to="-11620850#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="72" depart="32223.95" from="11623075#18" to="420818149" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="45" depart="32407.33" from="268206317#0" to="11615292#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="22" depart="34771.78" from="-268206317#8" to="-268206246#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="50" depart="35527.38" from="-11620937#0" to="-11621566#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="7" depart="36406.97" from="425434491#4" to="421305945#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="86" depart="36990.17" from="-425431901#13" to="-11615292#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="84" depart="37527.57" from="11620875#0" to="-11616506#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="89" depart="39160.89" from="11622593#3" to="230388295" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="64" depart="40286.24" from="-11625095#7" to="-261713322" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="57" depart="42329.21" from="-11621006#4" to="11619007" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="73" depart="44028.51" from="-425442680#17" to="-60787525" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="77" depart="45399.02" from="11624579#0" to="-11616476#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="37" depart="46548.02" from="-11620575#4" to="422873497#8" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="25" depart="46922.61" from="-425433923#4" to="60787560" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="48" depart="46928.24" from="11623486#1" to="11618800#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="26" depart="47109.37" from="38312440#6" to="11623787#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="66" depart="47292.73" from="268206318#0" to="-511747899#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="41" depart="48336.16" from="-425431901#10" to="420818164" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="33" depart="48414.23" from="-11618003#2" to="11614584" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="59" depart="49794.68" from="11624579#0" to="11623571#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="55" depart="50539.37" from="11620316#0" to="420627480" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="14" depart="51006.07" from="11623294" to="11623234" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="30" depart="51463.82" from="-11620575#2" to="11619280#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="69" depart="51668.07" from="-11623296#3" to="-60787532#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="40" depart="52436.18" from="11617879#2" to="511754951" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="1" depart="53093.67" from="11624594#1" to="-420818205" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="93" depart="53987.04" from="-11620837" to="-11620850#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="8" depart="54224.58" from="-425442685#1" to="11620943#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="74" depart="54894.73" from="-268206331#1" to="-132500849#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="24" depart="55068.25" from="268206317#7" to="11622515#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="78" depart="57061.53" from="425432958#8" to="28929125#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="67" depart="57107.53" from="-11624179#2" to="11622408#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="52" depart="57149.99" from="-28274780#7" to="-420818814" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="71" depart="57598.59" from="11620522#1" to="11620088#5" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="2" depart="60237.90" from="11624667#0" to="-11615252#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="0" depart="61114.90" from="11618003#4" to="11622920" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="10" depart="62286.05" from="-11622380#0" to="60787532#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="6" depart="64198.38" from="11618715" to="-49200101#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="83" depart="64566.17" from="576354106" to="56054061#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="97" depart="65005.96" from="27827473#8" to="-422750100#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="18" depart="66654.06" from="425433923#3" to="-11620056#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="21" depart="66976.67" from="-11620067#3" to="261713328#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="85" depart="67431.68" from="-28274780#8" to="-11620527" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="61" depart="68364.99" from="11619050#0" to="-11616476#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="38" depart="69247.57" from="268206317#2" to="60787514#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="32" depart="69388.60" from="424975233#2" to="-60787970#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="95" depart="71284.26" from="425431901#3" to="60787558#5" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="82" depart="71403.80" from="11622981" to="11622022#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="17" depart="71466.19" from="-11621857" to="-11617447" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="62" depart="71628.86" from="-11625095#6" to="11620999#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="3" depart="71957.46" from="11617418#5" to="11618800#7" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="79" depart="72615.63" from="-11617515" to="11622414#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="23" depart="72886.34" from="11621022#3" to="11614421#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="90" depart="74566.17" from="-11624594#1" to="268206349#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="16" depart="75455.22" from="-11622666#0" to="60787526" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="44" depart="75850.57" from="425432311#2" to="11616607#4" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="68" depart="76115.04" from="-11617807#0" to="-11618063#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="9" depart="77169.98" from="-11617807#1" to="-46965799#9" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="39" depart="77260.29" from="-11617072#0" to="60787568#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="28" depart="78498.84" from="38312440#5" to="11622307#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="98" depart="78801.53" from="-11625095#13" to="60785882#6" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="76" depart="79901.28" from="11621984#2" to="-11619314#6" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="27" depart="80125.65" from="11618064" to="11617649" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="46" depart="80289.73" from="425434491#10" to="346657923" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="11" depart="80778.05" from="-11621401#12" to="-11623595#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="34" depart="81956.17" from="576623843#1" to="422868066#2" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="80" depart="84055.83" from="-224940635#0" to="49200103#0" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="54" depart="84473.99" from="425434491#6" to="-28929125#1" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="94" depart="84513.56" from="-11623296#3" to="422751053" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="47" depart="85924.45" from="-11621970" to="11618800#12" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+    <trip id="87" depart="86139.29" from="27827473#9" to="-11624831#3" type="car" fromTaz="poly_0" toTaz="poly_1" departLane="free" departSpeed="max"/>
+</routes>

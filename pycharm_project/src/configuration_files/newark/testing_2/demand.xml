@@ -1,0 +1,7 @@
+<demand>
+   <actorConfig id="car">
+       <timeSlice duration="86400000" startTime="0">
+           <odPair amount="100" destination="poly_1" origin="poly_0"/>
+       </timeSlice>
+   </actorConfig>
+</demand>

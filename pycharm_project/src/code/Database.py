@@ -73,6 +73,8 @@ class Database:
                         reroutedAmount=func.vehicleReroutedAmount[vehicle],
                         extraTimeAddition=func.cumulativeExtraTime[vehicle], totalTime=sim.timeSpentInNetwork[vehicle]))
 
+
+        print(vehicle)
         # for vehicle in sim.timeSpentInNetwork:
         #     # Database.cursor.execute("INSERT OR REPLACE INTO {table} WHERE vehicleID = {vehicleID} (totalTimeSpentInSystem) VALUES "
         #     #                         "(COALESCE({totalTimeSpentInSystem}, '{totalTimeSpentInSystem}'))"

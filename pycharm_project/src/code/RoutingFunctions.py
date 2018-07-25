@@ -347,8 +347,8 @@ def rerouteSelectedVehiclesLane(laneID, kPathsBool=False):
                 # reroutedList.add(vehicle)
                 reroutedList.append(vehicle)
 
-    if fairness:
-        reroutedList = sim.selectVehiclesBasedOnFairness(reroutedList)
+    # if fairness:
+    #     reroutedList = sim.selectVehiclesBasedOnFairness(reroutedList)
 
     reroutedVehicles.update(reroutedList)
 

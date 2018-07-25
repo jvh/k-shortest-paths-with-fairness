@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Wed 25 Jul 18:17:40 2018 by Eclipse SUMO netedit Version UNKNOWN
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="newark_square.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="newark_square.net.xml"/>
+    </output>
+
+    <processing>
+        <no-turnarounds value="true"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+        <junctions.corner-detail value="0"/>
+        <rectangular-lane-cut value="false"/>
+        <walkingareas value="false"/>
+    </processing>
+
+</configuration>
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <poly id="poly_0" color="red" fill="0" layer="128.00" shape="301.880000,6404.740000 1792.390000,6394.530000 1812.810000,309.970000 322.300000,299.760000 291.670000,6333.270000 301.880000,6404.740000"/>
+    <poly id="poly_1" color="blue" fill="0" layer="128.00" shape="5088.670000,6589.170000 7020.210000,6533.020000 7020.210000,244.280000 4987.600000,233.050000 5133.580000,6521.790000 5088.670000,6589.170000"/>
+</additional>

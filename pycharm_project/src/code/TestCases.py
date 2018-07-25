@@ -32,7 +32,7 @@ Unit tests to ensure the functionality of the functions works as intended and re
 """
 
 # True when testing the database functionality
-databaseTestingBool = False
+databaseTestingBool = True
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
     """

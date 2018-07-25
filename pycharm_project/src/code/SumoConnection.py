@@ -124,7 +124,7 @@ ALGORITHM = 2
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
-OUTPUTS = True
+OUTPUTS = False
 #   --summary: Prints out a summary of the information
 SUMMARY_OUTPUT = True
 #   --full-output: Builds a file containing the full dump of various information regarding the positioning of vehicles
