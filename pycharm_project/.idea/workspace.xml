@@ -14,7 +14,7 @@
       <file leaf-file-name="SumoConnection.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/SumoConnection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
+            <state relative-caret-position="750">
               <caret line="51" column="66" selection-start-line="51" selection-start-column="66" selection-end-line="51" selection-end-column="66" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
@@ -23,20 +23,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestCases.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestCases.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/TestCases.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-26980">
-              <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
+            <state relative-caret-position="2835">
+              <caret line="190" column="39" selection-start-line="190" selection-start-column="39" selection-end-line="190" selection-end-column="39" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#922#7572#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimulationFunctions.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SimulationFunctions.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/code/SimulationFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -48,7 +47,7 @@
       <file leaf-file-name="RoutingFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/RoutingFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
+            <state relative-caret-position="7350">
               <caret line="499" column="39" selection-start-line="499" selection-start-column="8" selection-end-line="499" selection-end-column="39" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
@@ -69,7 +68,7 @@
       <file leaf-file-name="InitialMapHelperFunctions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/InitialMapHelperFunctions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
+            <state relative-caret-position="1335">
               <caret line="97" selection-start-line="97" selection-end-line="97" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
@@ -81,8 +80,8 @@
       <file leaf-file-name="Database.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/Database.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1989">
-              <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+            <state relative-caret-position="1005">
+              <caret line="76" column="21" selection-start-line="76" selection-start-column="21" selection-end-line="76" selection-end-column="21" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -109,10 +108,10 @@
         <option value="$PROJECT_DIR$/src/code/SimulationFunctions.py" />
         <option value="$PROJECT_DIR$/src/code/RoutingAlgorithms.py" />
         <option value="$PROJECT_DIR$/src/code/InitialMapHelperFunctions.py" />
-        <option value="$PROJECT_DIR$/src/code/Database.py" />
         <option value="$PROJECT_DIR$/src/code/SumoConnection.py" />
         <option value="$PROJECT_DIR$/src/code/TestCases.py" />
         <option value="$PROJECT_DIR$/src/code/RoutingFunctions.py" />
+        <option value="$PROJECT_DIR$/src/code/Database.py" />
       </list>
     </option>
   </component>
@@ -262,15 +261,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_for_TestCases_DatabaseTests_test_smallManhattan_vehicleReroutingAmount_databaseInsertion - 2018.07.25 at 22h 38m 25s.xml">
-      <configuration name="Unittests for TestCases.DatabaseTests.test_smallManhattan_vehicleReroutingAmount_databaseInsertion" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_TestCases_DatabaseTests_test_smallManhattan_vehicleReroutingAmount_databaseInsertion_endSim - 2018.07.25 at 22h 38m 33s.xml">
-      <configuration name="Unittests for TestCases.DatabaseTests.test_smallManhattan_vehicleReroutingAmount_databaseInsertion_endSim" configurationId="tests" />
-    </history-entry>
-    <history-entry file="Unittests_for_TestCases_DatabaseTests_test_smallManhattan_vehicleReroutingAmount_multipleVehiclesMultipleInstance - 2018.07.25 at 22h 38m 43s.xml">
-      <configuration name="Unittests for TestCases.DatabaseTests.test_smallManhattan_vehicleReroutingAmount_multipleVehiclesMultipleInstance" configurationId="tests" />
-    </history-entry>
     <history-entry file="Unittests_for_TestCases_DatabaseTests_test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance - 2018.07.25 at 22h 38m 52s.xml">
       <configuration name="Unittests for TestCases.DatabaseTests.test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance" configurationId="tests" />
     </history-entry>
@@ -292,6 +282,15 @@
     <history-entry file="Unittests_for_TestCases_DatabaseTests_test_smallManhattan_fairnessMetricsIntoDictionary - 2018.07.25 at 22h 39m 49s.xml">
       <configuration name="Unittests for TestCases.DatabaseTests.test_smallManhattan_fairnessMetricsIntoDictionary" configurationId="tests" />
     </history-entry>
+    <history-entry file="Unittests_in_TestCases_py - 2018.07.25 at 22h 45m 46s.xml">
+      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_TestCases_py - 2018.07.25 at 22h 47m 04s.xml">
+      <configuration name="Unittests in TestCases.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_TestCases_DatabaseTests_test_smallManhattan_clearingDatabase - 2018.07.25 at 22h 47m 37s.xml">
+      <configuration name="Unittests for TestCases.DatabaseTests.test_smallManhattan_clearingDatabase" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -300,13 +299,13 @@
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14702381" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45190382" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.45190382" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -368,7 +367,6 @@
           <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#922#7572#0" />
           </folding>
         </state>
       </provider>
@@ -431,7 +429,6 @@
           <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#922#7572#0" />
           </folding>
         </state>
       </provider>
@@ -494,7 +491,6 @@
           <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#922#7572#0" />
           </folding>
         </state>
       </provider>
@@ -557,7 +553,6 @@
           <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#922#7572#0" />
           </folding>
         </state>
       </provider>
@@ -610,13 +605,6 @@
     <entry file="file://$PROJECT_DIR$/src/project/code/SimulationFunctions.py" />
     <entry file="file://$PROJECT_DIR$/src/project/code/RoutingFunctions.py" />
     <entry file="file://$PROJECT_DIR$/src/project/code/TestCases.py" />
-    <entry file="file://$PROJECT_DIR$/src/code/SimulationFunctions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/code/RoutingAlgorithms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -647,7 +635,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/code/InitialMapHelperFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
+        <state relative-caret-position="1335">
           <caret line="97" selection-start-line="97" selection-end-line="97" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
@@ -655,19 +643,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/code/Database.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1989">
-          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/code/SumoConnection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
+        <state relative-caret-position="750">
           <caret line="51" column="66" selection-start-line="51" selection-start-column="66" selection-end-line="51" selection-end-column="66" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
@@ -677,7 +655,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/code/RoutingFunctions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
+        <state relative-caret-position="7350">
           <caret line="499" column="39" selection-start-line="499" selection-start-column="8" selection-end-line="499" selection-end-column="39" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
@@ -685,14 +663,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/Database.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1005">
+          <caret line="76" column="21" selection-start-line="76" selection-start-column="21" selection-end-line="76" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/code/TestCases.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-26980">
-          <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
+        <state relative-caret-position="2835">
+          <caret line="190" column="39" selection-start-line="190" selection-start-column="39" selection-end-line="190" selection-end-column="39" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#922#7572#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/SimulationFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
         </state>
       </provider>
     </entry>
