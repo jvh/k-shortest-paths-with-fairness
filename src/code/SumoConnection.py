@@ -1,31 +1,29 @@
+###################################################################################################################
+# Concerned with the configuration of SUMO and the connection with TraCI. This initialises SUMO with the settings #
+# input and reverts control back to TraCI to allow modification during runtime of the simulation and collection   #
+# of simulation states.                                                                                           #
+#                                                                                                                 #
+# Author: Jonathan Harper                                                                                         #
+###################################################################################################################
+
+__author__ = "Jonathan Harper"
+
 import sys
 import os
 # Inserts SUMO tools into the PATH (or PYTHONPATH)
+
 sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
 # This sets the environment variable 'SUMO_HOME'
 os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 
 import traci
 import sumolib
-import os
 import datetime
-import sys
 
 import src.code.Testing
 from src.code import RoutingAlgorithms as routing
-from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import Database as db
-
-
-
-__author__ = "Jonathan Harper"
-
-"""
-Concerned with the configuration of SUMO and the connection with TraCI. This initialises SUMO with the settings input
-and reverts control back to TraCI to allow modification during runtime of the simulation and collection of simulation
-states.
-"""
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
 COMPUTER = False
@@ -46,7 +44,7 @@ if COMPUTER:
     OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
     DATABASE_LOCATION = "D:/Nina/Documents/google_drive/sumo/database/output_database.sqlite"
 else:
-    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/sumo-project/pycharm_project/src/configuration_files/"
+    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
     SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
     OUTPUT_DIRECTORY = "/Users/jonathan/Documents/comp3200/sumo_output/"
     DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
@@ -162,7 +160,7 @@ class Main:
         Return:
             int: The current time of the simulation in seconds
         """
-        return int(traci.simulation.getCurrentTime()/1000)
+        return int(traci.simulation.getCurrentTime() / 1000)
 
     def configureSumo(self, sumoConfig):
         """
