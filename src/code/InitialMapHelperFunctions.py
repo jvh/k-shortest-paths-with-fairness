@@ -1,3 +1,14 @@
+###################################################################################################################
+# This particular file deals with all of the information regarding the map, particularly the generation of the    #
+# map into memory so that elements of the map may be efficiently accessed during runtime without unnecessary      #
+# calls to Traci throughout.                                                                                      #
+#                                                                                                                 #
+# Essentially, these functions are only called once at the start of the simulation. During runtime, instead of    #
+# directly calling the functions, the data shall be accessed by the corresponding variable.                       #
+#                                                                                                                 #
+# Author: Jonathan Harper                                                                                         #
+###################################################################################################################
+
 import sys
 import time
 
@@ -9,15 +20,6 @@ from src.code import Database as db
 from src.code import SimulationFunctions as sim
 
 __author__ = "Jonathan Harper"
-
-"""
-This particular file deals with all of the information regarding the map, particularly the generation of the map into 
-memory so that elements of the map may be efficiently accessed during runtime without unnecessary calls to Traci 
-throughout.
-
-Essentially, these functions are only called once at the start of the simulation. During runtime, instead of directly
-calling the functions, the data shall be accessed by the corresponding variable.
-"""
 
 # This is the minimum edge/lane length to be considered for possible rerouting
 MIN_EDGE_LENGTH = 25
@@ -47,7 +49,8 @@ multiIncomingEdges = {}
 # This stores the free-flow speeds of all of the edges, {edge: freeFlowSpeed}
 freeFlowSpeed = {}
 
-def endSim(i, manual = True, database=False):
+
+def endSim(i, manual=True, database=False):
     """
     Ends the simulation, prints the time taken, and updates the database with information about the simulation
 
@@ -69,6 +72,7 @@ def endSim(i, manual = True, database=False):
         sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
                                                                                          sumo.timerStart))
 
+
 def endSimWithError(error):
     """
     Ends the simulation and prints an error message
@@ -78,6 +82,7 @@ def endSimWithError(error):
     """
     sumo.timerEnd = time.clock()
     sys.exit(error)
+
 
 def initialisation():
     """
@@ -97,6 +102,7 @@ def initialisation():
     # Start the clock (for total simulation runtime)
     sumo.timerStart = time.clock()
 
+
 def loadFairnessMetrics():
     """
     Collects the fairness metrics (for each vehicle) from the database and deposits them into the relevant variables
@@ -112,6 +118,7 @@ def loadFairnessMetrics():
         func.cumulativeExtraTime[str(key)] = fairnessMetrics[key][1]
         sim.timeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
         sim.initialTimeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
+
 
 def loadMap():
     """
@@ -131,7 +138,6 @@ def loadMap():
         # This puts the free-flow travel speed of the network into memory
         freeFlowSpeed[edgeID] = traci.edge.getTraveltime(edgeID)
 
-
     # Populating edges with their corresponding non-special lanes
     for lane in traci.lane.getIDList():
         # Remove any special lanes
@@ -140,6 +146,7 @@ def loadMap():
             edge = traci.lane.getEdgeID(lane)
             lanesNetwork[lane] = edge
             edgesNetwork[edge].append(lane)
+
 
 def createDirectedRoadNetwork():
     """
@@ -171,7 +178,6 @@ def collectEdgesWithSingleOutgoing():
 
     if sumo.PRINT:
         print("\nThese are the single outgoing edges: {}".format(singleOutgoingEdges))
-
 
 
 def collectEdgesWithMultiOutgoing():
@@ -224,6 +230,7 @@ def recursiveIncomingEdges(edgeID, firstTime=False, edgeList=[], edgesToSearch=[
             MAX_EDGE_RECURSION_RANGE
             In the format {edgeID: order}
         edgesToSearch (str[]): The list specifying the edges which are to be searched for incoming edges
+        edgeOrderList : TO FILL
         finished (bool): Specifies if the function has finished (all edges searched)
     Returns:
         str[]: The edges incoming to the initial edge up to MAX_EDGE_RECURSION_RANGE

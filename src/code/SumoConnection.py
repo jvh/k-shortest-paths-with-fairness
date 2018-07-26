@@ -147,6 +147,7 @@ try:
 except TypeError:
     sys.exit("Ensure that you have the COMPUTER boolean set correctly, currently {}".format(COMPUTER))
 
+
 class Main:
     """
     The class in which most of the SUMO configuration occurs, along with Traci configuration to communicate with SUMO
@@ -162,7 +163,8 @@ class Main:
         """
         return int(traci.simulation.getCurrentTime() / 1000)
 
-    def configureSumo(self, sumoConfig):
+    @staticmethod
+    def configureSumo(sumoConfig):
         """
         This allows for the configuration of SUMO to be done based on the scenario picked and additional options
         selected
@@ -184,7 +186,7 @@ class Main:
 
         # Output directories
         summaryOut = OUTPUT_DIRECTORY + '{}/summary/summary_{}.xml'
-        vehiclefullOut = OUTPUT_DIRECTORY + '{}/vehicle_full_output/vehicle_full_{}.xml'
+        vehicleFullOut = OUTPUT_DIRECTORY + '{}/vehicle_full_output/vehicle_full_{}.xml'
         vtkOut = OUTPUT_DIRECTORY + '{}/vtk_output/vtk_{}'
         floatingCarData = OUTPUT_DIRECTORY + '{}/floating_car_data/fcd_{}.xml'
         tripInfo = OUTPUT_DIRECTORY + '{}/trips_info/trip_info_{}.xml'
@@ -204,7 +206,7 @@ class Main:
                     sumoConfig.append(summaryOut.format('small_manhattan/test', windowsDateTime))
                 if VEHICLE_FULL_OUTPUT:
                     sumoConfig.append("--full-output")
-                    sumoConfig.append(vehiclefullOut.format('small_manhattan/test', windowsDateTime))
+                    sumoConfig.append(vehicleFullOut.format('small_manhattan/test', windowsDateTime))
                 if VTK_OUTPUT:
                     sumoConfig.append("--vtk-output")
                     sumoConfig.append(vtkOut.format('small_manhattan/test', windowsDateTime))
@@ -227,7 +229,7 @@ class Main:
                     sumoConfig.append(summaryOut.format('small_manhattan/normal', windowsDateTime))
                 if VEHICLE_FULL_OUTPUT:
                     sumoConfig.append("--full-output")
-                    sumoConfig.append(vehiclefullOut.format('small_manhattan/normal', windowsDateTime))
+                    sumoConfig.append(vehicleFullOut.format('small_manhattan/normal', windowsDateTime))
                 if VTK_OUTPUT:
                     sumoConfig.append("--vtk-output")
                     sumoConfig.append(vtkOut.format('small_manhattan/normal', windowsDateTime))
@@ -250,7 +252,7 @@ class Main:
                     sumoConfig.append(summaryOut.format('newark/normal', windowsDateTime))
                 if VEHICLE_FULL_OUTPUT:
                     sumoConfig.append("--full-output")
-                    sumoConfig.append(vehiclefullOut.format('newark/normal', windowsDateTime))
+                    sumoConfig.append(vehicleFullOut.format('newark/normal', windowsDateTime))
                 if VTK_OUTPUT:
                     sumoConfig.append("--vtk-output")
                     sumoConfig.append(vtkOut.format('newark/normal', windowsDateTime))
@@ -273,7 +275,7 @@ class Main:
                     sumoConfig.append(summaryOut.format('newark/test', windowsDateTime))
                 if VEHICLE_FULL_OUTPUT:
                     sumoConfig.append("--full-output")
-                    sumoConfig.append(vehiclefullOut.format('newark/test', windowsDateTime))
+                    sumoConfig.append(vehicleFullOut.format('newark/test', windowsDateTime))
                 if VTK_OUTPUT:
                     sumoConfig.append("--vtk-output")
                     sumoConfig.append(vtkOut.format('newark/test', windowsDateTime))
@@ -331,10 +333,7 @@ class Main:
         ksp = routing.kShortestPaths()
         kspwf = routing.kShortestPathsFairness()
 
-
         initialFunc.initialisation()
-
-
 
         if SCENARIO == 0 or SCENARIO == 3:
             test.beforeLoop(functionName)
@@ -380,5 +379,3 @@ if __name__ == '__main__':
     print("This is the current working directory: {})".format(os.getcwd()))
     main = Main()
     main.run(instantStart=False)
-
-

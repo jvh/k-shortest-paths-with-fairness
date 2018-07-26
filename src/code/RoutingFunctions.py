@@ -1,7 +1,13 @@
-import random
-import time
+###################################################################################################################
+# The RoutingFunctions.py file deals with functions which are called during the runtime of the simulation in      #
+# order to manipulate the vehicles within the simulation.                                                         #
+#                                                                                                                 #
+# Can be thought of as 'setters' during the simulation runtime                                                    #
+#                                                                                                                 #
+# Author: Jonathan Harper                                                                                         #
+###################################################################################################################
 
-import sys
+import random
 import traci
 
 from src.code import InitialMapHelperFunctions as initialFunc
@@ -10,13 +16,6 @@ from src.code import SumoConnection as sumo
 from src.code.SimulationFunctions import selectVehiclesBasedOnFairness
 
 __author__ = "Jonathan Harper"
-
-"""
-The RoutingFunctions.py file deals with functions which are called during the runtime of the simulation in order to 
-manipulate the vehicles within the simulation.
-
-Can be thought of as 'setters' during the simulation runtime
-"""
 
 # This is the penalisation factor given to the edge estimated travel time
 PENALISATION = 2
@@ -139,19 +138,6 @@ def rerouteSelectedVehiclesEdge(edgeID, kPathsBool=False, fairness=False):
 
     return reroutedList
 
-# def rerouteVehicles(roadSegmentID, lane, type='', kPathsBool=False, fairness=False):
-#
-#     # # Ensures that a type has been entered and that it conforms to either 'edge', 'lane', or the shorthand variants
-#     # # 'e' and 'l' respectively
-#     # if type != 'edge' or type != 'e' or type != 'lane' or type != 'l':
-#     #     raise ValueError('Please insert a correct value for the parameter \'type\' - refers to the type of road '
-#     #                      'segment, either \'edge\' or \'lane\', alternatively shorthand \'e\' and \'l\' can be used '
-#     #                      'respectively.', type)
-#
-#     # If the specified roadSegmentID is a lane
-#     if lane:
-#         # The edge in which the lane belongs
-#         edgeID = initialFunc.lanesNetwork[roadSegmentID]
 
 def selectVehiclesForRerouting(roadSegmentID, fairness=False):
     """
@@ -174,14 +160,16 @@ def selectVehiclesForRerouting(roadSegmentID, fairness=False):
 
     # True if the road segment is a lane
     laneBool = False
+    edgeID = ""
+    outgoingLanes = []
 
     # Automatically work out if the road segment ID belongs to a lane or an edge
     if roadSegmentID in initialFunc.lanesNetwork:
         laneBool = True
         # The edge in which the lane belongs
         edgeID = initialFunc.lanesNetwork[roadSegmentID]
-        """ Effectively, we are testing if the vehicles need to occupy this specific lane to continue their journey, or if
-        another lane on the edge could instead be used/is necessary """
+        """ Effectively, we are testing if the vehicles need to occupy this specific lane to continue their journey, 
+        or if another lane on the edge could instead be used/is necessary """
         outgoingLanes = initialFunc.directedGraphLanes[roadSegmentID]
     elif roadSegmentID not in initialFunc.edgesNetwork:
         # The road segment ID doesn't exist as either an edge or a lane
@@ -252,7 +240,8 @@ def selectVehiclesForRerouting(roadSegmentID, fairness=False):
 
     return reroutingConsiderationList, vehicleEdge, vehicleOldRoute, []
 
-def rerouteSelectedVehicles(roadSegmentID, kPathsBool = False, fairness = False):
+
+def rerouteSelectedVehicles(roadSegmentID, kPathsBool=False, fairness=False):
     """
     Selects the vehicles to be rerouted from roadSegmentID (the edge OR lane which is currently congested) and reroutes
     them based on current estimated travel times
@@ -296,6 +285,7 @@ def rerouteSelectedVehicles(roadSegmentID, kPathsBool = False, fairness = False)
 
     return vehiclesUndergoneRerouting
 
+
 def rerouteSelectedVehiclesLane(laneID, kPathsBool=False):
     """
     Selects the vehicles to be rerouted from the laneID (the lane which is currently congested) which belongs to edgeID
@@ -304,16 +294,11 @@ def rerouteSelectedVehiclesLane(laneID, kPathsBool=False):
     Args:
         laneID (str): The lane in which the congestion is occurring
         kPathsBool (bool): True if kPaths needs to be performed for each vehicle
-        fairness (bool): True if fairness should be considered for the vehicles
-
     Returns:
         str[]: The list of vehicles which have been rerouted
     """
     # The edge in which the lane belongs
     edgeID = initialFunc.lanesNetwork[laneID]
-
-    totalTime = 0
-    startTime = time.clock()
 
     vehiclesList, edgesList, reroutedList, vehicleEdge = initialiseRerouteVehicles(edgeID)
 
@@ -347,103 +332,10 @@ def rerouteSelectedVehiclesLane(laneID, kPathsBool=False):
                 # reroutedList.add(vehicle)
                 reroutedList.append(vehicle)
 
-    # if fairness:
-    #     reroutedList = sim.selectVehiclesBasedOnFairness(reroutedList)
-
     reroutedVehicles.update(reroutedList)
 
     return reroutedList
 
-
-# def getRoutePathTime(route):
-#     """
-#     Calculates the total estimated time, considering the current road network conditions (for the entire road network)
-#     of the route passed
-#
-#     Args:
-#         route (str[]): The route in which the edges shall be checked for
-#     Returns:
-#         int: The estimated route time to take the route
-#     """
-#     totalEstimatedTime = 0
-#
-#     for edge in route:
-#         # This is the vehicle's internal travel time for this edge
-#         vehAdaptedTime = traci.vehicle.getAdaptedTraveltime(veh, time=currentTime, edgeID=edge)
-#         # If adapted travel time has not been set
-#         if vehAdaptedTime == -1001.0:
-#             # Setting the vehicle's internal edge travel time to be the same as the global edge travel time
-#             vehAdaptedTime = edgeSpeedGlobal[edge]
-#         totalEstimatedTime += vehAdaptedTime
-#         # Sets the vehicle's internal travel time for that edge
-#         traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=vehAdaptedTime)
-#
-#     return totalEstimatedTime
-
-
-# def kPaths(veh):
-#     """
-#     Determines k shortest paths for the vehicle and randomly assigns one
-#
-#     Args:
-#         veh (str): The vehicle which needs rerouting
-#     Returns:
-#         routeList ([[str]]): The list of routes in which the vehicle could possibly be chosen to take (in the form
-#         [[route1], [route2]... [routeK_MAX]])
-#     """
-#
-#     # Contains a list of the routes (where each route consists of a list of edges)
-#     routeList = []
-#     # Counter
-#     k = 1
-#     # A set of all of the edges
-#     edgesSet = set()
-#
-#     # Finding the best possible route for the vehicle
-#     traci.vehicle.rerouteTraveltime(veh)
-#     # The vehicle's current route
-#     currentRoute = traci.vehicle.getRoute(veh)
-#     bestTime = getGlobalRoutePathTime(currentRoute)
-#
-#     # Populating lists with the best route
-#     routeList.append(currentRoute)
-#     edgesSet.update(currentRoute)
-#
-#     # Creating up to k-1 additional routes
-#     while k < sumo.K_MAX:
-#         print()
-#         print("This is the current route time {}".format(getRoutePathTimeVehicle(veh, currentRoute)))
-#         print("This is the global route times {}".format(getGlobalRoutePathTime(currentRoute)))
-#         penalisePathTime(currentRoute)
-#
-#         traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=True)
-#         newRoute = traci.vehicle.getRoute(veh)
-#         newRouteTime = getGlobalRoutePathTime(newRoute, False)
-#
-#         currentRoute = newRoute
-#         # Ensuring the route doesn't exist within the routeList
-#         if currentRoute not in routeList:
-#             # New route's estimated time doesn't exceed >20% of the optimal route time
-#             if newRouteTime <= bestTime*1.2:
-#                 routeList.append(currentRoute)
-#                 edgesSet.update(currentRoute)
-#                 k += 1
-#             else:
-#                 break
-#
-#     randomNum = random.randint(0, sumo.K_MAX - 1)
-#     # Selecting a random route
-#     routeSelection = routeList[randomNum]
-#
-#     traci.vehicle.setRoute(vehID=veh, edgeList=routeSelection)
-#
-#     # Setting the adjusted travel times for the edges to their default (the original estimated travel time given the
-#     # current network traffic conditions).
-#     adjustedEdgeSpeedGlobal = deepcopy(edgeSpeedGlobal)
-#     for edge in adjustedEdgeSpeedGlobal.keys():
-#         traci.edge.adaptTraveltime(edgeID=edge, time=adjustedEdgeSpeedGlobal[edge])
-#
-#     return routeList
 
 def kPaths(veh, currentEdge):
     """
@@ -477,7 +369,7 @@ def kPaths(veh, currentEdge):
     alteredRoute = currentRoute[currentEdgeIndex:]
 
     bestTime = sim.getGlobalRoutePathTime(alteredRoute)
-    adjustedEdge ={}
+    adjustedEdge = {}
 
     bestRoute = alteredRoute
 
@@ -500,12 +392,12 @@ def kPaths(veh, currentEdge):
         traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=False)
         newRoute = traci.vehicle.getRoute(veh)
         newRouteTime = sim.getGlobalRoutePathTime(newRoute)
-        newRouteVehTime = adjustedEdge
+        # newRouteVehTime = adjustedEdge
         # Only taking the selection in which the vehicle can take (with the route beginning on the currently occupied
         # edge)
         currentRoute = newRoute[currentEdgeIndex:]
-        newRouteTime2 = sim.getGlobalRoutePathTime(currentRoute)
-        newRouteTime3 = sim.getGlobalRoutePathTime(newRoute[currentEdgeIndex:])
+        # newRouteTime2 = sim.getGlobalRoutePathTime(currentRoute)
+        # newRouteTime3 = sim.getGlobalRoutePathTime(newRoute[currentEdgeIndex:])
         # Ensuring the route doesn't exist within the routeList and that the route contains the edge in which the
         # vehicle is currently occupying
         if currentRoute not in routeList and currentEdge in currentRoute and currentRoute != bestRoute:
@@ -541,16 +433,6 @@ def kPaths(veh, currentEdge):
     # In case error with global path time occurs (SUMO issue with congestion)
     extraTime = congestionOccurrence(k, routeList, bestTime, extraTime)
 
-        # shortestTime = sys.maxsize
-        # shortestRoute = []
-        # for route in routeSelection:
-        #     time = sim.getGlobalRoutePathTime(routeSelection)
-        #     if time < shortestTime:
-        #         shortestRoute = route
-        #
-        # extraTime = 0
-        # routeSelection = shortestRoute
-
     # Setting the additional (estimated) extra time in which the vehicle has taken due to reroutings
     cumulativeExtraTime[veh] += extraTime
 
@@ -563,62 +445,6 @@ def kPaths(veh, currentEdge):
     return routeList
 
 
-# def k3Paths(veh):
-#     """
-#     Generates k-shortest paths for the vehicle and randomly selects one
-#
-#     Args:
-#         veh (str): The vehicle which needs rerouting
-#     """
-#     # Getting the edge weights of the entire scenario for the current time step
-#     getGlobalEdgeWeights()
-#
-#     # Set of all of the edges in which the vehicle's routes consist
-#     edgesSet = set()
-#     # A list containing the routes the vehicle can take
-#     routeList = []
-#     # Counter
-#     k = 1
-#
-#     # Finding the best possible route for the vehicle
-#     traci.vehicle.rerouteTraveltime(veh)
-#     currentRoute = traci.vehicle.getRoute(veh)
-#     # The best possible routes time taken
-#     bestTime = getGlobalRoutePathTime(currentRoute)
-#
-#     # Populating lists with the best route
-#     routeList.append(currentRoute)
-#     edgesSet.update(currentRoute)
-#
-#     # Creating up to k-1 additional routes
-#     while k < sumo.K_MAX:
-#         # Penalising the currentRoute
-#         penalisePathTimeVehicle(veh, currentRoute)
-#
-#         # Generating new route
-#         traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=True)
-#         currentRoute = traci.vehicle.getRoute(veh)
-#         newRouteTime = getGlobalRoutePathTime(currentRoute)
-#
-#         # Ensuring the route doesn't exist within the routeList
-#         if currentRoute not in routeList:
-#             # New route's estimated time doesn't exceed >20% of the optimal route time
-#             if newRouteTime <= bestTime*1.2:
-#                 routeList.append(currentRoute)
-#                 edgesSet.update(currentRoute)
-#                 k += 1
-#             else:
-#                 break
-#
-#     # Selecting a random route
-#     randomNum = random.randint(0, sumo.K_MAX - 1)
-#     routeSelection = routeList[randomNum]
-#     traci.vehicle.setRoute(vehID=veh, edgeList=routeSelection)
-#
-#     # Settings the vehicle's internal edge travel time back to the global edge travel time
-#     for edge in edgesSet:
-#         traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=edgeSpeedGlobal[edge])
-
 def congestionOccurrence(k, routeList, bestTime, extraTime):
     """
     For some reason, the best time (the route which SUMO considers the best) will not be the best time due to
@@ -630,6 +456,7 @@ def congestionOccurrence(k, routeList, bestTime, extraTime):
         k (int): The number of routes in the list
         routeList (str[]): The possible k routes
         bestTime (float): The best time in which the vehicle can achieve
+        extraTime: FILL IN
     """
     extraTimeTimeOut = 0
 
@@ -647,6 +474,7 @@ def congestionOccurrence(k, routeList, bestTime, extraTime):
 
     return extraTime
 
+
 def penalisePathTimeVehicle(veh, route, adjustedEdge={}):
     """
     Penalises the path time of a particular vehicle, used for k-shortest paths
@@ -654,17 +482,16 @@ def penalisePathTimeVehicle(veh, route, adjustedEdge={}):
     Args:
         veh (str): The vehicle which needs to have the adjusted route time
         route (str): The route to be penalised for the vehicle, veh
+        adjustedEdge: FILL IN
     """
-    currentSysTime = sumo.Main.getCurrentTime()
+    # currentSysTime = sumo.Main.getCurrentTime()
     for edge in route:
         currentAdaptedTime2 = adjustedEdge[edge]
         # Sets an adapted travel time for an edge (specifically for that vehicle)
-        currentAdaptedTime = traci.vehicle.getAdaptedTraveltime(vehID=veh, edgeID=edge, time=currentSysTime)
+        # currentAdaptedTime = traci.vehicle.getAdaptedTraveltime(vehID=veh, edgeID=edge, time=currentSysTime)
         adjustedEdge[edge] = currentAdaptedTime2 * PENALISATION
         # Penalise the travel time by a multiplication of PENALISATION
         traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=adjustedEdge[edge])
-
-
 
 
 def penalisePathTime(route):
@@ -680,5 +507,3 @@ def penalisePathTime(route):
         # Penalise the travel time by PENALISATION
         adjustedEdgeSpeedGlobal[edge] = currentAdaptedTime * 2
         traci.edge.adaptTraveltime(edge, adjustedEdgeSpeedGlobal[edge])
-
-

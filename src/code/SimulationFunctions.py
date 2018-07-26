@@ -1,7 +1,12 @@
-import collections
-from collections import OrderedDict
-from operator import itemgetter
+###################################################################################################################
+# This file contains functions which return information regarding the simulation during runtime.                  #
+#                                                                                                                 #
+# Can be thought of as 'getters' options during the simulation runtime                                            #
+#                                                                                                                 #
+# Author: Jonathan Harper                                                                                         #
+###################################################################################################################
 
+import collections
 import numpy as np
 import sys
 import traci
@@ -11,12 +16,6 @@ from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
 
 __author__ = "Jonathan Harper"
-
-"""
-This file contains functions which return information regarding the simulation during runtime.
-
-Can be thought of as 'getters' options during the simulation runtime
-"""
 
 # This contains data concerning if the vehicle was in a 'stopped' state (not defined as waiting, e.g. waiting at a
 # traffic light) in the last rerouting period. vehicle: stoppedState (for last rerouting period)
@@ -36,6 +35,7 @@ arrivalTime = {}
 departureTime = {}
 # Stores a list of all vehicles in network currently
 vehiclesInNetwork = []
+
 
 def returnCongestionLevelEdge(edgeID):
     """
@@ -60,6 +60,7 @@ def returnCongestionLevelLane(laneID):
     """
     return traci.lane.getLastStepOccupancy(laneID)
 
+
 def getEdgeOneAheadVehicleRoute(vehID):
     """
     Returns the edge in which the given vehicle shall travel to next (the edge after it's current edge in it's route)
@@ -77,6 +78,7 @@ def getEdgeOneAheadVehicleRoute(vehID):
     nextEdge = traci.vehicle.getRoute(vehID)[traci.vehicle.getRoute(vehID).index(edgeLoc) + 1]
 
     return nextEdge
+
 
 def getEdge2DCoordinates(edge):
     """
@@ -148,6 +150,7 @@ def getGlobalRoutePathTime(route, realTime=True):
 
     if realTime:
         for edgeRealtime in route:
+            # noinspection PyBroadException
             try:
                 totalEstimatedTime += func.edgeSpeedGlobal[edgeRealtime]
             except Exception:
@@ -180,8 +183,6 @@ def getGlobalEdgeWeights():
         func.edgeSpeedGlobal[edge] = travelTime
         func.adjustedEdgeSpeedGlobal[edge] = travelTime
 
-
-
         # Initially setting the weights for the road network as being the current estimated travel times
         traci.edge.adaptTraveltime(edge, travelTime)
 
@@ -192,7 +193,7 @@ def fairnessIndex():
     fairness of the system as a whole
 
     Returns:
-        fairnessIndex (float): This is the fairness index, F
+        fairnessIndexCalculated (float): This is the fairness index, F
         standardDeviation (float): This is the standard deviation of the QOEs
     """
     global vehiclesInNetwork
@@ -213,9 +214,9 @@ def fairnessIndex():
     print(standardDeviation)
     print(highestQOE)
 
-    fairnessIndex = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
+    fairnessIndexCalculated = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
 
-    return fairnessIndex, standardDeviation
+    return fairnessIndexCalculated, standardDeviation
 
 
 def updateVehicleTotalEstimatedTimeSpentInSystem(period=0):
@@ -254,6 +255,7 @@ def updateVehicleTotalEstimatedTimeSpentInSystem(period=0):
             print("Vehicle WAS in stopped state")
 
         stoppedStateLastPeriod[vehicle] = currentStatus
+
 
 def vehiclesDepartedAndArrived(i):
     """
@@ -299,6 +301,7 @@ def vehiclesDepartedAndArrived(i):
                 # First time
                 timeSpentInNetwork[vehicle] = additionalTimeRunning
 
+
 def selectVehiclesBasedOnFairness(reroutedList):
     """
     Selects vehicles for rerouting based on their current rerouting metrics
@@ -309,9 +312,6 @@ def selectVehiclesBasedOnFairness(reroutedList):
     Returns:
         reroutedFairly (set()): The vehicles which shall be rerouted due to their fairness measures
     """
-    # Holds all of the vehicles which will be rerouted when fairness is taken into consideration
-    reroutedFairly = []
-
     # Quality of Experience relates to the fairness in which the vehicle has experienced throughout their simulations,
     # the higher the QOE the more the system has been 'fair' to the user; similarly, lower values indicate an unfairness
     # given by the system to the vehicle

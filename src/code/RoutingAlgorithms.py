@@ -1,22 +1,23 @@
+###################################################################################################################
+# These are the various routing algorithms used within the rerouting of vehicles.                                 #
+#                                                                                                                 #
+# Author: Jonathan Harper                                                                                         #
+###################################################################################################################
+
 import traci
-import time
 
 from src.code import SumoConnection as sumo
 from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import SimulationFunctions as sim
-from src.code import Database as db
 
 __author__ = "Jonathan Harper"
-
-"""
-These are the various routing algorithms used within the rerouting of vehicles.
-"""
 
 # This is the period in seconds in which rerouting happens
 ROUTE_PERIOD = 200
 # The threshold in which congestion is considered to have occurred
 CONGESTION_THRESHOLD = 0.5
+
 
 class DynamicShortestPath:
     """
@@ -26,6 +27,7 @@ class DynamicShortestPath:
     to reduce the global average travel time.
     """
 
+    # noinspection PyMethodMayBeStatic
     def mainB(self, i):
         """
         The main programme run during the loop which progresses the simulation at every timestep
@@ -53,7 +55,6 @@ class DynamicShortestPath:
                         sumo.net.getEdge(edge).is_fringe():
                     congestion = sim.returnCongestionLevelLane(laneID)
                     if congestion > 0.5:
-                        func.getLane2DCoordinates(laneID)
                         func.rerouteSelectedVehiclesEdge(edge)
 
         if i == 600:
@@ -61,7 +62,7 @@ class DynamicShortestPath:
 
         traci.simulationStep()
 
-
+    # noinspection PyMethodMayBeStatic
     def main(self, i):
         """
         The main programme run during the loop which progresses the simulation at every timestep
@@ -74,8 +75,6 @@ class DynamicShortestPath:
             # Resets the set of vehicles which have undergone rerouting for the previous rerouting period
             func.reroutedVehicles = set()
 
-            timeTakenStart = time.clock()
-
             # Processing the lanes existing on edges with multiple outgoing edges
             for lane in initialFunc.reroutingLanes:
                 congestion = sim.returnCongestionLevelLane(lane)
@@ -84,10 +83,6 @@ class DynamicShortestPath:
                     edge = initialFunc.lanesNetwork[lane]
                     sim.getEdge2DCoordinates(edge)
                     func.rerouteSelectedVehiclesLane(lane)
-
-            timeTakenEnd = time.clock()
-
-            totalTime = timeTakenEnd - timeTakenStart
 
             # Processing those edges which only have a single outgoing edge (all lanes lead to the same position
             for edge in initialFunc.singleOutgoingEdges:
@@ -109,7 +104,7 @@ class kShortestPaths:
     # 2. For each edge collect up to k total different paths (find all the ways out)
     # 3. For each vehicle randomly assign one of these
 
-
+    # noinspection PyMethodMayBeStatic
     def main(self, i, database):
         """
         The main programme run during the loop which progresses the simulation at every timestep
@@ -118,8 +113,6 @@ class kShortestPaths:
             i (int): The current timestep of the simulation
             database (Database): This is the database in which the information is stored
         """
-
-
         traci.simulationStep()
         # Checks for vehicle departure and arrival into the simulation
         sim.vehiclesDepartedAndArrived(i)
@@ -189,6 +182,7 @@ class kShortestPathsFairness:
     # 2. For each edge collect up to k total different paths (find all the ways out)
     # 3. For each vehicle randomly assign one of these
 
+    # noinspection PyMethodMayBeStatic
     def main(self, i, database):
         """
         The main programme run during the loop which progresses the simulation at every timestep
@@ -262,16 +256,9 @@ class DynamicReroutingWithFairness:
     Reroutes vehicles upon detecting congestion with fairness as a requirement WITHOUT FUTURE PROOF
     """
 
-    def main(self, i):
+    # noinspection PyMethodMayBeStatic
+    def main(self):
         """
         The main programme run during the loop which progresses the simulation at every timestep
-
-        Args:
-            i (int): The current timestep of the simulation
         """
-
         traci.simulationStep()
-
-
-
-

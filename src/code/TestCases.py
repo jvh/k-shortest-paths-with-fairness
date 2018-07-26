@@ -1,3 +1,9 @@
+###################################################################################################################
+# Unit tests to ensure the functionality of the functions works as intended and returns the correct results.      #
+#                                                                                                                 #
+# Author: Jonathan Harper                                                                                         #
+###################################################################################################################
+
 import sys
 import os
 sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
@@ -5,34 +11,23 @@ os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 import random
 import unittest
 import warnings
-
 import sumolib
-import os
-
 import sys
 import traci
 from copy import deepcopy
-import time
-import numpy as np
 
 from src.code import SumoConnection as sumo
-from src.code import RoutingAlgorithms as routing
 from src.code import RoutingFunctions as func
 from src.code import Testing as testing
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import SimulationFunctions as sim
 from src.code import Database as db
 
-
-
 __author__ = "Jonathan Harper"
-
-"""
-Unit tests to ensure the functionality of the functions works as intended and returns the correct results.
-"""
 
 # True when testing the database functionality
 databaseTestingBool = True
+
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
     """
@@ -65,7 +60,8 @@ class SmallSouthamptonTestsRoute(unittest.TestCase):
         In this situation, the initial best path is congested with traffic, therefore, once kPaths() is called it will
         deviate away from the best path at start up (as there are no vehicle's when the simulation initially begins) to
         a more appropriate route. However, given that the next best route other than the one initially selected in
-        kPaths() is >20% (KPATH_MAX_ALLOWED_TIME = 1.2) worse in terms of time taken, no further routes should be selected.
+        kPaths() is >20% (KPATH_MAX_ALLOWED_TIME = 1.2) worse in terms of time taken, no further routes should be
+        selected.
         """
         sumo.K_MAX = 3
         func.KPATH_MAX_ALLOWED_TIME = 1.2
@@ -201,7 +197,7 @@ class DatabaseTests(unittest.TestCase):
             raise unittest.SkipTest("Skipping database tests, these must be ran individually.")
         else:
             testing.TESTING_NUMBER = 0
-            func.reroutedVehicles = set() # Resetting
+            func.reroutedVehicles = set()  # Resetting
             sumo.SCENARIO = 0
             sumo.net = sumolib.net.readNet(sumo.NET_FILE_SM)
 
@@ -277,7 +273,7 @@ class DatabaseTests(unittest.TestCase):
         # Vehicle shouldn't have an edited vehicleReroutedAmount
         self.assertEqual(func.vehicleReroutedAmount["999"], 0)
 
-    def test_smallManhattan_cumulativeExtraTime(self, clearDB = True):
+    def test_smallManhattan_cumulativeExtraTime(self, clearDB=True):
         """
         Tests that when kPaths is ran (and the given route is not the original route), the cumulative extra time
         registers
@@ -304,6 +300,7 @@ class DatabaseTests(unittest.TestCase):
         # This is the cumulative route time after rerouting with kPaths (where a check is made to ensure that the best
         # route was not selected for rerouting for testing purposes)
         routeTimeAfter = 0
+        # noinspection PyBroadException
         try:
             # This tracks the number of times the vehicle has been asked to reroute
             reroutedAmount = func.vehicleReroutedAmount['999']
@@ -335,7 +332,7 @@ class DatabaseTests(unittest.TestCase):
 
         # Running kPaths until the new route does not match the best route
         while newRoute == currentRoute:
-            func.reroutedVehicles = set() # Resetting
+            func.reroutedVehicles = set()  # Resetting
             func.rerouteSelectedVehicles(nextEdge, kPathsBool=True)
             newRoute = traci.vehicle.getRoute('999')
             if newRoute == currentRoute:
@@ -366,7 +363,7 @@ class DatabaseTests(unittest.TestCase):
         extraBefore = func.cumulativeExtraTime['999']
 
         while newRoute == currentRoute:
-            func.reroutedVehicles = set() # Resetting
+            func.reroutedVehicles = set()  # Resetting
             func.rerouteSelectedVehicles(nextEdge, kPathsBool=True)
             newRoute = traci.vehicle.getRoute('999')
             if newRoute == currentRoute:
@@ -384,7 +381,8 @@ class DatabaseTests(unittest.TestCase):
         # routeTimeBefore
         self.assertGreaterEqual("{0:.6g}".format(routeTimeAfter), "{0:.6g}".format(routeTimeBefore))
         # Checking that the calculation has been done correctly
-        self.assertEqual("{0:.6g}".format((routeTimeAfter - routeTimeBefore)), "{0:.6g}".format(func.cumulativeExtraTime['999']))
+        self.assertEqual("{0:.6g}".format((routeTimeAfter - routeTimeBefore)), "{0:.6g}".format(
+            func.cumulativeExtraTime['999']))
         # Checks that the number of reroutings returned is correct
         self.assertEqual(reroutedAmount, func.vehicleReroutedAmount['999'])
 
@@ -427,11 +425,10 @@ class DatabaseTests(unittest.TestCase):
         self.assertGreater(rowsVeh, 0)
         self.assertGreater(rowsNew, 0)
 
-
         database.cursor.execute('DROP TABLE new_table')
         database.closeDB()
 
-    def test_smallManhattan_vehicleReroutingAmount_databaseInsertionkPaths(self, clearDB = True):
+    def test_smallManhattan_vehicleReroutingAmount_databaseInsertionkPaths(self, clearDB=True):
         """
         Checking that the database has been correctly populated (with a vehicleID which is being newly inserted) when
         using kPaths() instead of Dynamic Shortest Path
@@ -489,7 +486,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(database.getDBTableContents(db.VEHICLE_OUTPUT_TABLE)[0], (999, 2, 0, 0))
         database.closeDB()
 
-    def test_smallManhattan_vehicleReroutingAmount_multipleVehiclesMultipleInstance(self, clearDB = True):
+    def test_smallManhattan_vehicleReroutingAmount_multipleVehiclesMultipleInstance(self, clearDB=True):
         """
         Checking that multiple tuples are inserted for each vehicle when vehicles are not necessarily rerouted in the
         same SUMO instance
@@ -540,7 +537,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(database.fairnessMetricsIntoDictionary()[9999], (1, 0, 0))
         database.closeDB()
 
-    def test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(self, clearDB = True):
+    def test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(self, clearDB=True):
         """
         Checking that multiple tuples are inserted for each vehicle when all vehicles are present in the instance (and
         subsequently rerouted)
@@ -563,7 +560,6 @@ class DatabaseTests(unittest.TestCase):
         else:
             # Adding another vehicle
             testing.Testing().setupGenericCarSM(name="9999")
-
 
         for i in range(70):
             traci.simulationStep()
@@ -588,7 +584,6 @@ class DatabaseTests(unittest.TestCase):
         else:
             # Adding another vehicle
             testing.Testing().setupGenericCarSM(name="999", routeName="start999", zoom=False)
-
 
         for i in range(20):
             traci.simulationStep()
@@ -792,12 +787,10 @@ class DatabaseTests(unittest.TestCase):
                         # it only gets into the REROUTING_PERIOD (50) check 3 times, therefore, at the moment the value
                         # should be 150
                         self.assertEqual(database.fairnessMetricsIntoDictionary()[999][-1], 150)
-                        # Vehicle 111 has been in the simulation for 2 different rerouting periods (although it hasn't been
-                        # in the simulation for the entire duration of both), therefore an estimate of 2 rerouting periods
-                        # are added to the DB
+                        # Vehicle 111 has been in the simulation for 2 different rerouting periods (although it hasn't
+                        # been in the simulation for the entire duration of both), therefore an estimate of 2 rerouting
+                        # periods are added to the DB
                         self.assertEqual(database.fairnessMetricsIntoDictionary()[111][-1], 100)
-
-
 
     def test_smallManhattan_fairnessIndex_insertion(self, clearDB=True):
         """
@@ -870,6 +863,7 @@ class DatabaseTests(unittest.TestCase):
 
         # Should consist of the dictionary {999: (2, 0)}
         self.assertEqual({999: (2, 0, 0)}, database.fairnessMetricsIntoDictionary())
+
 
 class SmallSouthamptonTests(unittest.TestCase):
     """
@@ -1207,7 +1201,7 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         self.assertEqual(totalPathTime, sim.getRoutePathTimeVehicle("testVeh", testingVehicleRoute))
 
-    def test_smallManhattan_fringeEdges(self):
+    def test_smallManhattan_fringe_edges(self):
         """
         True if all edges held within fringeEdges are fringe edges (edges on the fringe of the network - no incoming
         edges) in the traffic network
@@ -1239,7 +1233,7 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         self.assertEqual(penalisedRouteTime, func.PENALISATION * routeTime)
 
-    def test_smallManhattan_penalisePathTimeVehicle_routeTime(self):
+    def test_smallManhattan_penalisePathTimeVehicle_routeTime_global(self):
         """
         When penalised, the travel time for the individual vehicle should be affected and the global travel times (along
         with other travel vehicle's internal travel times) should remain unaffected by this change.
