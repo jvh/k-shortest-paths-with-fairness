@@ -1,27 +1,0 @@
-
->python:S108")Either remove or fill this block of code.(ã‘Û¾
->python:S108")Either remove or fill this block of code.(ã‘Û¾
-4python:S125"Remove this commented out code.(ÆÔœ¦
-mpython:S100"XRename method "setupGenericCarSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ËšÄº
-upython:S100"[Rename method "testVehicleSetEffort" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(–Âúıÿÿÿÿ
-ipython:S100"TRename method "test1BeforeSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(‡â—Å
-ipython:S100"TRename method "test1DuringSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(“ìÉ±
-ipython:S100"TRename method "test2BeforeSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ƒÁË
-hpython:S100"TRename method "test2DuringSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(²®‹{
-npython:S100"TRename method "test3BeforeSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(˜õ—ùÿÿÿÿ
-npython:S100"TRename method "test3DuringSM" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(–ş®­øÿÿÿÿ
-npython:S100"TRename method "test1BeforeNW" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ğ˜´ùÿÿÿÿ
-npython:S100"TRename method "test1DuringNW" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(É’Ê’üÿÿÿÿ
-ipython:S100"TRename method "test2BeforeNW" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ºÙ¹Ã
-npython:S100"TRename method "test2DuringNW" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(õ¸¥ãúÿÿÿÿ
-fpython:S100"QRename method "beforeLoop" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(âÑ¯’
-kpython:S100"QRename method "duringLoop" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ø¡òÿşÿÿÿÿ
-kpython:S117"QRename this parameter "vehID" to match the regular expression ^[_a-z][a-z0-9_]*$.(–Âúıÿÿÿÿ
-lpython:S117"RRename this parameter "edgeID" to match the regular expression ^[_a-z][a-z0-9_]*$.(–Âúıÿÿÿÿ
-vpython:S117"aRename this local variable "edgeEffortDouble" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ä²±ğ
-spython:S117"YRename this local variable "maxSpeed" to match the regular expression ^[_a-z][a-z0-9_]*$.(¬©¥‰ûÿÿÿÿ
-tpython:S117"ZRename this local variable "meanSpeed" to match the regular expression ^[_a-z][a-z0-9_]*$.(şßŞÑÿÿÿÿÿ
-ypython:S117"dRename this local variable "estimatedTravelTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÌÙ¤ë
-wpython:S117"]Rename this local variable "vehicleEdges" to match the regular expression ^[_a-z][a-z0-9_]*$.(²£ö«ùÿÿÿÿ
-xpython:S117"^Rename this local variable "outgoingEdges" to match the regular expression ^[_a-z][a-z0-9_]*$.(ò¬ÿ›ùÿÿÿÿ
-rpython:S117"XRename this local variable "laneOut" to match the regular expression ^[_a-z][a-z0-9_]*$.(É»¬Šşÿÿÿÿ

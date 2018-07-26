@@ -1,89 +1,0 @@
-
-4python:S125"Remove this commented out code.(¤ÆÄ®
-fpython:S100"LRename method "setUp" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(§˜œşÿÿÿÿ
-dpython:S100"ORename method "tearDown" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(•ûÜë
-‹python:S100"vRename method "test_smallManhattan_kPaths_lessThanMaxSelection" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¶Ä¶Í
-†python:S100"lRename method "test_smallManhattan_manualTravelTimes" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¬´‹ùÿÿÿÿ
-python:S100"xRename method "test_smallManhattan_automaticTravelTimeAdjustment" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(§ó×û
-fpython:S100"LRename method "setUp" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(§˜œşÿÿÿÿ
-dpython:S100"ORename method "tearDown" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(•ûÜë
-†python:S100"lRename method "test_smallManhattan_manualTravelTimes" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¬´‹ùÿÿÿÿ
-”python:S100"zRename method "test_smallManhattan_edgeSpeedGlobal_remainsConstant" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(°öèşÿÿÿÿ
-’python:S100"}Rename method "test_smallManhattan_multiIncomingRecursion_4Recursions" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(…å¢¶
-—python:S100"}Rename method "test_smallManhattan_multiIncomingRecursion_3Recursions" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(´Ü«Íùÿÿÿÿ
-—python:S100"}Rename method "test_smallManhattan_multiIncomingRecursion_2Recursions" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(•ª´†ùÿÿÿÿ
-ˆpython:S100"nRename method "test_smallManhattan_directedGraphsEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(®éò„ùÿÿÿÿ
-ˆpython:S100"nRename method "test_smallManhattan_directedGraphsLanes" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Õ¹Ê½øÿÿÿÿ
-ˆpython:S100"nRename method "test_smallManhattan_singleOutgoingEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¼²ıÍûÿÿÿÿ
-ƒpython:S100"iRename method "test_smallManhattan_reroutingLanes" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ç¼ü†üÿÿÿÿ
-€python:S100"fRename method "test_smallManhattan_fringeEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(çßâóúÿÿÿÿ
-„python:S100"jRename method "test_smallManhattan_edgeSpeedGlobal" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Â—’Õùÿÿÿÿ
-Špython:S100"pRename method "test_smallManhattan_edgeSpeedGlobal_twice" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(íÂèüÿÿÿÿ
-python:S100"{Rename method "test_smallManhattan_getRoutePathTime_noRouteArgument" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(´À£÷
-python:S100"yRename method "test_smallManhattan_getRoutePathTime_routeArgument" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¿‘Éå
-€python:S100"fRename method "test_smallManhattan_fringeEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(çßâóúÿÿÿÿ
-–python:S100"|Rename method "test_smallManhattan_penalisePathTimeVehicle_routeTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ÿúô¹ÿÿÿÿÿ
-python:S100"zRename method "test_smallManhattan_getGlobalRoutePathTime_realTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ÿ¶Â·
-python:S100"kRename method "test_smallManhattan_penalisePathTime" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(‘˜-
-‹python:S100"qRename method "test_smallManhattan_penalisePathTime_twice" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(”ä’şúÿÿÿÿ
-’python:S100"xRename method "test_smallManhattan_penalisePathTimeVehicle_reset" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ä¿¶ëùÿÿÿÿ
-{python:S100"aRename method "test_smallManhattan_endSim" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(«çç¨øÿÿÿÿ
-­python:S100"—Rename method "test_smallManhattan_rerouteSelectedVehiclesLane_noVehiclesSelectedAsTurnOffWrong" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¬Å¿ğ
-²python:S100"œRename method "test_smallManhattan_rerouteSelectedVehiclesLane_vehicleSelectedAsIncomingToCongestion" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(«™êï
-…python:S100"pRename method "test_smallManhattan_kPaths_numberOfRoutes" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ºŒ¸
-Špython:S100"pRename method "test_smallManhattan_kPaths_routeAtomicity" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(…ŠÑøÿÿÿÿ
-Špython:S100"pRename method "test_smallManhattan_kPaths_routeSelection" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ûªø™øÿÿÿÿ
-°python:S100"šRename method "test_smallManhattan_rerouteSelectedVehiclesEdge_vehicleReroutedOnSingleOutgoingEdge" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(êæË
-Špython:S100"uRename method "test_smallManhattan_kPaths_singlePathAvailable" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ğ´Ôƒ
-œpython:S100"Rename method "test_smallManhattan_rerouteSelectedVehiclesEdge_noVehicles" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(í›Û¯şÿÿÿÿ
-‚python:S100"mRename method "test_smallManhattan_multiIncomingEdges" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(¦’¸
-fpython:S100"LRename method "setUp" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(§˜œşÿÿÿÿ
-Špython:S100"uRename method "test_newark_multiIncomingRecursion_3Recursions" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(î™£®
-Ppython:S1481":Remove the unused local variable "penalisedRouteTimeOnce".(šé—Œ
-npython:S117"ZRename this local variable "routeFile" to match the regular expression ^[_a-z][a-z0-9_]*$.(ú†ês
-wpython:S117"]Rename this local variable "initialRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(ïÇèŸşÿÿÿÿ
-tpython:S117"ZRename this local variable "routeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(Õ€Îˆùÿÿÿÿ
-npython:S117"ZRename this local variable "routeFile" to match the regular expression ^[_a-z][a-z0-9_]*$.(ú†ês
-wpython:S117"]Rename this local variable "currentRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(áÖ¶Üÿÿÿÿÿ
-spython:S117"YRename this local variable "newRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(Œœ€ğüÿÿÿÿ
-npython:S117"ZRename this local variable "routeFile" to match the regular expression ^[_a-z][a-z0-9_]*$.(ú†ês
-wpython:S117"]Rename this local variable "currentRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(áÖ¶Üÿÿÿÿÿ
-spython:S117"YRename this local variable "newRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(Œœ€ğüÿÿÿÿ
-wpython:S117"]Rename this local variable "currentRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(áÖ¶Üÿÿÿÿÿ
-spython:S117"YRename this local variable "newRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(Œœ€ğüÿÿÿÿ
-ypython:S117"_Rename this local variable "expectedOutput" to match the regular expression ^[_a-z][a-z0-9_]*$.(šä½™şÿÿÿÿ
-ypython:S117"_Rename this local variable "expectedOutput" to match the regular expression ^[_a-z][a-z0-9_]*$.(šä½™şÿÿÿÿ
-ypython:S117"_Rename this local variable "expectedOutput" to match the regular expression ^[_a-z][a-z0-9_]*$.(ËòÉìÿÿÿÿÿ
-|python:S117"gRename this local variable "estimatedRouteTimeTrue" to match the regular expression ^[_a-z][a-z0-9_]*$.(·¿‹
-{python:S117"aRename this local variable "routeCurrentTrue" to match the regular expression ^[_a-z][a-z0-9_]*$.(¹ÛÜ¾ÿÿÿÿÿ
-}python:S117"hRename this local variable "estimatedRouteTimeFalse" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÁıÛ
-wpython:S117"bRename this local variable "routeCurrentFalse" to match the regular expression ^[_a-z][a-z0-9_]*$.(„ÿìı
-ppython:S117"[Rename this local variable "edgeSpeed1" to match the regular expression ^[_a-z][a-z0-9_]*$.(×şæÖ
-upython:S117"[Rename this local variable "edgeSpeed2" to match the regular expression ^[_a-z][a-z0-9_]*$.(‰È“÷ùÿÿÿÿ
-rpython:S117"^Rename this local variable "totalPathTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(û³é
-~python:S117"dRename this local variable "testingVehicleRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(Şß¼­şÿÿÿÿ
-rpython:S117"^Rename this local variable "totalPathTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(û³é
-opython:S117"ZRename this local variable "routeTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(¤Ò‡Á
-xpython:S117"cRename this local variable "penalisedRouteTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(ìÙÙİ
-vpython:S117"\Rename this local variable "initialTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(éğ‘ıÿÿÿÿ
-€python:S117"kRename this local variable "routeTimeAfterPenalisation" to match the regular expression ^[_a-z][a-z0-9_]*$.(Îºµ¿
-vpython:S117"\Rename this local variable "initialTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(éğ‘ıÿÿÿÿ
-xpython:S117"cRename this local variable "penalisedRouteTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(°›»
-vpython:S117"\Rename this local variable "initialTime" to match the regular expression ^[_a-z][a-z0-9_]*$.(éğ‘ıÿÿÿÿ
-|python:S117"gRename this local variable "penalisedRouteTimeOnce" to match the regular expression ^[_a-z][a-z0-9_]*$.(šé—Œ
-}python:S117"hRename this local variable "penalisedRouteTimeTwice" to match the regular expression ^[_a-z][a-z0-9_]*$.(çŒÿ¯
-wpython:S117"]Rename this local variable "optimalRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(ßøéæúÿÿÿÿ
-vpython:S117"\Rename this local variable "currentEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.(õŒÕ‘úÿÿÿÿ
-wpython:S117"]Rename this local variable "optimalRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(ßøéæúÿÿÿÿ
-vpython:S117"\Rename this local variable "currentEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.(õŒÕ‘úÿÿÿÿ
-qpython:S117"WRename this local variable "kPaths" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ô¶ÃÇúÿÿÿÿ
-upython:S117"`Rename this local variable "nonOptimalRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(£…³–
-tpython:S117"ZRename this local variable "routeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(Õ€Îˆùÿÿÿÿ
-zpython:S117"`Rename this local variable "nonOptimalRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(ùóÉ”øÿÿÿÿ
-wpython:S117"]Rename this local variable "optimalRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(ßøéæúÿÿÿÿ
-~python:S117"dRename this local variable "routeAfterRerouting" to match the regular expression ^[_a-z][a-z0-9_]*$.(›±’îøÿÿÿÿ
-wpython:S117"]Rename this local variable "initialRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(ïÇèŸşÿÿÿÿ
-tpython:S117"ZRename this local variable "routeList" to match the regular expression ^[_a-z][a-z0-9_]*$.(Õ€Îˆùÿÿÿÿ
-vpython:S117"\Rename this local variable "singleRoute" to match the regular expression ^[_a-z][a-z0-9_]*$.(•Â± ÿÿÿÿÿ
-upython:S117"[Rename this local variable "targetEdge" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ÿ‰¤Êÿÿÿÿÿ
-ypython:S117"_Rename this local variable "expectedOutput" to match the regular expression ^[_a-z][a-z0-9_]*$.(šä½™şÿÿÿÿ

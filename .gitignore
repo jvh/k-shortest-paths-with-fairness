@@ -130,3 +130,8 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# SUMO-specific stuff
+.osm
+.db
+.poly.xml
