@@ -77,6 +77,7 @@ else:
 #   may take a while to disperse
 # Keep a list of vehicles which if they are in the set of vehicles which have already undergone some kind of rerouting,
 #   they should not be considered further as this may mean they are consistently rerouted in a single turn
+# Include the ability for not full adherence to the fairness thing
 
 # SUMO Configuration files
 SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"

@@ -9,6 +9,7 @@
 
 import random
 import traci
+from copy import deepcopy
 
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import SimulationFunctions as sim
@@ -416,10 +417,14 @@ def kPaths(veh, currentEdge):
         currentRoute = newRoute[currentEdgeIndex:]
         # newRouteTime2 = sim.getGlobalRoutePathTime(currentRoute)
         # newRouteTime3 = sim.getGlobalRoutePathTime(newRoute[currentEdgeIndex:])
+
         # Ensuring the route doesn't exist within the routeList and that the route contains the edge in which the
         # vehicle is currently occupying
         if currentRoute not in routeList and currentEdge in currentRoute and currentRoute != bestRoute:
             timeOut = 0
+
+            # This keeps track if the calculated 'best' route time is above that of the calculated new route time
+            bestRouteMoreThanNewRouteTime = False
 
             """
             Sometimes the roads suffer so much congestion that there are issues with reliable estimation of travel
@@ -449,6 +454,12 @@ def kPaths(veh, currentEdge):
                 # 'best' travel time may not actually be the best when taking these estimated travel time measurements.
                 # This can result in ratios < 1.
                 if ratio < 1:
+                    bestRouteMoreThanNewRouteTime = True
+
+                    # Add the new time to the list so that it can be determined whether or not the existing times can
+                    # exist given this new best time (with boundaries in mind)
+                    routesTest['{}_best'.format(k + 1)] = (newRouteTime, currentRoute,)
+
                     tracker += 1
 
                     # In extremely rare cases, TraCI can erroneously...
@@ -457,8 +468,8 @@ def kPaths(veh, currentEdge):
 
                     tupleList = []
 
-                    for key in routes:
-                        timeRouteTuple = routes[key]
+                    for key in routesTest:
+                        timeRouteTuple = routesTest[key]
                         tupleList.append(timeRouteTuple)
 
                     sortedTuples = sorted(tupleList, key=lambda x: x[0])
@@ -473,12 +484,21 @@ def kPaths(veh, currentEdge):
 
                     # Based on this best time, we now need to ensure that all of the entries are still bounded by
                     # bestTime*KPATH_MAX_ALLOWED_TIME
-                    for key in routesTest:
+
+                    if len(routesTest) == 3:
+                        print("LOOK AT TMEJSKDJFASKDJ")
+
+                    if len(routesTest) == 1:
+                        print("UH OH")
+
+                    for key in deepcopy(routesTest):
                         if routesTest[key][0] >= bestTime * KPATH_MAX_ALLOWED_TIME:
                             print('ok')
                             del routesTest[key]
                             print("finished")
 
+                    # Resetting k depending on how many elements are left after removal
+                    k = len(routesTest)
 
                     if tracker == 2:
                         print("akshdahsdgk")
@@ -487,7 +507,7 @@ def kPaths(veh, currentEdge):
                     newRouteTime = bestTime * ratio
 
             # New route's estimated time doesn't exceed >KPATH_MAX_ALLOWED_TIME of the optimal route time
-            if newRouteTime <= bestTime*KPATH_MAX_ALLOWED_TIME:
+            if newRouteTime <= bestTime*KPATH_MAX_ALLOWED_TIME and not bestRouteMoreThanNewRouteTime:
                 routeTimes[newRouteTime] = currentRoute
                 routesWithTime[" ".join(str(x) for x in currentRoute)] = newRouteTime
                 for edge in currentRoute:
@@ -508,7 +528,7 @@ def kPaths(veh, currentEdge):
                 break
 
     # ranNum = random.randint(1, k)
-    ranNum = len(routes)
+    ranNum = len(routesTest)
 
     randomNum = random.randint(0, k - 1)
     # Selecting a random route
