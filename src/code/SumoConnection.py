@@ -299,17 +299,20 @@ class Main:
             routeFile (str): The route file to use for execution
             functionName (str): This is the name of the function which called the main method
         """
-        # Defines the configuration to start SUMO with
-        #   --net-file: The SUMO network file to be used (.net.xml)
-        #   --step-length: Defines the length of each timestep in seconds
-        #   --additional-files: Allows for additional files to be input into the configuration
 
-        #   --routing-algorithm: Defines the routing algorithm used by the vehicles
-        #   --gui-settings-file: Allows for the GUI to be manipulated
-        #   --device.rerouting.probability: Defines the probability that a vehicle in the simulation will automatically
-        # reroute
-        #   --device.rerouting.threads: The number of threads used for rerouting purposes
-        #   --depart
+        """
+        Defines the configuration to start SUMO with
+           --net-file: The SUMO network file to be used (.net.xml)
+           --step-length: Defines the length of each timestep in seconds
+           --additional-files: Allows for additional files to be input into the configuration
+
+           --routing-algorithm: Defines the routing algorithm used by the vehicles
+           --gui-settings-file: Allows for the GUI to be manipulated
+           --device.rerouting.probability: Defines the probability that a vehicle in the simulation will automatically
+             reroute
+           --device.rerouting.threads: The number of threads used for rerouting purposes
+           --depart
+        """
         sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
                              VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
                              '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
@@ -335,6 +338,8 @@ class Main:
 
         initialFunc.initialisation()
 
+        print("Running with algorithm {}.".format(ALGORITHM))
+
         if SCENARIO == 0 or SCENARIO == 3:
             test.beforeLoop(functionName)
 
@@ -347,8 +352,10 @@ class Main:
                     traci.simulationStep()
             # Dynamic shortest path
             elif ALGORITHM == 1:
+                # Initialising the database
+                database = db.Database()
                 for i in range(START_TIME, END_TIME):
-                    dsp.main(i)
+                    dsp.main(i, database)
             # k-shortest paths
             elif ALGORITHM == 2:
                 # Initialising the database
@@ -376,6 +383,5 @@ if __name__ == '__main__':
     """
     The main method for all running
     """
-    print("This is the current working directory: {})".format(os.getcwd()))
     main = Main()
-    main.run(instantStart=False)
+    main.run(instantStart=True)

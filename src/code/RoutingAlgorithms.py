@@ -63,7 +63,7 @@ class DynamicShortestPath:
         traci.simulationStep()
 
     # noinspection PyMethodMayBeStatic
-    def main(self, i):
+    def mainA(self, i):
         """
         The main programme run during the loop which progresses the simulation at every timestep
 
@@ -93,6 +93,74 @@ class DynamicShortestPath:
                     func.rerouteSelectedVehiclesEdge(edge)
 
         traci.simulationStep()
+
+    # noinspection PyMethodMayBeStatic
+    def main(self, i, database):
+        """
+        The main programme run during the loop which progresses the simulation at every timestep
+
+        Args:
+            i (int): The current timestep of the simulation
+            database (Database): This is the database in which the information is stored
+        """
+        traci.simulationStep()
+        # Checks for vehicle departure and arrival into the simulation
+        sim.vehiclesDepartedAndArrived(i)
+
+        # After 30 minutes have elapsed
+        if i == 1800:
+            initialFunc.endSim(i)
+
+        # Every REROUTING_PERIOD
+        if i % func.REROUTING_PERIOD == 0 and i >= 1:
+            print("***** REROUTING PERIOD {} ********".format(i / func.REROUTING_PERIOD))
+
+            # This is the updating of the time spent in the system for each vehicle
+            sim.updateVehicleTotalEstimatedTimeSpentInSystem(func.REROUTING_PERIOD)
+
+            """ Selecting and rerouting vehicles at points of congestion """
+
+            # Resets the set of vehicles which have undergone rerouting for the previous rerouting period
+            func.reroutedVehicles = set()
+            # True when any congestion is detected
+            congestionBool = False
+
+            # Processing the lanes existing on edges with multiple outgoing edges
+            for lane in initialFunc.reroutingLanes:
+                congestion = sim.returnCongestionLevelLane(lane)
+                if congestion >= CONGESTION_THRESHOLD:
+                    if not congestionBool:
+                        # Getting the edge weights of the entire scenario for the current time step
+                        sim.getGlobalEdgeWeights()
+                        congestionBool = True
+                    print("\n***** LANE {} REROUTE ********\n".format(lane))
+                    edge = initialFunc.lanesNetwork[lane]
+                    sim.getEdge2DCoordinates(edge)
+
+                    func.rerouteSelectedVehicles(lane, kPathsBool=False, fairness=False)
+
+            # Processing those edges which only have a single outgoing edge (all lanes lead to the same position
+            for edge in initialFunc.singleOutgoingEdges:
+                congestion = sim.returnCongestionLevelEdge(edge)
+                if congestion >= CONGESTION_THRESHOLD:
+                    # If current road conditions haven't yet been calculated
+                    if not congestionBool:
+                        sim.getGlobalEdgeWeights()
+                        congestionBool = True
+                    print("\n***** EDGE {} REROUTE ********\n".format(edge))
+                    sim.getEdge2DCoordinates(edge)
+
+                    func.rerouteSelectedVehicles(edge, kPathsBool=False, fairness=False)
+
+            # Working out fairness index + standard deviation of QOE values
+            fairnessIndex, standardDeviation = sim.fairnessIndex()
+
+            # Update the database with the up-to-date values
+            database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE)
+            database.populateDBVehicleTable()
+
+            # Reset
+            sim.vehiclesInNetwork = []
 
 
 class kShortestPaths:
@@ -227,7 +295,7 @@ class kShortestPathsFairness:
 
                     func.rerouteSelectedVehicles(lane, kPathsBool=True, fairness=True)
 
-            # Processing those edges which only have a single outgoing edge (all lanes lead to the same position
+            # Processing those edges which only have a single outgoing edge (all lanes lead to the same position)
             for edge in initialFunc.singleOutgoingEdges:
                 congestion = sim.returnCongestionLevelEdge(edge)
                 if congestion >= CONGESTION_THRESHOLD:
