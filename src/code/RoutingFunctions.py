@@ -438,22 +438,32 @@ def kPaths(veh, currentEdge):
                 oldBest = bestTime
                 oldNew = newRouteTime
 
+                # These are the predicted route times which are given directly from TraCI
                 bestTimeGivenByTraci = 0
                 newRouteTimeGivenByTraci = 0
 
+                # These are the smoothed travel times which are generated through the vehicle's individual rerouting
+                # device
+                smoothedBestTime = 0
+                smoothedNewTime = 0
+
+                # Times for the best route
                 for edge in alteredRoute:
                     bestTimeGivenByTraci += traci.edge.getTraveltime(edge)
+                    smoothedBestTime += float(traci.vehicle.getParameter(veh, "device.rerouting.edge:{}".format(edge)))
+
+                # Times for the new route
                 for edge in currentRoute:
                     newRouteTimeGivenByTraci += traci.edge.getTraveltime(edge)
+                    smoothedNewTime += float(traci.vehicle.getParameter(veh, "device.rerouting.edge:{}".format(edge)))
 
-                ratio = newRouteTimeGivenByTraci / bestTimeGivenByTraci
+                traciRatio = newRouteTimeGivenByTraci / bestTimeGivenByTraci
+                smoothedRatio = smoothedNewTime / smoothedBestTime
 
-
-
-                # Traci can erroneously (extremely rarely) return an incorrect edge travel time which means that the
-                # 'best' travel time may not actually be the best when taking these estimated travel time measurements.
-                # This can result in ratios < 1.
-                if ratio < 1:
+                # In extremely rare cases, TraCI can erroneously return an incorrect edge travel time which means
+                # that the 'best' travel time may not actually be the best when taking these estimated travel time
+                # measurements. This can result in ratios < 1.
+                if traciRatio < 1 and smoothedRatio < 1:
                     bestRouteMoreThanNewRouteTime = True
 
                     # Add the new time to the list so that it can be determined whether or not the existing times can
@@ -461,8 +471,6 @@ def kPaths(veh, currentEdge):
                     routesTest['{}_best'.format(k + 1)] = (newRouteTime, currentRoute,)
 
                     tracker += 1
-
-                    # In extremely rare cases, TraCI can erroneously...
 
                     lowestTimeTaken = bestTime
 
@@ -503,8 +511,11 @@ def kPaths(veh, currentEdge):
                     if tracker == 2:
                         print("akshdahsdgk")
                 else:
+                    # This takes the most accurate ratio (which is deemed to be the ratio which is closest to 1)
+                    accurateRatio = min([traciRatio, smoothedRatio], key=lambda v: abs(v - 1))
+                    traciRatio = accurateRatio
                     # Work out the new, more accurate currentRoute travel time based on this ratio
-                    newRouteTime = bestTime * ratio
+                    newRouteTime = bestTime * traciRatio
 
             # New route's estimated time doesn't exceed >KPATH_MAX_ALLOWED_TIME of the optimal route time
             if newRouteTime <= bestTime*KPATH_MAX_ALLOWED_TIME and not bestRouteMoreThanNewRouteTime:
@@ -528,11 +539,11 @@ def kPaths(veh, currentEdge):
                 break
 
     # ranNum = random.randint(1, k)
-    ranNum = len(routesTest)
+    ranNum = random.randint(1, len(routesTest))
 
     randomNum = random.randint(0, k - 1)
     # Selecting a random route
-    routeSelection = routeList[ranNum - 1]
+    routeSelection = routesTest['{}_best'.format(ranNum)][1]
 
     newBestTime = 999999999
     for route in routeList:
