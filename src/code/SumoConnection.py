@@ -8,6 +8,10 @@
 
 __author__ = "Jonathan Harper"
 
+#############
+# IMPORTING #
+#############
+
 import sys
 import os
 # Inserts SUMO tools into the PATH (or PYTHONPATH)
@@ -25,86 +29,35 @@ from src.code import RoutingAlgorithms as routing
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import Database as db
 
+########################
+# USER-DEFINED OPTIONS #
+########################
+
 # True if using main computer (allows for easy switching between laptop and main home computer)
 COMPUTER = False
 
-# These are the times between the simulation start and end, delay MUST be set at 0ms for this to be comparable to other
-# results
-timerStart = 0
-timerEnd = 0
-
 # This enables major print statements for diagnostic purposes
-PRINT = True
+PRINT = False
 
-# Settings main working directory
-if COMPUTER:
-    # Main computer project configuration location
-    MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/configuration_files/"
-    SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
-    OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
-    DATABASE_LOCATION = "D:/Nina/Documents/google_drive/sumo/database/output_database.sqlite"
-else:
-    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
-    SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
-    OUTPUT_DIRECTORY = "/Users/jonathan/Documents/comp3200/sumo_output/"
-    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
-
-# TODO
-# Remove the edges which are the insertions of the map to only facilitate at most one edge (so that vehicles don't pack
-#   up on that single edge
-# The simulation itself always runs on a single core. However, routing in SUMO or DUAROUTER can be parallelized by
-#   setting the option --device.rerouting.threads <INT> and --routing-threads <INT> respectively.
-# The python TraCI library allows controlling multiple simulations from a single script either by calling traci.connect
-#   and storing the returned connection object or by calling traci.start(label=...) and retrieving the connection object
-#   with traci.getConnection(label).
-# Change from dijkstras to a*
-# Think about subscriptions
-# Add in 'tau' into the vehicles.xml (driver's reaction time)
-# Edges might not be the best solution when choosing where congestion occurs because an edge can contain a number of
-#   lanes which go to certain intersections, for example a left edge may invite a left turn, whereas a right edge may
-#   invite a right turn. This means that a single lane on an edge may be congested whereas the other lane may not be.
-#   See img1.png for a good representation of this exact thing
-# Write about using sets over lists for some things (NOT OWN WORDS BELOW)
-#           * since the in operator is O(n) on a list but O(1) on a set
-#           * Sets are significantly faster when it comes to determining if an object is present in the set (as in x in
-#             s), but are slower than lists when it comes to iterating over their contents.
-# departSpeed = 'random' in the routes file for each of the vehicle definitions
-#       e.g. <vehicle type="car" departSpeed="random" id="1" depart="0.00">
-# The fairness should be measured against a more generic fairness measure which is to simply reroute only X% vehicles
-#   coming up to a congested area
-# Maybe do this thing where you start with a base value of maybe 1 for edge recursions, however, if you go down the
-#   incoming lanes/edges and you also find congestion then you should go down +1 further edges given that the congestion
-#   may take a while to disperse
-# Keep a list of vehicles which if they are in the set of vehicles which have already undergone some kind of rerouting,
-#   they should not be considered further as this may mean they are consistently rerouted in a single turn
-# Include the ability for not full adherence to the fairness thing
-
-# SUMO Configuration files
-SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
-TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cfg"
-NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
-TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
-NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
-NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark_square.net.xml"
-VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
-GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
+# Prints out the lanes/edges which have been rerouted for that period
+PRINT_ROAD_REROUTED = True
 
 # Whether or not to calculate the A* distances for this map
 A_STAR_DISTANCES = True
 
 # This is the unique reference for the simulation in progress
-SIMULATION_REFERENCE = "kPathsFair5"
+SIMULATION_REFERENCE = "testing"
 
 # SUMO settings
 START_TIME = 0
-END_TIME = 1000000
+END_TIME = 1800
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
 
 # This specifies the number of incoming edges away (the range) from the original edge to search
 MAX_EDGE_RECURSIONS_RANGE = 3
-# Specifies the number of up to k alternative routes
+# Specifies the number of up to k-alternative routes
 K_MAX = 3
 
 # Specifies the scenario (map)
@@ -121,6 +74,10 @@ SCENARIO = 2
 #   4: k-Shortest Path with fairness
 ALGORITHM = 2
 
+###########
+# OUTPUTS #
+###########
+
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
 OUTPUTS = False
@@ -134,6 +91,86 @@ VTK_OUTPUT = False
 FLOATING_CAR_DATA_OUTPUT = False
 #   --tripinfo-output: Generates information about the vehicle trips
 TRIPS_OUTPUT = True
+
+########
+# TODO #
+########
+
+"""
+Remove the edges which are the insertions of the map to only facilitate at most one edge (so that vehicles don't pack 
+up on that single edge
+
+The simulation itself always runs on a single core. However, routing in SUMO or DUAROUTER can be parallelized by setting
+the option --device.rerouting.threads <INT> and --routing-threads <INT> respectively.
+ 
+The python TraCI library allows controlling multiple simulations from a single script either by calling traci.connect 
+and storing the returned connection object or by calling traci.start(label=...) and retrieving the connection object 
+with traci.getConnection(label).
+
+Change from dijkstras to a*
+
+Think about subscriptions
+
+Add in 'tau' into the vehicles.xml (driver's reaction time)
+
+Edges might not be the best solution when choosing where congestion occurs because an edge can contain a number of 
+lanes which go to certain intersections, for example a left edge may invite a left turn, whereas a right edge may 
+Invite a right turn. This means that a single lane on an edge may be congested whereas the other lane may not be.
+   
+See img1.png for a good representation of this exact thing
+
+Write about using sets over lists for some things (NOT OWN WORDS BELOW)
+    1) since the in operator is O(n) on a list but O(1) on a set
+    2) Sets are significantly faster when it comes to determining if an object is present in the set (as in x in s), 
+    but are slower than lists when it comes to iterating over their contents.
+
+departSpeed = 'random' in the routes file for each of the vehicle definitions
+    e.g. <vehicle type="car" departSpeed="random" id="1" depart="0.00">
+
+The fairness should be measured against a more generic fairness measure which is to simply reroute only X% vehicles 
+coming up to a congested area
+
+Maybe do this thing where you start with a base value of maybe 1 for edge recursions, however, if you go down the
+incoming lanes/edges and you also find congestion then you should go down +1 further edges given that the congestion
+may take a while to disperse
+
+Keep a list of vehicles which if they are in the set of vehicles which have already undergone some kind of rerouting,
+they should not be considered further as this may mean they are consistently rerouted in a single turn
+
+Include the ability for not full adherence to the fairness thing
+"""
+
+####################
+# PROJECT SETTINGS #
+####################
+
+# These are the times between the simulation start and end, delay MUST be set at 0ms for this to be comparable to other
+# results
+timerStart = 0
+timerEnd = 0
+
+# Settings main working directory
+if COMPUTER:
+    # Main computer project configuration location
+    MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/configuration_files/"
+    SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
+    OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
+    DATABASE_LOCATION = "D:/Nina/Documents/google_drive/sumo/database/output_database.sqlite"
+else:
+    MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
+    SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
+    OUTPUT_DIRECTORY = "/Users/jonathan/Documents/comp3200/sumo_output/"
+    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
+
+# SUMO Configuration files
+SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
+TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cfg"
+NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
+TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
+NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
+NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark_square.net.xml"
+VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
+GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
 
 try:
     # Small manhattan
@@ -318,6 +355,7 @@ class Main:
                              VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
                              '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
 
+        # Additional SUMO config options
         if instantStart:
             sumoConfigInitial.append('--start')
 
@@ -332,14 +370,18 @@ class Main:
         traci.start(sumoConfig)
 
         test = src.code.Testing.Testing()
-        dsp = routing.DynamicShortestPath()
-        drwf = routing.DynamicReroutingWithFairness()
-        ksp = routing.kShortestPaths()
-        kspwf = routing.kShortestPathsFairness()
-
+        reroutingAlgorithm = routing.ReroutingAlgorithms()
+        # Initialise data regarding the map into memory for quick real-time access
         initialFunc.initialisation()
 
-        print("Running with algorithm {}.".format(ALGORITHM))
+        algorithm = ''
+        if ALGORITHM == 0: algorithm = 'No Rerouting';
+        elif ALGORITHM == 1: algorithm = 'Dynamic Shortest Path'
+        elif ALGORITHM == 2: algorithm = 'k-Shortest Paths'
+        elif ALGORITHM == 3: algorithm = 'Dynamic Shortest Path with Fairness'
+        elif ALGORITHM == 4: algorithm = 'k-Shortest Paths with Fairness'
+
+        print("Running with algorithm {}.".format(algorithm))
 
         if SCENARIO == 0 or SCENARIO == 3:
             test.beforeLoop(functionName)
@@ -351,28 +393,11 @@ class Main:
             if ALGORITHM == 0:
                 for i in range(START_TIME, END_TIME):
                     traci.simulationStep()
-            # Dynamic shortest path
-            elif ALGORITHM == 1:
+            else:
                 # Initialising the database
                 database = db.Database()
                 for i in range(START_TIME, END_TIME):
-                    dsp.main(i, database)
-            # k-shortest paths
-            elif ALGORITHM == 2:
-                # Initialising the database
-                database = db.Database()
-                for i in range(START_TIME, END_TIME):
-                    ksp.main(i, database)
-            # Dynamic Rerouting with Fairness
-            elif ALGORITHM == 3:
-                for i in range(START_TIME, END_TIME):
-                    drwf.main(i)
-            # k-Shortest Path with Fairness
-            elif ALGORITHM == 4:
-                # Initialising the database
-                database = db.Database()
-                for i in range(START_TIME, END_TIME):
-                    kspwf.main(i, database)
+                    reroutingAlgorithm.main(i, database)
 
         # If not running test cases close when the END_TIME is reached
         if not testCase:

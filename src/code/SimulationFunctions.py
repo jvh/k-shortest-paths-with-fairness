@@ -211,9 +211,6 @@ def fairnessIndex():
 
     standardDeviation = np.nanstd(np.where(np.isclose(qoeValues, 0), np.nan, qoeValues))
 
-    print(standardDeviation)
-    print(highestQOE)
-
     fairnessIndexCalculated = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
 
     return fairnessIndexCalculated, standardDeviation
@@ -251,8 +248,6 @@ def updateVehicleTotalEstimatedTimeSpentInSystem(period=0):
             timeSpentInNetwork[vehicle] += period
         else:
             timeSpentStopped[vehicle] += period
-            # REMOVE THIS IS FOR TESTING ONLY
-            print("Vehicle WAS in stopped state")
 
         stoppedStateLastPeriod[vehicle] = currentStatus
 
@@ -278,6 +273,8 @@ def vehiclesDepartedAndArrived(i):
             func.cumulativeExtraTime[vehicle] = 0
         # This is reset every time the simulation is restarted and doesn't need to be tracked between simulations
         timeSpentStopped[vehicle] = 0
+        # Setting the vehicle rerouting method to be 'smoothed'
+        traci.vehicle.setRoutingMode(vehicle, traci.constants.ROUTING_MODE_AGGREGATED)
 
     """ Checking for vehicle's which have finished their trip in the system """
     # Checking which vehicles have left the system during this timestep

@@ -18,6 +18,10 @@ from src.code.SimulationFunctions import selectVehiclesBasedOnFairness
 
 __author__ = "Jonathan Harper"
 
+##########################
+# USER-DEFINED VARIABLES #
+##########################
+
 # This is the penalisation factor given to the edge estimated travel time
 PENALISATION = 2
 # This ensures that the route chosen in kPaths() doesn't exceed the bestPath * KPATH_MAX_ALLOWED_TIME
@@ -27,9 +31,17 @@ KPATH_TIMEOUT = 15
 # This is the percentage of vehicles in the top percentile range which will be considered for rerouting based on their
 # fairness (vehicle chosen if their QOE >= PERCENTILE * max QOE of vehicle's considered)
 PERCENTILE = 0.6
-
+# This is the weighting of the factors which determine fairness. Fairness is determined by the ratio between
+# vehicleReroutedAmount:cumulativeExtraTime, a value of 0.6 means a weighting of 60:40
+FAIRNESS_WEIGHTING = 0.6
 # The period in timesteps in which rerouting occurs during the simulation
 REROUTING_PERIOD = 100
+# The threshold in which congestion is considered to have occurred
+CONGESTION_THRESHOLD = 0.5
+
+########################
+# SIMULATION VARIABLES #
+########################
 
 # Stores the edge and their CURRENT corresponding estimated travel time
 edgeSpeedGlobal = {}
@@ -41,9 +53,6 @@ vehicleReroutedAmount = {}
 # This is the cumulative extra (estimated) time in which the vehicle has experienced due to the rerouting. Represented
 # in the form {vehicleID: cumulativeExtraTimeSpent (s)}
 cumulativeExtraTime = {}
-# This is the weighting of the factors which determine fairness. Fairness is determined by the ratio between
-# vehicleReroutedAmount:cumulativeExtraTime, a value of 0.6 means a weighting of 60:40
-FAIRNESS_WEIGHTING = 0.6
 
 # This stores the vehicles rerouted during the 'rerouting period' in which the vehicles are rerouted
 reroutedVehicles = set()
@@ -349,95 +358,69 @@ def kPaths(veh, currentEdge):
         routeList ([[str]]): The list of routes in which the vehicle could possibly be chosen to take (in the form
         [[route1], [route2]... [routeK_MAX]])
     """
-    traci.vehicle.setRoutingMode(veh, traci.constants.ROUTING_MODE_AGGREGATED)
-
-    # Contains a list of the routes (where each route consists of a list of edges)
-    routeList = []
-    # These are the routes adjusted for the beginning edge being the edge in which the vehicle is currently present
-    #
-    # Counter
-    k = 1
-    # A set of all of the edges
+    # A set of all of the edges, used to reset the vehicle's internal estimated edge store
     edgesSet = set()
+    k = 1
+    # This is a fail safe in case there are less paths than K_MAX available for the vehicle to take
+    timeOut = 0
 
     # Finding the best possible route for the vehicle
     traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=False)
 
     # The vehicle's current route
-    currentRoute = traci.vehicle.getRoute(veh)
+    bestRoute = traci.vehicle.getRoute(veh)
     # Element of the current edge within the currentRoute
-    currentEdgeIndex = currentRoute.index(currentEdge)
+    currentEdgeIndex = bestRoute.index(currentEdge)
     # Altered route with the first element of the route being the current edge
-    alteredRoute = currentRoute[currentEdgeIndex:]
+    currentRoute = bestRoute[currentEdgeIndex:]
 
-    bestTime = sim.getGlobalRoutePathTime(alteredRoute)
-    adjustedEdge = {}
-
-    if(bestTime <= 0):
-        print("This best time is lower {}".format(bestTime))
-
-    bestRoute = alteredRoute
-
-    for edge in alteredRoute:
-        adjustedEdge[edge] = edgeSpeedGlobal[edge]
-
-    # Populating lists with the best route
-    routeList.append(alteredRoute)
-    edgesSet.update(alteredRoute)
-
-    currentRoute = alteredRoute
-
-    # This is a fail safe in case there are less paths than K_MAX available for the vehicle to take
-    timeOut = 0
-
-    routeTimes = {}
-    routeTimes[bestTime] = alteredRoute
-
-    routesWithTime = {}
-    routesWithTime[" ".join(str(x) for x in alteredRoute)] = bestTime
-
+    # Recording down the current best route and time
+    bestTime = sim.getGlobalRoutePathTime(currentRoute)
     routes = {}
-    routesTest = {}
-    routes['{}_best'.format(k)] = (bestTime, alteredRoute,)
-    routesTest['{}_best'.format(k)] = (bestTime, alteredRoute,)
+    routes['{}_best'.format(k)] = (bestTime, currentRoute,)
 
-
-    tracker = 0
+    # This records the estimated travel time for each road segment in which the vehicle may take (with or without
+    # penalisation applied) -- this is done on and reset on a vehicle-per-vehicle basis
+    adjustedEdgeVehicle = {}
+    for edge in currentRoute:
+        adjustedEdgeVehicle[edge] = edgeSpeedGlobal[edge]
 
     # Creating up to k-1 additional routes
     while k < sumo.K_MAX:
-        penalisePathTimeVehicle(veh, currentRoute, adjustedEdge)
+        penalisePathTimeVehicle(veh, currentRoute, adjustedEdgeVehicle)
 
         traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=False)
         newRoute = traci.vehicle.getRoute(veh)
         newRouteTime = sim.getGlobalRoutePathTime(newRoute)
-        # newRouteVehTime = adjustedEdge
-        # Only taking the selection in which the vehicle can take (with the route beginning on the currently occupied
-        # edge)
         currentRoute = newRoute[currentEdgeIndex:]
-        # newRouteTime2 = sim.getGlobalRoutePathTime(currentRoute)
-        # newRouteTime3 = sim.getGlobalRoutePathTime(newRoute[currentEdgeIndex:])
 
-        # Ensuring the route doesn't exist within the routeList and that the route contains the edge in which the
-        # vehicle is currently occupying
-        if currentRoute not in routeList and currentEdge in currentRoute and currentRoute != bestRoute:
+        # These are the routes which have already been selected
+        currentEligibleRoutes = [x[1] for x in routes.values()]
+        # Ensuring the route doesn't exist within the existing eligible routes, the route contains the edge in which the
+        # vehicle is currently occupying, and the route is not currently the best route
+        if currentRoute not in currentEligibleRoutes and currentEdge in currentRoute:
             timeOut = 0
-
             # This keeps track if the calculated 'best' route time is above that of the calculated new route time
             bestRouteMoreThanNewRouteTime = False
 
             """
             Sometimes the roads suffer so much congestion that there are issues with reliable estimation of travel
-            times given by Traci. In an attempt to alleviate this, the estimated travel times are bounded to 15x their
-            free-flow speed. However, this sometimes causes the best time to no longer be the best time depending on
-            the number of edge travel time boundings in a route. Given this, we instead work out the ratio between the
-            best travel time and the currentRoute travel time, we multiply this ratio against the best travel time 
-            to give a better, more accurate estimation of the currentRoute's travel time.
+            times given by TraCI. TraCI may sometimes give overblown estimations of the travel times of an edge, for
+            example if the edge is being blocked and no movement is being made, the estimated time may be 
+            disproportionally large compared to it's real-world equivalent predicted time taken; this problem persists
+            even with a rerouting device being connected to the vehicles which allows for more accurate 'smoothed' 
+            aggregated travel times- this is a fault inherent to TraCI. 
+            
+            In an attempt to alleviate this, the estimated travel times are bounded to 15x their free-flow speed. 
+            However, this sometimes causes the best time to no longer be the best time depending on the number of 
+            edge travel time boundings in a route (which could alter the predicted time for a route given we are 
+            now estimating some of the edge times). 
+            
+            Given this, we instead work out the ratio between the best travel time and the currentRoute travel time, 
+            we multiply this ratio against the best travel time to give a better, more accurate estimation of the 
+            currentRoute's travel time.
             """
             if newRouteTime < bestTime:
-                oldBest = bestTime
-                oldNew = newRouteTime
-
                 # These are the predicted route times which are given directly from TraCI
                 bestTimeGivenByTraci = 0
                 newRouteTimeGivenByTraci = 0
@@ -448,7 +431,7 @@ def kPaths(veh, currentEdge):
                 smoothedNewTime = 0
 
                 # Times for the best route
-                for edge in alteredRoute:
+                for edge in routes['1_best'][1]:
                     bestTimeGivenByTraci += traci.edge.getTraveltime(edge)
                     smoothedBestTime += float(traci.vehicle.getParameter(veh, "device.rerouting.edge:{}".format(edge)))
 
@@ -460,76 +443,57 @@ def kPaths(veh, currentEdge):
                 traciRatio = newRouteTimeGivenByTraci / bestTimeGivenByTraci
                 smoothedRatio = smoothedNewTime / smoothedBestTime
 
-                # In extremely rare cases, TraCI can erroneously return an incorrect edge travel time which means
-                # that the 'best' travel time may not actually be the best when taking these estimated travel time
-                # measurements. This can result in ratios < 1.
+                """
+                In extremely rare cases, TraCI can erroneously return an incorrect edge travel time which means
+                that the 'best' travel time may not actually be the best when taking these estimated travel time
+                measurements; this can result in ratios < 1.
+                """
                 if traciRatio < 1 and smoothedRatio < 1:
                     bestRouteMoreThanNewRouteTime = True
 
                     # Add the new time to the list so that it can be determined whether or not the existing times can
                     # exist given this new best time (with boundaries in mind)
-                    routesTest['{}_best'.format(k + 1)] = (newRouteTime, currentRoute,)
+                    routes['{}_best'.format(k + 1)] = (newRouteTime, currentRoute,)
 
-                    tracker += 1
-
-                    lowestTimeTaken = bestTime
-
+                    # All of the route and time pair combinations
                     tupleList = []
-
-                    for key in routesTest:
-                        timeRouteTuple = routesTest[key]
+                    for key in routes:
+                        timeRouteTuple = routes[key]
                         tupleList.append(timeRouteTuple)
 
+                    # Sort the tuples with the lowest time being at index 0, with the longest being at index k-1
                     sortedTuples = sorted(tupleList, key=lambda x: x[0])
 
+                    # Placing the contents of the sortedTuple into routes
                     counter = 0
-
-                    for key in routesTest:
-                        routesTest[key] = sortedTuples[counter]
+                    for key in routes:
+                        routes[key] = sortedTuples[counter]
                         counter += 1
 
-                    bestTime = routesTest['1_best'][0]
+                    # Best time will now be in the first position
+                    bestTime = routes['1_best'][0]
 
-                    # Based on this best time, we now need to ensure that all of the entries are still bounded by
-                    # bestTime*KPATH_MAX_ALLOWED_TIME
-
-                    if len(routesTest) == 3:
-                        print("LOOK AT TMEJSKDJFASKDJ")
-
-                    if len(routesTest) == 1:
-                        print("UH OH")
-
-                    for key in deepcopy(routesTest):
-                        if routesTest[key][0] >= bestTime * KPATH_MAX_ALLOWED_TIME:
-                            print('ok')
-                            del routesTest[key]
-                            print("finished")
+                    # Delete any routes which don't conform to <= new best time *
+                    for key in deepcopy(routes):
+                        if routes[key][0] >= bestTime * KPATH_MAX_ALLOWED_TIME:
+                            del routes[key]
 
                     # Resetting k depending on how many elements are left after removal
-                    k = len(routesTest)
-
-                    if tracker == 2:
-                        print("akshdahsdgk")
+                    k = len(routes)
                 else:
                     # This takes the most accurate ratio (which is deemed to be the ratio which is closest to 1)
-                    accurateRatio = min([traciRatio, smoothedRatio], key=lambda v: abs(v - 1))
-                    traciRatio = accurateRatio
+                    traciRatio = min([traciRatio, smoothedRatio], key=lambda v: abs(v - 1))
                     # Work out the new, more accurate currentRoute travel time based on this ratio
                     newRouteTime = bestTime * traciRatio
 
-            # New route's estimated time doesn't exceed >KPATH_MAX_ALLOWED_TIME of the optimal route time
+            # New route's estimated time doesn't exceed bestTime*KPATH_MAX_ALLOWED_TIME of the optimal route time
             if newRouteTime <= bestTime*KPATH_MAX_ALLOWED_TIME and not bestRouteMoreThanNewRouteTime:
-                routeTimes[newRouteTime] = currentRoute
-                routesWithTime[" ".join(str(x) for x in currentRoute)] = newRouteTime
-                for edge in currentRoute:
-                    if edge not in adjustedEdge:
-                        adjustedEdge[edge] = edgeSpeedGlobal[edge]
-                routeList.append(currentRoute)
-                edgesSet.update(currentRoute)
                 k += 1
+                for edge in currentRoute:
+                    if edge not in adjustedEdgeVehicle:
+                        adjustedEdgeVehicle[edge] = edgeSpeedGlobal[edge]
+                edgesSet.update(currentRoute)
                 routes['{}_best'.format(k)] = (newRouteTime, currentRoute,)
-                routesTest['{}_best'.format(k)] = (newRouteTime, currentRoute,)
-
             else:
                 break
         else:
@@ -538,56 +502,26 @@ def kPaths(veh, currentEdge):
             if timeOut == KPATH_TIMEOUT:
                 break
 
-    # ranNum = random.randint(1, k)
-    ranNum = random.randint(1, len(routesTest))
-
-    randomNum = random.randint(0, k - 1)
     # Selecting a random route
-    routeSelection = routesTest['{}_best'.format(ranNum)][1]
+    # ranNum = random.randint(1, len(routes))
+    ranNum = len(routes)
 
-    newBestTime = 999999999
-    for route in routeList:
-        if sim.getGlobalRoutePathTime(route) < newBestTime:
-            newBestTime = sim.getGlobalRoutePathTime(route)
-
-    # actualLocation = traci.vehicle.getLaneID(veh)
-    # actual = initialFunc.lanesNetwork[actualLocation]
-
-    # This is the time in which the route is estimated to take
-    routeTime = sim.getGlobalRoutePathTime(routeSelection)
-    # The amount of time extra in which the vehicle will travel in relation to it's optimal time
-    extraTime = routeTime - bestTime
-
-
-    routeChoice = routesTest['{}_best'.format(ranNum)]
-
-    routeChoiceTimeTaken = routeChoice[0]
-    bestChoiceTimeTaken = routesTest['1_best'][0]
-
-    extraTime2 = routeChoiceTimeTaken - bestChoiceTimeTaken
-
-    if extraTime2 < 0:
-        print("NOOOOOOOOOOOOOOOOOOO")
-
-    # routeTimes.values()
-
-    # anotherTime = routeTime
-
-    if extraTime < 0:
-        print("Extra time is less than 0 {}, route time {}, bestTime {}".format(extraTime, routeTime, bestTime))
-        print("New extra time {}, route time {}, best time {}".format((routeTime - newBestTime), routeTime, newBestTime))
-
-    # In case error with global path time occurs (SUMO issue with congestion)
-    # extraTime = congestionOccurrence(k, routeList, bestTime, extraTime)
+    routeChoice = routes['{}_best'.format(ranNum)]
 
     # Setting the additional (estimated) extra time in which the vehicle has taken due to reroutings
+    routeChoiceTimeTaken = routeChoice[0]
+    bestChoiceTimeTaken = routes['1_best'][0]
+    extraTime = routeChoiceTimeTaken - bestChoiceTimeTaken
     cumulativeExtraTime[veh] += extraTime
 
-    traci.vehicle.setRoute(veh, routeSelection)
+    traci.vehicle.setRoute(veh, routeChoice[1])
 
     # Settings the vehicle's internal edge travel time back to the global edge travel time (resetting back to global)
     for edge in edgesSet:
         traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=edgeSpeedGlobal[edge])
+
+    # These are the routes which were available to be selected
+    routeList = [x[1] for x in routes.values()]
 
     return routeList
 
@@ -631,12 +565,10 @@ def penalisePathTimeVehicle(veh, route, adjustedEdge={}):
         route (str): The route to be penalised for the vehicle, veh
         adjustedEdge: FILL IN
     """
-    # currentSysTime = sumo.Main.getCurrentTime()
     for edge in route:
-        currentAdaptedTime2 = adjustedEdge[edge]
+        currentAdaptedTime = adjustedEdge[edge]
         # Sets an adapted travel time for an edge (specifically for that vehicle)
-        # currentAdaptedTime = traci.vehicle.getAdaptedTraveltime(vehID=veh, edgeID=edge, time=currentSysTime)
-        adjustedEdge[edge] = currentAdaptedTime2 * PENALISATION
+        adjustedEdge[edge] = currentAdaptedTime * PENALISATION
         # Penalise the travel time by a multiplication of PENALISATION
         traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=adjustedEdge[edge])
 
