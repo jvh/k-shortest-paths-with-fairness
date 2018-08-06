@@ -51,6 +51,7 @@ class ReroutingAlgorithms:
 
         :param road: The road segment which is being considered.
         :param roadBool: True if lane, False if edge.
+        :param congestionBool: True if road congested
         """
         congBool = congestionBool
 
@@ -71,11 +72,12 @@ class ReroutingAlgorithms:
                 else:
                     print("***** EDGE {} REROUTE ********".format(road))
 
-            if roadBool:
-                edge = initialFunc.lanesNetwork[road]
-                sim.getEdge2DCoordinates(edge)
-            else:
-                sim.getEdge2DCoordinates(road)
+            if sumo.SNAP_TO_CONGESTION:
+                if roadBool:
+                    edge = initialFunc.lanesNetwork[road]
+                    sim.getEdge2DCoordinates(edge)
+                else:
+                    sim.getEdge2DCoordinates(road)
 
             self.selectReroutingAlgorithm(road)
 

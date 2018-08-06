@@ -30,7 +30,7 @@ from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import Database as db
 
 ########################
-# USER-DEFINED OPTIONS #
+# USER-DEFINED OPTIONS (#
 ########################
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
@@ -38,27 +38,13 @@ COMPUTER = False
 
 # This enables major print statements for diagnostic purposes
 PRINT = False
-
 # Prints out the lanes/edges which have been rerouted for that period
 PRINT_ROAD_REROUTED = True
-
-# Whether or not to calculate the A* distances for this map
-A_STAR_DISTANCES = True
+# True if the camera should snap to the congested zone
+SNAP_TO_CONGESTION = True
 
 # This is the unique reference for the simulation in progress
 SIMULATION_REFERENCE = "testing"
-
-# SUMO settings
-START_TIME = 0
-END_TIME = 1800
-ZOOM_FACTOR = 12
-# Each step is 1 second
-STEP_LENGTH = '1.0'
-
-# This specifies the number of incoming edges away (the range) from the original edge to search
-MAX_EDGE_RECURSIONS_RANGE = 3
-# Specifies the number of up to k-alternative routes
-K_MAX = 3
 
 # Specifies the scenario (map)
 #   0: Testing (small_manhattan)
@@ -73,6 +59,18 @@ SCENARIO = 2
 #   3: Dynamic Rerouting with Fairness
 #   4: k-Shortest Path with fairness
 ALGORITHM = 2
+# Whether or not to calculate the A* distances for this map
+A_STAR_DISTANCES = True
+
+#################
+# SUMO SETTINGS #
+#################
+
+START_TIME = 0
+END_TIME = 1800
+ZOOM_FACTOR = 12
+# Each step is 1 second
+STEP_LENGTH = '1.0'
 
 ###########
 # OUTPUTS #

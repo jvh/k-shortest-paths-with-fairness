@@ -6,6 +6,9 @@
 
 import sys
 import os
+
+import src.code.RoutingFunctions
+
 sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
 os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 import random
@@ -26,7 +29,7 @@ from src.code import Database as db
 __author__ = "Jonathan Harper"
 
 # True when testing the database functionality
-databaseTestingBool = True
+databaseTestingBool = False
 
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
@@ -63,7 +66,7 @@ class SmallSouthamptonTestsRoute(unittest.TestCase):
         kPaths() is >20% (KPATH_MAX_ALLOWED_TIME = 1.2) worse in terms of time taken, no further routes should be
         selected.
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         func.KPATH_MAX_ALLOWED_TIME = 1.2
         routeFile = sumo.MAIN_PROJECT + "small_manhattan/testing/routes_sm_rerouting_test.xml"
         self.main = sumo.Main()
@@ -86,7 +89,7 @@ class SmallSouthamptonTestsRoute(unittest.TestCase):
 
         routeList = func.kPaths("testVeh", currentEdge)
 
-        self.assertTrue(initialRoute not in routeList and len(routeList) < sumo.K_MAX)
+        self.assertTrue(initialRoute not in routeList and len(routeList) < src.code.RoutingFunctions.K_MAX)
 
     def test_smallManhattan_setRouteAllVehicles(self):
         """
@@ -96,7 +99,7 @@ class SmallSouthamptonTestsRoute(unittest.TestCase):
         self.main = sumo.Main()
         self.main.run(True, True, True, functionName=self.id())
 
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
 
@@ -302,7 +305,8 @@ class DatabaseTests(unittest.TestCase):
         routeTimeAfter = 0
         # noinspection PyBroadException
         try:
-            # This tracks the number of times the vehicle has been asked to reroute
+            # This tracks the number of times the vehicle has been asked to reroute (essentially takes the data taken
+            # from the DB)
             reroutedAmount = func.vehicleReroutedAmount['999']
         except Exception:
             # If the test needs to be run as if nothing is in the database
@@ -981,7 +985,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         subsequently rerouting them as their routes are set sub-optimally.
         Note: Although there are simulation steps in between, this should be treated as if a single rerouting period
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         traci.simulationStep()
         testing.Testing().setupGenericCarSM(initialise=True)
         traci.simulationStep()
@@ -1027,19 +1031,12 @@ class SmallSouthamptonTests(unittest.TestCase):
         vehiclesList.extend(nextVehicleList)
         self.assertEqual(sorted(vehiclesList), sorted(list(func.reroutedVehicles)))
 
-    def test_smallManhattan_edgeSpeedGlobal_remainsConstant(self):
-        """
-        Ensuring that when calls are made to edgeSpeedGlobal, it stays the same throughout until getGlobalEdgeWeights()
-        is called again.
-        """
-        pass
-
     def test_smallManhattan_multiIncomingRecursion_4Recursions(self):
         """
         Tests that multiIncomingRecursion (and consequently recursiveIncomingEdges) returns the correct edges list when
         number of recursions (MAX_EDGE_RECURSIONS_RANGE) is equal to 2
         """
-        sumo.MAX_EDGE_RECURSIONS_RANGE = 4
+        src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE = 4
         output = initialFunc.getMultiIncomingEdges("511924978#1")
         expectedOutput = {'511924978#0', '497165756#3', '441405436', '569345515#0', '497165753#5', '569345508#1',
                           '5673497', '458180186#0', '497165756#2', '497165756#1', '5673063#5', '497165756#0',
@@ -1051,7 +1048,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         Tests that multiIncomingRecursion (and consequently recursiveIncomingEdges) returns the correct edges list when
         number of recursions (MAX_EDGE_RECURSIONS_RANGE) is equal to 3
         """
-        sumo.MAX_EDGE_RECURSIONS_RANGE = 3
+        src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE = 3
         output = initialFunc.getMultiIncomingEdges("511924978#1")
         expectedOutput = {'511924978#0', '497165756#3', '441405436', '569345515#0', '497165753#5', '569345508#1',
                           '5673497', '458180186#0', '497165756#2', '497165756#1'}
@@ -1062,7 +1059,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         Tests that multiIncomingRecursion (and consequently recursiveIncomingEdges) returns the correct edges list when
         number of recursions (MAX_EDGE_RECURSIONS_RANGE) is equal to 2
         """
-        sumo.MAX_EDGE_RECURSIONS_RANGE = 2
+        src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE = 2
         output = initialFunc.getMultiIncomingEdges("511924978#1")
         expectedOutput = {'511924978#0', '497165756#3', '441405436', '569345515#0', '458180186#0', '497165756#2'}
         self.assertEqual(set(output), expectedOutput)
@@ -1332,11 +1329,88 @@ class SmallSouthamptonTests(unittest.TestCase):
         Checks that once the penalisePathTimeVehicle() method has been ran, the edge weights are reset back to what
         they were initially
         """
-        pass
+        sim.getGlobalEdgeWeights()
+
+        testing.Testing().setupGenericCarSM(initialise=True)
+        route = traci.vehicle.getRoute('testVeh')
+        # This is the global time for the route, this shouldn't be affected by penalising the route time for a vehicle
+        globalTime = sim.getGlobalRoutePathTime(route)
+
+        func.penalisePathTimeVehicle('testVeh', route, {})
+        # Getting the route time taken for 'testVeh' after penalisation
+        penalisedTime = 0
+        for edge in traci.vehicle.getRoute('testVeh'):
+            penalisedTime += traci.vehicle.getAdaptedTraveltime('testVeh', edgeID=edge, time=sim.getCurrentTimestep())
+
+        # Resetting route time for that vehicle
+        func.resetVehicleAdaptedTravelTime('testVeh', route)
+        resetTime = 0
+        for edge in traci.vehicle.getRoute('testVeh'):
+            resetTime += traci.vehicle.getAdaptedTraveltime('testVeh', edgeID=edge, time=sim.getCurrentTimestep())
+
+        self.assertEqual(resetTime, globalTime)
+        self.assertEqual(resetTime * func.PENALISATION, penalisedTime)
+
+    def test_smallManhattan_penalisePathTimeVehicle_twiceWithAdjustedEdge(self):
+        """
+        Checks that the penalisation occurs correctly given that the vehicle has an 'adjustedEdge' variable (which
+        tracks the adjusted travel times for that vehicle in the format {edge: time}
+        """
+        sim.getGlobalEdgeWeights()
+
+        testing.Testing().setupGenericCarSM(initialise=True)
+        route = traci.vehicle.getRoute('testVeh')
+        # This is the global time for the route, this shouldn't be affected by penalising the route time for a vehicle
+        globalTime = sim.getGlobalRoutePathTime(route)
+
+        adjustedEdge = {}
+        for edge in route:
+            adjustedEdge[edge] = func.edgeSpeedGlobal[edge]
+
+        func.penalisePathTimeVehicle('testVeh', route, adjustedEdge)
+
+        ##################
+        # PENALISATION 2 #
+        ##################
+
+        func.penalisePathTimeVehicle('testVeh', route, adjustedEdge)
+        penalisedTime = 0
+        # Getting the route time taken for 'testVeh' after penalisation
+        for edge in traci.vehicle.getRoute('testVeh'):
+            penalisedTime += traci.vehicle.getAdaptedTraveltime('testVeh', edgeID=edge, time=sim.getCurrentTimestep())
+
+        self.assertEqual(globalTime * func.PENALISATION * func.PENALISATION, penalisedTime)
+
+    def test_smallManhattan_penalisePathTimeVehicle_twiceWithoutAdjustedEdge(self):
+        """
+        Checks that the penalisation occurs correctly without an adjustedEdge variable
+        """
+        sim.getGlobalEdgeWeights()
+
+        testing.Testing().setupGenericCarSM(initialise=True)
+        route = traci.vehicle.getRoute('testVeh')
+        # This is the global time for the route, this shouldn't be affected by penalising the route time for a vehicle
+        globalTime = sim.getGlobalRoutePathTime(route)
+
+        func.penalisePathTimeVehicle('testVeh', route, {})
+
+        ##################
+        # PENALISATION 2 #
+        ##################
+
+        func.penalisePathTimeVehicle('testVeh', route, {})
+        penalisedTime = 0
+        # Getting the route time taken for 'testVeh' after penalisation
+        for edge in traci.vehicle.getRoute('testVeh'):
+            penalisedTime += traci.vehicle.getAdaptedTraveltime('testVeh', edgeID=edge, time=sim.getCurrentTimestep())
+
+        self.assertEqual(globalTime * func.PENALISATION * func.PENALISATION, penalisedTime)
 
     def test_smallManhattan_endSim(self):
         """
         Checks that the simulation has been successfully ended if endSim() is manually called
+
+        :return: True if SystemExit is raised when endSim() is called
         """
         with self.assertRaises(SystemExit):
             for i in range(sumo.END_TIME):
@@ -1510,7 +1584,7 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         Vehicles are re-routed using kPaths algorithm directly called from the rerouteSelectedVehicles() method
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         testing.Testing().setupGenericCarSM(initialise=True)
         sim.getGlobalEdgeWeights()
         traci.simulationStep()
@@ -1531,7 +1605,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         Tests the selectVehiclesBasedOnFairness method by passing in values where the values can be manually calculated
         and compared to the outcome of the function
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
 
         traci.simulationStep()
         testing.Testing().setupGenericCarSM()
@@ -1626,7 +1700,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         This is the case in which all 3 vehicles are new to the simulation and do not have any fairness values
         associated
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
 
         # The initialise=True marker ensures that all vehicles start with all fairness metrics = 0
         testing.Testing().setupGenericCarSM(initialise=True)
@@ -1647,7 +1721,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         """
         In this case, the vehicles have been in the simulation before and have a timeSpentInNetwork value > 0
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
 
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
@@ -1727,14 +1801,13 @@ class SmallSouthamptonTests(unittest.TestCase):
         self.assertEqual(standardDeviation, 1.1990119747104309)
         self.assertEqual(fairnessIndex, 0.7601976050579138)
 
-
     def test_smallManhattan_kPaths_numberOfRoutes(self):
         """
         Assumption that k = 3
 
         Pass if the method kPaths() generates 3 potential routes for the specified vehicle
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
         sim.getGlobalEdgeWeights()
@@ -1753,7 +1826,8 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         Pass if the method kPaths() generates routes which are not the same as one another (they are all distinct)
         """
-        sumo.K_MAX = 3
+
+        src.code.RoutingFunctions.K_MAX = 3
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
         sim.getGlobalEdgeWeights()
@@ -1772,19 +1846,6 @@ class SmallSouthamptonTests(unittest.TestCase):
         self.assertNotEqual(route1, route3)
         self.assertNotEqual(route2, route3)
 
-    def test_smallManhattan_kPaths_endEdge(self):
-        """
-        Assumption that k = 3
-
-        Pass if all of the routes returned by kPaths have the same destination edge as the one previously defined in the
-        initial route
-        """
-        sumo.K_MAX = 3
-        testing.Testing().setupGenericCarSM()
-        traci.simulationStep()
-        traci.simulationStep()
-        sim.getGlobalEdgeWeights()
-
     def test_smallManhattan_kPaths_routeSelection(self):
         """
         Assumption that k = 3
@@ -1792,7 +1853,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         Pass if the method kPaths() selects one of the generated routes and that the non-optimal solution (a solution
         which shouldn't belong in kPaths() due to it's lack of optimality) is no longer the route of the vehicle
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
         traci.simulationStep()
@@ -1823,7 +1884,7 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         Pass if the best route time and the worst route time are bounded between bestTime - bestTime*KPATH_TIME_LIMIT
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
         func.KPATH_MAX_ALLOWED_TIME = 2
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
@@ -1891,31 +1952,27 @@ class SmallSouthamptonTests(unittest.TestCase):
         testing.Testing().setupGenericCarSM(zoom=False)
         for i in range(20): traci.simulationStep()
         testing.Testing().setupGenericCarSM("testVeh2", zoom=False, routeName="testVeh2Route")
-        for i in range(20): traci.simulationStep()
+        for i in range(10): traci.simulationStep()
         testing.Testing().setupGenericCarSM("testVeh3", zoom=False, routeName="testVeh3Route")
         for i in range(20): traci.simulationStep()
         testing.Testing().setupGenericCarSM("testVeh4", zoom=False, routeName="testVeh4Route")
-        for i in range(150):
-            for vehicle in traci.simulation.getArrivedIDList():
-                print("Vehicle {} at timestep {}".format(vehicle, i))
-            traci.simulationStep()
 
         # testVeh is out in front
-        # nextEdge = sim.getEdgeOneAheadVehicleRoute("testVeh")
+        nextEdge = sim.getEdgeOneAheadVehicleRoute("testVeh")
 
         # Eligible vehicles should be 3 recursive edges away from the edge ahead of testVeh, as vehicles are in
         # sequential order according to their route definition 'testVeh', 'testVeh2', and 'testVeh3' should appear while
         # 'testVeh4' shouldn't as it's outside of the 3 recursive edges away (being 4 edges away from the point of
         # congestion).
-        # eligible, _, _ = func.selectVehiclesForRerouting(nextEdge)
-        # self.assertEqual(sorted(eligible), ['testVeh', 'testVeh2', 'testVeh3'])
+        eligible, _, _, _ = func.selectVehiclesForRerouting(nextEdge)
+        self.assertEqual(sorted(eligible), ['testVeh', 'testVeh2', 'testVeh3'])
 
     def test_smallManhattan_kPaths_singlePathAvailable(self):
         """
         Assumption that k = 3
         There is only a single valid route to the destination, therefore kPaths() should return only a single route.
         """
-        sumo.K_MAX = 3
+        src.code.RoutingFunctions.K_MAX = 3
 
         # Setting up vehicle
         traci.route.add("startNode", ["499172074#4"])
@@ -1953,7 +2010,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         MAX_EDGE_RECURSIONS_RANGE away
         """
         # Maximum range is 3
-        sumo.MAX_EDGE_RECURSIONS_RANGE = 3
+        src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE = 3
 
         testing.Testing().setupGenericCarSM()
         traci.simulationStep()
@@ -1972,7 +2029,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         Checks that the values held in multiIncomingEdges variable matches the expected incoming edges up to
         MAX_RECURSIVE_INCOMING_EDGES (assumption that it is 3) away from the target edge
         """
-        sumo.MAX_EDGE_RECURSIONS_RANGE = 3
+        src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE = 3
         targetEdge = '511924978#1'
         expectedOutput = {'511924978#0', '497165756#3', '441405436', '569345515#0', '497165753#5', '569345508#1',
                           '5673497', '458180186#0', '497165756#2', '497165756#1'}

@@ -7,6 +7,11 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
+import sys
+import os
+sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
 import random
 import traci
 from copy import deepcopy
@@ -19,7 +24,7 @@ from src.code.SimulationFunctions import selectVehiclesBasedOnFairness
 __author__ = "Jonathan Harper"
 
 ##########################
-# USER-DEFINED VARIABLES #
+# USER-DEFINED CONSTANTS #
 ##########################
 
 # This is the penalisation factor given to the edge estimated travel time
@@ -38,6 +43,10 @@ FAIRNESS_WEIGHTING = 0.6
 REROUTING_PERIOD = 100
 # The threshold in which congestion is considered to have occurred
 CONGESTION_THRESHOLD = 0.5
+# This specifies the number of incoming edges away (the range) from the original edge to search
+MAX_EDGE_RECURSIONS_RANGE = 3
+# Specifies the number of up to k-alternative routes
+K_MAX = 3
 
 ########################
 # SIMULATION VARIABLES #
@@ -373,6 +382,7 @@ def kPaths(veh, currentEdge):
     currentEdgeIndex = bestRoute.index(currentEdge)
     # Altered route with the first element of the route being the current edge
     currentRoute = bestRoute[currentEdgeIndex:]
+    edgesSet.update(currentRoute)
 
     # Recording down the current best route and time
     bestTime = sim.getGlobalRoutePathTime(currentRoute)
@@ -386,13 +396,13 @@ def kPaths(veh, currentEdge):
         adjustedEdgeVehicle[edge] = edgeSpeedGlobal[edge]
 
     # Creating up to k-1 additional routes
-    while k < sumo.K_MAX:
+    while k < K_MAX:
         penalisePathTimeVehicle(veh, currentRoute, adjustedEdgeVehicle)
 
         traci.vehicle.rerouteTraveltime(veh, currentTravelTimes=False)
         newRoute = traci.vehicle.getRoute(veh)
-        newRouteTime = sim.getGlobalRoutePathTime(newRoute)
         currentRoute = newRoute[currentEdgeIndex:]
+        newRouteTime = sim.getGlobalRoutePathTime(currentRoute)
 
         # These are the routes which have already been selected
         currentEligibleRoutes = [x[1] for x in routes.values()]
@@ -516,14 +526,30 @@ def kPaths(veh, currentEdge):
 
     traci.vehicle.setRoute(veh, routeChoice[1])
 
-    # Settings the vehicle's internal edge travel time back to the global edge travel time (resetting back to global)
-    for edge in edgesSet:
-        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=edgeSpeedGlobal[edge])
+    resetVehicleAdaptedTravelTime(veh, edgesSet)
 
     # These are the routes which were available to be selected
     routeList = [x[1] for x in routes.values()]
 
     return routeList
+
+
+def resetVehicleAdaptedTravelTime(vehicle, edges):
+    """
+    After a vehicle has undergone rerouting, the vehicle's internal edge travel time should be reset back to the global
+    edge travel time (resetting back to global)
+
+    :param vehicle: The vehicle whose route should be reset
+    :param edges: The edges in which the route consists of
+    :return: The reset travel time
+    """
+    routeTime = 0
+    for edge in edges:
+        edgeTime = edgeSpeedGlobal[edge]
+        routeTime += edgeTime
+        traci.vehicle.setAdaptedTraveltime(vehID=vehicle, edgeID=edge, time=edgeTime)
+
+    return edgeTime
 
 
 def congestionOccurrence(k, routeList, bestTime, extraTime):
@@ -563,14 +589,25 @@ def penalisePathTimeVehicle(veh, route, adjustedEdge={}):
     Args:
         veh (str): The vehicle which needs to have the adjusted route time
         route (str): The route to be penalised for the vehicle, veh
-        adjustedEdge: FILL IN
+        adjustedEdge: This is the dictionary which contains the edge: travelTime. This keeps track of each individual
+        edge's adjusted travel time for a particular vehicle
     """
     for edge in route:
-        currentAdaptedTime = adjustedEdge[edge]
-        # Sets an adapted travel time for an edge (specifically for that vehicle)
-        adjustedEdge[edge] = currentAdaptedTime * PENALISATION
+        if adjustedEdge:
+            currentAdaptedTime = adjustedEdge[edge]
+            # Sets an adapted travel time for an edge (specifically for that vehicle)
+            adjustedEdge[edge] = currentAdaptedTime * PENALISATION
+            edgeTime = adjustedEdge[edge]
+        else:
+            currentAdaptedTime = traci.vehicle.getAdaptedTraveltime(veh, edgeID=edge, time=sim.getCurrentTimestep())
+            # If adapted time has never been initialised
+            if currentAdaptedTime == -1001.0:
+                edgeTime = traci.edge.getAdaptedTraveltime(edge, sim.getCurrentTimestep()) * PENALISATION
+            else:
+                edgeTime = currentAdaptedTime * PENALISATION
+
         # Penalise the travel time by a multiplication of PENALISATION
-        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=adjustedEdge[edge])
+        traci.vehicle.setAdaptedTraveltime(vehID=veh, edgeID=edge, time=edgeTime)
 
 
 def penalisePathTime(route):

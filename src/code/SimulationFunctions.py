@@ -162,12 +162,17 @@ def getGlobalRoutePathTime(route, realTime=True):
     return totalEstimatedTime
 
 
+def getCurrentTimestep():
+    """
+    :return: The current timestep, i
+    """
+    return traci.simulation.getCurrentTime()
+
+
 def getGlobalEdgeWeights():
     """
     Populates the global edge weight variable, which stores the edge and corresponding estimated travel time
     """
-    # Clears the mapping for this timestep
-    # edgeSpeedGlobal.clear()
     for edge in traci.edge.getIDList():
         travelTime = traci.edge.getTraveltime(edge)
         """
@@ -222,8 +227,8 @@ def updateVehicleTotalEstimatedTimeSpentInSystem(period=0):
     is calculated by incrementing the total time by the rerouting period IF they were present and WEREN'T stopped during
     the period between the previous and current rerouting period.
 
-    Afterwards, a check is made for vehicles which have
-    exited the simulation, once they have exited the simulation an accurate time is inserted???????????
+    Afterwards, a check is made for vehicles which have exited the simulation, once they have exited the simulation
+    an accurate time is inserted???????????
 
     Args:
         period (int): This is the time period in which this method is repeated

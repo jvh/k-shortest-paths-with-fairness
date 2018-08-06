@@ -14,6 +14,7 @@ import time
 
 import traci
 
+import src.code.RoutingFunctions
 from src.code import SumoConnection as sumo
 from src.code import RoutingFunctions as func
 from src.code import Database as db
@@ -88,7 +89,7 @@ def initialisation():
     """
     This initialises the simulation with settings which are relevant to all scenarios
     """
-    # Puts the map into memory so that access to SUMO through traci is not necessary for building other map
+    # Puts the map into memory so that access to SUMO through TraCI is not necessary for building other map
     # initialisation variables
     loadMap()
     createDirectedRoadNetwork()
@@ -103,27 +104,10 @@ def initialisation():
     sumo.timerStart = time.clock()
 
 
-def loadFairnessMetrics():
-    """
-    Collects the fairness metrics (for each vehicle) from the database and deposits them into the relevant variables
-    for use during simulation
-    """
-    database = db.Database()
-    fairnessMetrics = database.fairnessMetricsIntoDictionary()
-
-    for key in fairnessMetrics:
-        # Keys must be as strings due to the nature in which they're inserted during runtime (updating during runtime
-        # with the vehicle numbers)
-        func.vehicleReroutedAmount[str(key)] = fairnessMetrics[key][0]
-        func.cumulativeExtraTime[str(key)] = fairnessMetrics[key][1]
-        sim.timeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
-        sim.initialTimeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
-
-
 def loadMap():
     """
     This loads the map into a dictionary (of edges) which contains a list of lanes for each edge. This has been
-    implemented for efficiency purposes as many calls to SUMO through traci causes major slowdown.
+    implemented for efficiency purposes as many calls to SUMO through TraCI causes major slowdown.
 
     edgesNetwork is in the form {edge: [lanes]}: The edge with its corresponding lanes
     """
@@ -197,6 +181,23 @@ def collectEdgesWithMultiOutgoing():
                 reroutingLanes.add(lane)
 
 
+def loadFairnessMetrics():
+    """
+    Collects the fairness metrics (for each vehicle) from the database and deposits them into the relevant variables
+    for use during simulation
+    """
+    database = db.Database()
+    fairnessMetrics = database.fairnessMetricsIntoDictionary()
+
+    for key in fairnessMetrics:
+        # Keys must be as strings due to the nature in which they're inserted during runtime (updating during runtime
+        # with the vehicle numbers)
+        func.vehicleReroutedAmount[str(key)] = fairnessMetrics[key][0]
+        func.cumulativeExtraTime[str(key)] = fairnessMetrics[key][1]
+        sim.timeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
+        sim.initialTimeSpentInNetwork[str(key)] = fairnessMetrics[key][2]
+
+
 def populateFringeEdges(edge):
     """
     Populates the fringeEdges variable with the edges which exist on the fringe of the network
@@ -235,7 +236,7 @@ def recursiveIncomingEdges(edgeID, firstTime=False, edgeList=[], edgesToSearch=[
     Returns:
         str[]: The edges incoming to the initial edge up to MAX_EDGE_RECURSION_RANGE
     """
-    if (edgesToSearch or edgeOrderList[edgeID] != sumo.MAX_EDGE_RECURSIONS_RANGE) and not finished:
+    if (edgesToSearch or edgeOrderList[edgeID] != src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE) and not finished:
         if firstTime:
             edgeOrderList = {}
             edgeList = []
@@ -251,7 +252,7 @@ def recursiveIncomingEdges(edgeID, firstTime=False, edgeList=[], edgesToSearch=[
             # The new edge has range of edgeOrderList[edgeID] + 1 away from the original edge
             edgeOrderList[edge] = edgeOrderList[edgeID] + 1
             # If the range of the edge is below the maximum range then continue searching down that edge
-            if edgeOrderList[edge] < sumo.MAX_EDGE_RECURSIONS_RANGE:
+            if edgeOrderList[edge] < src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE:
                 edgesToSearch.append(edge)
 
         # There are still more edges to search
@@ -326,21 +327,5 @@ def getIncomingEdges(edgeID):
     incEdgeList = []
     # This is the list of incoming edges for edgeID; however, these are references to the object and not their IDs
     for edgeInc in sumo.net.getEdge(edgeID).getIncoming():
-        incEdgeList.append(edgeInc.getID())
-    return incEdgeList
-
-
-def getIncomingLanes(laneID):
-    """
-    INCOMPLETE
-    Returns a list of all of the incoming lanes to the specified lane
-
-    Args:
-        laneID (str): The identification of the edge to collect incoming edges
-    Returns:
-        incEdgeList (str[]): The edges incoming to edgeID
-    """
-    incEdgeList = []
-    for edgeInc in sumo.net.getLane(laneID).getIncoming():
         incEdgeList.append(edgeInc.getID())
     return incEdgeList
