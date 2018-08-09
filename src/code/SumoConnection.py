@@ -13,7 +13,7 @@ __author__ = "Jonathan Harper"
 ###############
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
-COMPUTER = False
+COMPUTER = True
 
 #############
 # IMPORTING #
@@ -156,10 +156,10 @@ timerEnd = 0
 # Settings main working directory
 if COMPUTER:
     # Main computer project configuration location
-    MAIN_PROJECT = "D:/comp3200-code/sumo-project-bitbucket/pycharm_project/src/configuration_files/"
+    MAIN_PROJECT = "D:/Users/Jonathan/Desktop/Work/sumo/ReroutingWithFairness/src/configuration_files/"
     SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
-    OUTPUT_DIRECTORY = "D:/Nina/Documents/google_drive/sumo/sumo_output/"
-    DATABASE_LOCATION = "D:/Nina/Documents/google_drive/sumo/database/output_database.sqlite"
+    OUTPUT_DIRECTORY = "D:/Users/Jonathan/Desktop/Work/sumo/sumo_output/"
+    DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database.sqlite"
 else:
     MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
     SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
