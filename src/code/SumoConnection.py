@@ -46,10 +46,10 @@ PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
 PRINT_ROAD_REROUTED = True
 # True if the camera should snap to the congested zone
-SNAP_TO_CONGESTION = False
+SNAP_TO_CONGESTION = True
 
 # This is the unique reference for the simulation in progress
-SIMULATION_REFERENCE = ""
+SIMULATION_REFERENCE = "testing_"
 
 # Specifies the scenario (map)
 #   0: Testing (small_manhattan)
@@ -57,7 +57,6 @@ SIMULATION_REFERENCE = ""
 #   2: newark
 #   3: Testing (newark)
 #   4: Southampton
-#   5: small_southampton
 SCENARIO = 4
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
@@ -74,7 +73,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 2500
+END_TIME = 10800
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -107,7 +106,7 @@ up on that single edge
 
 The simulation itself always runs on a single core. However, routing in SUMO or DUAROUTER can be parallelized by setting
 the option --device.rerouting.threads <INT> and --routing-threads <INT> respectively.
- 
+
 The python TraCI library allows controlling multiple simulations from a single script either by calling traci.connect 
 and storing the returned connection object or by calling traci.start(label=...) and retrieving the connection object 
 with traci.getConnection(label).
@@ -121,7 +120,7 @@ Add in 'tau' into the vehicles.xml (driver's reaction time)
 Edges might not be the best solution when choosing where congestion occurs because an edge can contain a number of 
 lanes which go to certain intersections, for example a left edge may invite a left turn, whereas a right edge may 
 Invite a right turn. This means that a single lane on an edge may be congested whereas the other lane may not be.
-   
+
 See img1.png for a good representation of this exact thing
 
 Write about using sets over lists for some things (NOT OWN WORDS BELOW)
@@ -173,14 +172,13 @@ TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cf
 NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
 TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
 SOUTHAMPTON_CONFIG = MAIN_PROJECT + "new_stuff/southampton/southampton.cfg"
-SMALL_SOUTHAMPTON_CONFIG = MAIN_PROJECT + "new_stuff/small_southampton/small_southampton.cfg"
 NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
 NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark_square.net.xml"
 NET_FILE_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/southampton/southampton.net.xml"
-NET_FILE_SMALL_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/small_southampton/small_southampton.net.xml"
 VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
 GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
 SOUTHAMPTON_DIRECTORY = MAIN_PROJECT + 'new_stuff/southampton/'
+
 
 try:
     # Small manhattan
@@ -193,8 +191,6 @@ try:
     elif SCENARIO == 4:
         net = sumolib.net.readNet(NET_FILE_SOUTHAMPTON)
         SCENARIO_DIRECTORY = SOUTHAMPTON_DIRECTORY
-    elif SCENARIO == 5:
-        net = sumolib.net.readNet(NET_FILE_SMALL_SOUTHAMPTON)
     else:
         sys.exit("Please enter a valid SCENARIO number")
 except TypeError:
@@ -229,7 +225,7 @@ class Main:
             str[]: The new configuration of SUMO based upon the options selected
         """
         # Input validation
-        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4 or SCENARIO == 5) and not (0 <= ALGORITHM <= 4):
+        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4) and not (0 <= ALGORITHM <= 4):
             sys.exit("Please enter a valid ALGORITHM number.")
 
         # Current date-time
@@ -245,8 +241,8 @@ class Main:
         tripInfo = OUTPUT_DIRECTORY + '{}/trips_info/trip_info_{}.xml'
 
         # Choosing the scenario
-        # sumoConfig.insert(1, "-c")
-        sumoConfig.insert(1, '--net-file')
+        sumoConfig.insert(1, "-c")
+        sumoConfig.insert(2, '--net-file')
         # Small manhattan test
         if SCENARIO == 0:
             sumoConfig.insert(2, TEST_SM_CONFIG)
@@ -339,10 +335,10 @@ class Main:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('newark/test', windowsDateTime))
 
-        # Southampton
+        # Newark test
         elif SCENARIO == 4:
-            # sumoConfig.insert(2, SOUTHAMPTON_CONFIG)
-            sumoConfig.insert(2, NET_FILE_SOUTHAMPTON)
+            sumoConfig.insert(2, SOUTHAMPTON_CONFIG)
+            sumoConfig.insert(4, NET_FILE_SOUTHAMPTON)
 
             # Outputs
             if OUTPUTS:
@@ -362,29 +358,6 @@ class Main:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('southampton', windowsDateTime))
 
-        # small_southampton
-        elif SCENARIO == 5:
-            sumoConfig.insert(2, SMALL_SOUTHAMPTON_CONFIG)
-            sumoConfig.insert(4, NET_FILE_SMALL_SOUTHAMPTON)
-
-            # Outputs
-            if OUTPUTS:
-                if SUMMARY_OUTPUT:
-                    sumoConfig.append("--summary")
-                    sumoConfig.append(summaryOut.format('small_southampton', windowsDateTime))
-                if VEHICLE_FULL_OUTPUT:
-                    sumoConfig.append("--full-output")
-                    sumoConfig.append(vehicleFullOut.format('small_southampton', windowsDateTime))
-                if VTK_OUTPUT:
-                    sumoConfig.append("--vtk-output")
-                    sumoConfig.append(vtkOut.format('small_southampton', windowsDateTime))
-                if FLOATING_CAR_DATA_OUTPUT:
-                    sumoConfig.append("--fcd-output")
-                    sumoConfig.append(floatingCarData.format('small_southampton', windowsDateTime))
-                if TRIPS_OUTPUT:
-                    sumoConfig.append("--tripinfo-output")
-                    sumoConfig.append(tripInfo.format('small_southampton', windowsDateTime))
-
         return sumoConfig
 
     def run(self, routeNumber='', testCase=False, instantStart=False, quitOnEnd=False, routeFile="", functionName=""):
@@ -393,7 +366,6 @@ class Main:
 
         Args:
             testCase (bool): True if test cases are being ran, closing traci only when prompted
-            routeNumber (int): This is the route file that we shall be accessing
             instantStart (bool): True if the simulation is required to be instantly started
             quitOnEnd (bool): True if the GUI should quit at the end of the simulation
             routeFile (str): The route file to use for execution
@@ -443,11 +415,16 @@ class Main:
         initialFunc.initialisation()
 
         algorithm = ''
-        if ALGORITHM == 0: algorithm = 'No Rerouting'
-        elif ALGORITHM == 1: algorithm = 'Dynamic Shortest Path'
-        elif ALGORITHM == 2: algorithm = 'k-Shortest Paths'
-        elif ALGORITHM == 3: algorithm = 'Dynamic Shortest Path with Fairness'
-        elif ALGORITHM == 4: algorithm = 'k-Shortest Paths with Fairness'
+        if ALGORITHM == 0:
+            algorithm = 'No Rerouting'
+        elif ALGORITHM == 1:
+            algorithm = 'Dynamic Shortest Path'
+        elif ALGORITHM == 2:
+            algorithm = 'k-Shortest Paths'
+        elif ALGORITHM == 3:
+            algorithm = 'Dynamic Shortest Path with Fairness'
+        elif ALGORITHM == 4:
+            algorithm = 'k-Shortest Paths with Fairness'
 
         print("Running with algorithm {}.".format(algorithm))
 
@@ -477,6 +454,8 @@ if __name__ == '__main__':
     """
     The main method for all running
     """
+    # main = Main()
+    # main.run(instantStart=True)
     main = Main()
     main.run(routeNumber=1, instantStart=True, quitOnEnd=True)
     # import src.code.SumoConnection as sumo
