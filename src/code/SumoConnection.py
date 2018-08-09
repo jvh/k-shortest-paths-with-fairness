@@ -241,8 +241,11 @@ class Main:
         tripInfo = OUTPUT_DIRECTORY + '{}/trips_info/trip_info_{}.xml'
 
         # Choosing the scenario
-        sumoConfig.insert(1, "-c")
-        sumoConfig.insert(2, '--net-file')
+        if SCENARIO == 4:
+            sumoConfig.insert(1, '--net-file')
+        else:
+            sumoConfig.insert(1, "-c")
+            sumoConfig.insert(2, '--net-file')
         # Small manhattan test
         if SCENARIO == 0:
             sumoConfig.insert(2, TEST_SM_CONFIG)
@@ -335,10 +338,9 @@ class Main:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('newark/test', windowsDateTime))
 
-        # Newark test
+        # Southampton
         elif SCENARIO == 4:
-            sumoConfig.insert(2, SOUTHAMPTON_CONFIG)
-            sumoConfig.insert(4, NET_FILE_SOUTHAMPTON)
+            sumoConfig.insert(2, NET_FILE_SOUTHAMPTON)
 
             # Outputs
             if OUTPUTS:
@@ -360,7 +362,7 @@ class Main:
 
         return sumoConfig
 
-    def run(self, routeNumber='', testCase=False, instantStart=False, quitOnEnd=False, routeFile="", functionName=""):
+    def run(self, testCase=False, instantStart=False, quitOnEnd=False, routeFile="", functionName=""):
         """
         Starts the simulation and Traci
 
@@ -385,15 +387,9 @@ class Main:
            --device.rerouting.threads: The number of threads used for rerouting purposes
            --depart
         """
-        if routeNumber == '':
-            sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
-                                 VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
-                                 '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
-        else:
-            sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
+        sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
                              VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
-                             '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3',
-                             '--route-files', '{}routes_{}.xml'.format(SCENARIO_DIRECTORY, routeNumber)]
+                             '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
 
         # Additional SUMO config options
         if instantStart:
@@ -457,7 +453,7 @@ if __name__ == '__main__':
     # main = Main()
     # main.run(instantStart=True)
     main = Main()
-    main.run(routeNumber=1, instantStart=True, quitOnEnd=True)
+    main.run(routeFile='{}routes_{}.xml'.format(SCENARIO_DIRECTORY, 1), instantStart=True, quitOnEnd=True)
     # import src.code.SumoConnection as sumo
     # import time
     # for i in range(2):
