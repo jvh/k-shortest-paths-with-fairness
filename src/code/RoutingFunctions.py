@@ -7,10 +7,19 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
+__author__ = "Jonathan Harper"
+
+###########
+# IMPORTS #
+###########
+
+from src.code import SumoConnection as sumo
 import sys
 import os
-sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
-os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
+if not sumo.COMPUTER:
+    sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+    os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 
 import random
 import traci
@@ -18,10 +27,7 @@ from copy import deepcopy
 
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import SimulationFunctions as sim
-from src.code import SumoConnection as sumo
 from src.code.SimulationFunctions import selectVehiclesBasedOnFairness
-
-__author__ = "Jonathan Harper"
 
 ##########################
 # USER-DEFINED CONSTANTS #
@@ -242,14 +248,19 @@ def selectVehiclesForRerouting(roadSegmentID, fairness=False):
                 # Finding the next edge and corresponding lane of the vehicle to see if it's current route shall be
                 # affected by the congestion existent on the lane
                 congestionIndex = oldRoute.index(edgeID)
-                nextEdge = oldRoute[congestionIndex + 1]
-                lanesInNextEdge = initialFunc.edgesNetwork[nextEdge]
+                # If the vehicle is on the last edge of it's destination, do not reroute
+                try:
+                    nextEdge = oldRoute[congestionIndex + 1]
 
-                """ Testing if lanes present in the edge after the congested edge (of the vehicle's route) are any of 
-                the outgoing lanes from the congested lane, otherwise do not reroute the vehicle as this congestion will
-                 not affect the vehicle """
-                if any(lane in lanesInNextEdge for lane in outgoingLanes):
-                    reroutingConsiderationList.append(vehicle)
+                    lanesInNextEdge = initialFunc.edgesNetwork[nextEdge]
+
+                    """ Testing if lanes present in the edge after the congested edge (of the vehicle's route) are any of 
+                    the outgoing lanes from the congested lane, otherwise do not reroute the vehicle as this congestion will
+                     not affect the vehicle """
+                    if any(lane in lanesInNextEdge for lane in outgoingLanes):
+                        reroutingConsiderationList.append(vehicle)
+                except IndexError:
+                    pass
             else:
                 # Vehicle must be affected by congestion as congestion is throughout the entire edge
                 reroutingConsiderationList.append(vehicle)
@@ -522,7 +533,7 @@ def kPaths(veh, currentEdge):
     routeChoiceTimeTaken = routeChoice[0]
     bestChoiceTimeTaken = routes['1_best'][0]
     extraTime = routeChoiceTimeTaken - bestChoiceTimeTaken
-    cumulativeExtraTime[veh] += extraTime
+    cumulativeExtraTime[veh] += abs(extraTime)
 
     traci.vehicle.setRoute(veh, routeChoice[1])
 

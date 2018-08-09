@@ -9,18 +9,31 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
-import sys
-import time
+__author__ = "Jonathan Harper"
 
+###########
+# IMPORTS #
+###########
+
+from src.code import SumoConnection as sumo
+import sys
+import os
+
+if not sumo.COMPUTER:
+    sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+    os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
+import time
 import traci
 
 import src.code.RoutingFunctions
-from src.code import SumoConnection as sumo
 from src.code import RoutingFunctions as func
 from src.code import Database as db
 from src.code import SimulationFunctions as sim
 
-__author__ = "Jonathan Harper"
+#############
+# VARIABLES #
+#############
 
 # This is the minimum edge/lane length to be considered for possible rerouting
 MIN_EDGE_LENGTH = 25

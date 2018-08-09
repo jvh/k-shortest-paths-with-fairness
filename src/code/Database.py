@@ -4,13 +4,21 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
+__author__ = "Jonathan Harper"
+
+###########
+# IMPORTS #
+###########
+
 import sqlite3
 
 from src.code import SumoConnection as sumo
 from src.code import RoutingFunctions as func
 from src.code import SimulationFunctions as sim
 
-__author__ = "Jonathan Harper"
+#############
+# VARIABLES #
+#############
 
 VEHICLE_OUTPUT_TABLE = "vehicle_output"
 SIMULATION_OUTPUT_TABLE = "simulation_output"
@@ -49,6 +57,8 @@ class Database:
                                     .format(SIMULATION_OUTPUT_TABLE))
             Database.cursor.execute("ALTER TABLE {} ADD COLUMN 'standardDeviationQOE' REAL"
                                     .format(SIMULATION_OUTPUT_TABLE))
+            Database.cursor.execute("ALTER TABLE {} ADD COLUMN 'meanCongestionLevel' REAL"
+                                    .format(SIMULATION_OUTPUT_TABLE))
         except sqlite3.OperationalError:
             print("Table \'{}\' already created".format(SIMULATION_OUTPUT_TABLE))
 
@@ -76,7 +86,7 @@ class Database:
         Database.conn.commit()
 
     @staticmethod
-    def populateDBSimulationTable(i, fairnessIndex, sd, simulationIndex):
+    def populateDBSimulationTable(i, fairnessIndex, sd, simulationIndex, meanCongestion):
         """
         Populates the DB with information regarding the finished simulation
 
@@ -85,18 +95,23 @@ class Database:
             fairnessIndex (float): The fairness index of the QOE's
             sd (float): The standard deviations of the QOE's
             simulationIndex (str): The index of the simulation (number and corresponding type)
+            meanCongestion (float): This is the % of congestion in the road network
         """
         simIndex = str(simulationIndex + str(i))
 
         Database.cursor.execute(
-            "INSERT OR REPLACE INTO {table} (simIndexTimestep, fairnessIndex, standardDeviationQOE) "
+            "INSERT OR REPLACE INTO {table} (simIndexTimestep, fairnessIndex, standardDeviationQOE, "
+            "meanCongestionLevel) "
             "VALUES ('{index}', "
             "COALESCE({fairness}, '{fairness}'), "
-            "COALESCE({standard}, '{standard}'))"
-            .format(table=SIMULATION_OUTPUT_TABLE,
+            "COALESCE({standard}, '{standard}'), "
+            "COALESCE({congestion}, '{congestion}'))"
+                .format(
+                    table=SIMULATION_OUTPUT_TABLE,
                     index=simIndex,
                     fairness=fairnessIndex,
-                    standard=sd))
+                    standard=sd,
+                    congestion=meanCongestion))
         # Commits any changes made to the database
         Database.conn.commit()
 

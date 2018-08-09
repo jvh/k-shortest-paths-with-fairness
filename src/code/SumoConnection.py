@@ -8,17 +8,25 @@
 
 __author__ = "Jonathan Harper"
 
+###############
+# WORKSTATION #
+###############
+
+# True if using main computer (allows for easy switching between laptop and main home computer)
+COMPUTER = False
+
 #############
 # IMPORTING #
 #############
 
 import sys
 import os
-# Inserts SUMO tools into the PATH (or PYTHONPATH)
 
-sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
-# This sets the environment variable 'SUMO_HOME'
-os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+if not COMPUTER:
+    # Inserts SUMO tools into the PATH (or PYTHONPATH)
+    sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+    # This sets the environment variable 'SUMO_HOME'
+    os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 
 import traci
 import sumolib
@@ -30,11 +38,8 @@ from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import Database as db
 
 ########################
-# USER-DEFINED OPTIONS (#
+# USER-DEFINED OPTIONS #
 ########################
-
-# True if using main computer (allows for easy switching between laptop and main home computer)
-COMPUTER = False
 
 # This enables major print statements for diagnostic purposes
 PRINT = False
@@ -44,21 +49,22 @@ PRINT_ROAD_REROUTED = True
 SNAP_TO_CONGESTION = True
 
 # This is the unique reference for the simulation in progress
-SIMULATION_REFERENCE = "testing"
+SIMULATION_REFERENCE = "testing_"
 
 # Specifies the scenario (map)
 #   0: Testing (small_manhattan)
 #   1: small_manhattan
 #   2: newark
 #   3: Testing (newark)
-SCENARIO = 2
+#   4: Southampton
+SCENARIO = 4
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
 #   2: k-Shortest Path
 #   3: Dynamic Rerouting with Fairness
 #   4: k-Shortest Path with fairness
-ALGORITHM = 2
+ALGORITHM = 4
 # Whether or not to calculate the A* distances for this map
 A_STAR_DISTANCES = True
 
@@ -67,7 +73,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 1800
+END_TIME = 10800
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -78,7 +84,7 @@ STEP_LENGTH = '1.0'
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
-OUTPUTS = False
+OUTPUTS = True
 #   --summary: Prints out a summary of the information
 SUMMARY_OUTPUT = True
 #   --full-output: Builds a file containing the full dump of various information regarding the positioning of vehicles
@@ -165,8 +171,10 @@ SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
 TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cfg"
 NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
 TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
+SOUTHAMPTON_CONFIG = MAIN_PROJECT + "new_stuff/southampton/southampton.cfg"
 NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
 NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark_square.net.xml"
+NET_FILE_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/southampton/southampton.net.xml"
 VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
 GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
 
@@ -178,6 +186,8 @@ try:
     # Newark
     elif SCENARIO == 2 or SCENARIO == 3:
         net = sumolib.net.readNet(NET_FILE_NEWARK)
+    elif SCENARIO == 4:
+        net = sumolib.net.readNet(NET_FILE_SOUTHAMPTON)
     else:
         sys.exit("Please enter a valid SCENARIO number")
 except TypeError:
@@ -212,7 +222,7 @@ class Main:
             str[]: The new configuration of SUMO based upon the options selected
         """
         # Input validation
-        if (SCENARIO == 1 or SCENARIO == 2) and not (0 <= ALGORITHM <= 4):
+        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4) and not (0 <= ALGORITHM <= 4):
             sys.exit("Please enter a valid ALGORITHM number.")
 
         # Current date-time
@@ -321,6 +331,29 @@ class Main:
                 if TRIPS_OUTPUT:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('newark/test', windowsDateTime))
+
+        # Newark test
+        elif SCENARIO == 4:
+            sumoConfig.insert(2, SOUTHAMPTON_CONFIG)
+            sumoConfig.insert(4, NET_FILE_SOUTHAMPTON)
+
+            # Outputs
+            if OUTPUTS:
+                if SUMMARY_OUTPUT:
+                    sumoConfig.append("--summary")
+                    sumoConfig.append(summaryOut.format('southampton', windowsDateTime))
+                if VEHICLE_FULL_OUTPUT:
+                    sumoConfig.append("--full-output")
+                    sumoConfig.append(vehicleFullOut.format('southampton', windowsDateTime))
+                if VTK_OUTPUT:
+                    sumoConfig.append("--vtk-output")
+                    sumoConfig.append(vtkOut.format('southampton', windowsDateTime))
+                if FLOATING_CAR_DATA_OUTPUT:
+                    sumoConfig.append("--fcd-output")
+                    sumoConfig.append(floatingCarData.format('southampton', windowsDateTime))
+                if TRIPS_OUTPUT:
+                    sumoConfig.append("--tripinfo-output")
+                    sumoConfig.append(tripInfo.format('southampton', windowsDateTime))
 
         return sumoConfig
 

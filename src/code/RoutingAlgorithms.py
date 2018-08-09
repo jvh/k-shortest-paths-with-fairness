@@ -4,14 +4,25 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
-import traci
+__author__ = "Jonathan Harper"
+
+###########
+# IMPORTS #
+###########
 
 from src.code import SumoConnection as sumo
+import sys
+import os
+
+if not sumo.COMPUTER:
+    sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+    os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
+import traci
+
 from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import SimulationFunctions as sim
-
-__author__ = "Jonathan Harper"
 
 
 class ReroutingAlgorithms:
@@ -44,7 +55,7 @@ class ReroutingAlgorithms:
         elif sumo.ALGORITHM == 4:
             func.rerouteSelectedVehicles(road, kPathsBool=True, fairness=True)
 
-    def determineReroutingBasedOnCongestion(self, road, roadBool, congestionBool):
+    def determineReroutingBasedOnCongestion(self, road, roadBool, congestionBool, congestionLevel):
         """
         This takes the current road and, based on the congestion levels of the road, checks whether or not the vehicles
         on that road should be eligible for rerouting.
@@ -52,6 +63,7 @@ class ReroutingAlgorithms:
         :param road: The road segment which is being considered.
         :param roadBool: True if lane, False if edge.
         :param congestionBool: True if road congested
+        :param congestionLevel: This holds the {edge: congestion} for the road network
         """
         congBool = congestionBool
 
@@ -59,6 +71,8 @@ class ReroutingAlgorithms:
             congestion = sim.returnCongestionLevelLane(road)
         else:
             congestion = sim.returnCongestionLevelEdge(road)
+
+        sim.roadCongestion[road] = congestion
 
         if congestion >= func.CONGESTION_THRESHOLD:
             if not congBool:
@@ -76,6 +90,7 @@ class ReroutingAlgorithms:
                 if roadBool:
                     edge = initialFunc.lanesNetwork[road]
                     sim.getEdge2DCoordinates(edge)
+
                 else:
                     sim.getEdge2DCoordinates(road)
 
@@ -108,6 +123,8 @@ class ReroutingAlgorithms:
 
             """ Selecting and rerouting vehicles at points of congestion """
 
+            # Resets the congestion level for each road segment
+            sim.roadCongestion = {}
             # Resets the set of vehicles which have undergone rerouting for the previous rerouting period
             func.reroutedVehicles = set()
             # True when any congestion is detected
@@ -115,20 +132,23 @@ class ReroutingAlgorithms:
 
             # Processing the lanes existing on edges with multiple outgoing edges
             for lane in initialFunc.reroutingLanes:
-                congestionBool = self.determineReroutingBasedOnCongestion(lane, True, congestionBool)
+                congestionBool = self.determineReroutingBasedOnCongestion(lane, True, congestionBool,
+                                                                          sim.roadCongestion)
 
-            print(congestionBool)
             print()
 
             # Processing those edges which only have a single outgoing edge (all lanes lead to the same position)
             for edge in initialFunc.singleOutgoingEdges:
-                congestionBool = self.determineReroutingBasedOnCongestion(edge, False, congestionBool)
+                congestionBool = self.determineReroutingBasedOnCongestion(edge, False, congestionBool,
+                                                                          sim.roadCongestion)
 
             # Working out fairness index + standard deviation of QOE values
             fairnessIndex, standardDeviation = sim.fairnessIndex()
+            # Working out the mean congestion level for each of the edges
 
             # Update the database with the up-to-date values
-            database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE)
+            database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE,
+                                               sim.calculateAverageRoadCongestion())
             database.populateDBVehicleTable()
 
             # Reset

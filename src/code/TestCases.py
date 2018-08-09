@@ -4,13 +4,20 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
+__author__ = "Jonathan Harper"
+
+###########
+# IMPORTS #
+###########
+
+from src.code import SumoConnection as sumo
 import sys
 import os
 
-import src.code.RoutingFunctions
+if not sumo.COMPUTER:
+    sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+    os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 
-sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
-os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 import random
 import unittest
 import warnings
@@ -19,17 +26,19 @@ import sys
 import traci
 from copy import deepcopy
 
-from src.code import SumoConnection as sumo
+import src.code.RoutingFunctions
 from src.code import RoutingFunctions as func
 from src.code import Testing as testing
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import SimulationFunctions as sim
 from src.code import Database as db
 
-__author__ = "Jonathan Harper"
+#############
+# VARIABLES #
+#############
 
 # True when testing the database functionality
-databaseTestingBool = False
+databaseTestingBool = True
 
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
@@ -847,10 +856,10 @@ class DatabaseTests(unittest.TestCase):
                 self.assertEqual(standardDeviation, 1.1990119747104309)
                 self.assertEqual(fairnessIndex, 0.7601976050579138)
 
-                database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, "Test")
+                database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, "Test", 0)
 
                 self.assertEqual(database.getDBTableContents(db.SIMULATION_OUTPUT_TABLE),
-                                 [('Test80', fairnessIndex, standardDeviation)])
+                                 [('Test80', fairnessIndex, standardDeviation, 0)])
 
     def test_smallManhattan_fairnessMetricsIntoDictionary(self):
         """
@@ -2036,6 +2045,22 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         initialFunc.initialisation()
         self.assertEqual(initialFunc.multiIncomingEdges[targetEdge], expectedOutput)
+
+    def test_calculateAverageRoadCongestion(self):
+        """
+        Ensures that the calculateAverageRoadCongestion() function works
+        :return: True if correct value returned
+        """
+        sim.roadCongestion = {}
+        sim.roadCongestion['road_1'] = 0.5
+        sim.roadCongestion['road_2'] = 0.6
+        sim.roadCongestion['road_3'] = 0.2
+
+        manualCalculation = (0.5 + 0.6 + 0.2) / 3
+        functionCalculation = sim.calculateAverageRoadCongestion()
+
+        self.assertEqual(manualCalculation, functionCalculation)
+
 
 class NewarkTests(unittest.TestCase):
     """

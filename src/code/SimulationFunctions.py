@@ -6,16 +6,31 @@
 # Author: Jonathan Harper                                                                                         #
 ###################################################################################################################
 
+__author__ = "Jonathan Harper"
+
+###########
+# IMPORTS #
+###########
+
+from src.code import SumoConnection as sumo
+import sys
+import os
+
+if not sumo.COMPUTER:
+    sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
+    os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
+
 import collections
 import numpy as np
 import sys
 import traci
 
-from src.code import SumoConnection as sumo
 from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
 
-__author__ = "Jonathan Harper"
+#############
+# VARIABLES #
+#############
 
 # This contains data concerning if the vehicle was in a 'stopped' state (not defined as waiting, e.g. waiting at a
 # traffic light) in the last rerouting period. vehicle: stoppedState (for last rerouting period)
@@ -35,6 +50,8 @@ arrivalTime = {}
 departureTime = {}
 # Stores a list of all vehicles in network currently
 vehiclesInNetwork = []
+# Stores the congestion level for each road segment {road segment: congestion level}
+roadCongestion = {}
 
 
 def returnCongestionLevelEdge(edgeID):
@@ -59,6 +76,24 @@ def returnCongestionLevelLane(laneID):
          float: The occupancy (congestion) of the road, in percentage
     """
     return traci.lane.getLastStepOccupancy(laneID)
+
+
+def calculateAverageRoadCongestion():
+    """
+    Calculates the average road network congestion level
+
+    :return: The mean road network congestion
+    """
+    numberOfEntries = len(roadCongestion)
+    # All congestion entries added together
+    totalCongestion = sum(roadCongestion.values())
+
+    if totalCongestion > 0:
+        meanCongestion = totalCongestion/numberOfEntries
+    else:
+        meanCongestion = 0
+
+    return meanCongestion
 
 
 def getEdgeOneAheadVehicleRoute(vehID):
@@ -212,11 +247,16 @@ def fairnessIndex():
     # All QOE values and highest and lowest values observed
     _, qoe, highestQOE, lowestQOE = selectVehiclesBasedOnFairness(vehiclesList)
 
-    qoeValues = list(qoe.values())
+    if lowestQOE < highestQOE:
+        qoeValues = list(qoe.values())
 
-    standardDeviation = np.nanstd(np.where(np.isclose(qoeValues, 0), np.nan, qoeValues))
+        standardDeviation = np.nanstd(np.where(np.isclose(qoeValues, 0), np.nan, qoeValues))
 
-    fairnessIndexCalculated = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
+        fairnessIndexCalculated = 1 - ((2 * standardDeviation) / (highestQOE - lowestQOE))
+    else:
+        # Everything is completely fair
+        fairnessIndexCalculated = 1
+        standardDeviation = 0
 
     return fairnessIndexCalculated, standardDeviation
 
