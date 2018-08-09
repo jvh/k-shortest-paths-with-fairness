@@ -13,7 +13,7 @@ __author__ = "Jonathan Harper"
 ###############
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
-COMPUTER = True
+COMPUTER = False
 
 #############
 # IMPORTING #
@@ -46,10 +46,10 @@ PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
 PRINT_ROAD_REROUTED = True
 # True if the camera should snap to the congested zone
-SNAP_TO_CONGESTION = True
+SNAP_TO_CONGESTION = False
 
 # This is the unique reference for the simulation in progress
-SIMULATION_REFERENCE = "testing_"
+SIMULATION_REFERENCE = ""
 
 # Specifies the scenario (map)
 #   0: Testing (small_manhattan)
@@ -57,6 +57,7 @@ SIMULATION_REFERENCE = "testing_"
 #   2: newark
 #   3: Testing (newark)
 #   4: Southampton
+#   5: small_southampton
 SCENARIO = 4
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
@@ -73,7 +74,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 10800
+END_TIME = 2500
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -172,11 +173,14 @@ TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cf
 NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
 TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
 SOUTHAMPTON_CONFIG = MAIN_PROJECT + "new_stuff/southampton/southampton.cfg"
+SMALL_SOUTHAMPTON_CONFIG = MAIN_PROJECT + "new_stuff/small_southampton/small_southampton.cfg"
 NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
 NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark_square.net.xml"
 NET_FILE_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/southampton/southampton.net.xml"
+NET_FILE_SMALL_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/small_southampton/small_southampton.net.xml"
 VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
 GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
+SOUTHAMPTON_DIRECTORY = MAIN_PROJECT + 'new_stuff/southampton/'
 
 try:
     # Small manhattan
@@ -188,6 +192,9 @@ try:
         net = sumolib.net.readNet(NET_FILE_NEWARK)
     elif SCENARIO == 4:
         net = sumolib.net.readNet(NET_FILE_SOUTHAMPTON)
+        SCENARIO_DIRECTORY = SOUTHAMPTON_DIRECTORY
+    elif SCENARIO == 5:
+        net = sumolib.net.readNet(NET_FILE_SMALL_SOUTHAMPTON)
     else:
         sys.exit("Please enter a valid SCENARIO number")
 except TypeError:
@@ -222,7 +229,7 @@ class Main:
             str[]: The new configuration of SUMO based upon the options selected
         """
         # Input validation
-        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4) and not (0 <= ALGORITHM <= 4):
+        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4 or SCENARIO == 5) and not (0 <= ALGORITHM <= 4):
             sys.exit("Please enter a valid ALGORITHM number.")
 
         # Current date-time
@@ -238,8 +245,8 @@ class Main:
         tripInfo = OUTPUT_DIRECTORY + '{}/trips_info/trip_info_{}.xml'
 
         # Choosing the scenario
-        sumoConfig.insert(1, "-c")
-        sumoConfig.insert(2, '--net-file')
+        # sumoConfig.insert(1, "-c")
+        sumoConfig.insert(1, '--net-file')
         # Small manhattan test
         if SCENARIO == 0:
             sumoConfig.insert(2, TEST_SM_CONFIG)
@@ -332,10 +339,10 @@ class Main:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('newark/test', windowsDateTime))
 
-        # Newark test
+        # Southampton
         elif SCENARIO == 4:
-            sumoConfig.insert(2, SOUTHAMPTON_CONFIG)
-            sumoConfig.insert(4, NET_FILE_SOUTHAMPTON)
+            # sumoConfig.insert(2, SOUTHAMPTON_CONFIG)
+            sumoConfig.insert(2, NET_FILE_SOUTHAMPTON)
 
             # Outputs
             if OUTPUTS:
@@ -355,14 +362,38 @@ class Main:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('southampton', windowsDateTime))
 
+        # small_southampton
+        elif SCENARIO == 5:
+            sumoConfig.insert(2, SMALL_SOUTHAMPTON_CONFIG)
+            sumoConfig.insert(4, NET_FILE_SMALL_SOUTHAMPTON)
+
+            # Outputs
+            if OUTPUTS:
+                if SUMMARY_OUTPUT:
+                    sumoConfig.append("--summary")
+                    sumoConfig.append(summaryOut.format('small_southampton', windowsDateTime))
+                if VEHICLE_FULL_OUTPUT:
+                    sumoConfig.append("--full-output")
+                    sumoConfig.append(vehicleFullOut.format('small_southampton', windowsDateTime))
+                if VTK_OUTPUT:
+                    sumoConfig.append("--vtk-output")
+                    sumoConfig.append(vtkOut.format('small_southampton', windowsDateTime))
+                if FLOATING_CAR_DATA_OUTPUT:
+                    sumoConfig.append("--fcd-output")
+                    sumoConfig.append(floatingCarData.format('small_southampton', windowsDateTime))
+                if TRIPS_OUTPUT:
+                    sumoConfig.append("--tripinfo-output")
+                    sumoConfig.append(tripInfo.format('small_southampton', windowsDateTime))
+
         return sumoConfig
 
-    def run(self, testCase=False, instantStart=False, quitOnEnd=False, routeFile="", functionName=""):
+    def run(self, routeNumber='', testCase=False, instantStart=False, quitOnEnd=False, routeFile="", functionName=""):
         """
         Starts the simulation and Traci
 
         Args:
             testCase (bool): True if test cases are being ran, closing traci only when prompted
+            routeNumber (int): This is the route file that we shall be accessing
             instantStart (bool): True if the simulation is required to be instantly started
             quitOnEnd (bool): True if the GUI should quit at the end of the simulation
             routeFile (str): The route file to use for execution
@@ -382,9 +413,15 @@ class Main:
            --device.rerouting.threads: The number of threads used for rerouting purposes
            --depart
         """
-        sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
+        if routeNumber == '':
+            sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
+                                 VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
+                                 '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
+        else:
+            sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
                              VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
-                             '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
+                             '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3',
+                             '--route-files', '{}routes_{}.xml'.format(SCENARIO_DIRECTORY, routeNumber)]
 
         # Additional SUMO config options
         if instantStart:
@@ -406,7 +443,7 @@ class Main:
         initialFunc.initialisation()
 
         algorithm = ''
-        if ALGORITHM == 0: algorithm = 'No Rerouting';
+        if ALGORITHM == 0: algorithm = 'No Rerouting'
         elif ALGORITHM == 1: algorithm = 'Dynamic Shortest Path'
         elif ALGORITHM == 2: algorithm = 'k-Shortest Paths'
         elif ALGORITHM == 3: algorithm = 'Dynamic Shortest Path with Fairness'
@@ -441,4 +478,11 @@ if __name__ == '__main__':
     The main method for all running
     """
     main = Main()
-    main.run(instantStart=True)
+    main.run(routeNumber=1, instantStart=True, quitOnEnd=True)
+    # import src.code.SumoConnection as sumo
+    # import time
+    # for i in range(2):
+    #     sumo.SIMULATION_REFERENCE = "testing_{}_".format(i+1)
+    #     main = Main()
+    #     main.run(routeNumber=i+1, instantStart=True)
+    #     time.sleep(10)

@@ -38,7 +38,7 @@ class Testing:
         """
         # Adding vehicle and associated route
         traci.route.add(routeName, startPos)
-        traci.vehicle.addFull(name, routeName, typeID="car")
+        traci.vehicle.add(name, routeName, typeID="car")
 
         if zoom:
             # GUI tracking vehicle and zoom

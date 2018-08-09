@@ -898,7 +898,7 @@ class SmallSouthamptonTests(unittest.TestCase):
             func.reroutedVehicles = set()
 
             self.mainMethod = sumo.Main()
-            self.mainMethod.run(True, True, True, functionName=self.id())
+            self.mainMethod.run(testCase=True, instantStart=True, quitOnEnd=True, functionName=self.id())
 
     def tearDown(self):
         """

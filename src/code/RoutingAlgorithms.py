@@ -13,6 +13,7 @@ __author__ = "Jonathan Harper"
 from src.code import SumoConnection as sumo
 import sys
 import os
+import datetime
 
 if not sumo.COMPUTER:
     sys.path.insert(1, '/Users/jonathan/Documents/comp3200/sumo/tools')
@@ -110,9 +111,10 @@ class ReroutingAlgorithms:
         # Checks for vehicle departure and arrival into the simulation
         sim.vehiclesDepartedAndArrived(i)
 
-        # After 20 minutes have elapsed
+        # After 3 hours have elapsed
         if i == sumo.END_TIME:
             initialFunc.endSim(i)
+            print('Mean time taken for rerouting: {}'.format(sum(sim.timeTaken)/len(sim.timeTaken)))
 
         # Every REROUTING_PERIOD
         if i % func.REROUTING_PERIOD == 0 and i >= 1:
@@ -130,21 +132,30 @@ class ReroutingAlgorithms:
             # True when any congestion is detected
             congestionBool = False
 
+            startTime = datetime.datetime.now()
+
             # Processing the lanes existing on edges with multiple outgoing edges
             for lane in initialFunc.reroutingLanes:
                 congestionBool = self.determineReroutingBasedOnCongestion(lane, True, congestionBool,
                                                                           sim.roadCongestion)
 
-            print()
+            if congestionBool: print()
 
             # Processing those edges which only have a single outgoing edge (all lanes lead to the same position)
             for edge in initialFunc.singleOutgoingEdges:
                 congestionBool = self.determineReroutingBasedOnCongestion(edge, False, congestionBool,
                                                                           sim.roadCongestion)
 
+            # Only work out time taken if rerouting has taken place
+            if congestionBool:
+                endTime = datetime.datetime.now()
+                sim.getTimeTaken(startTime, endTime)
+
             # Working out fairness index + standard deviation of QOE values
             fairnessIndex, standardDeviation = sim.fairnessIndex()
             # Working out the mean congestion level for each of the edges
+
+            why = sumo.SIMULATION_REFERENCE
 
             # Update the database with the up-to-date values
             database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE,

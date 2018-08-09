@@ -52,6 +52,8 @@ departureTime = {}
 vehiclesInNetwork = []
 # Stores the congestion level for each road segment {road segment: congestion level}
 roadCongestion = {}
+# A list of the time taken for the algorithm to run
+timeTaken = []
 
 
 def returnCongestionLevelEdge(edgeID):
@@ -64,6 +66,19 @@ def returnCongestionLevelEdge(edgeID):
          float: The occupancy (congestion) of the road, in percentage
     """
     return traci.edge.getLastStepOccupancy(edgeID)
+
+
+def getTimeTaken(startTime, endTime):
+    """
+    Records the time taken to perform a task given a start and end time
+
+    :param startTime: The starting time
+    :param endTime: The ending time
+    :return: The time taken
+    """
+    time = endTime - startTime
+    timeTaken.append(time.total_seconds())
+    return time.total_seconds()
 
 
 def returnCongestionLevelLane(laneID):

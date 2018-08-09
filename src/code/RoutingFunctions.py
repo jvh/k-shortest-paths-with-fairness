@@ -52,7 +52,7 @@ CONGESTION_THRESHOLD = 0.5
 # This specifies the number of incoming edges away (the range) from the original edge to search
 MAX_EDGE_RECURSIONS_RANGE = 3
 # Specifies the number of up to k-alternative routes
-K_MAX = 3
+K_MAX = 4
 
 ########################
 # SIMULATION VARIABLES #
