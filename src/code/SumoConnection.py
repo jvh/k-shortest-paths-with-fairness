@@ -541,7 +541,7 @@ if __name__ == '__main__':
     func.KPATH_MAX_ALLOWED_TIME = 1.2
     func.K_MAX = 5
 
-    for i in range(1):
+    for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.2_{}_".format(i + 1)
         print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
                                                                          func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
@@ -554,7 +554,7 @@ if __name__ == '__main__':
     sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database7.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.4
 
-    for i in range(1):
+    for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.4_{}_".format(i + 1)
         print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
                                                                          func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
