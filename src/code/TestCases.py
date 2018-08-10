@@ -38,7 +38,7 @@ from src.code import Database as db
 #############
 
 # True when testing the database functionality
-databaseTestingBool = True
+databaseTestingBool = False
 
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):

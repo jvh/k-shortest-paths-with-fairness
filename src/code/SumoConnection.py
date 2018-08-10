@@ -13,7 +13,7 @@ __author__ = "Jonathan Harper"
 ###############
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
-COMPUTER = False
+COMPUTER = True
 MAIN_COMP = True
 
 #############
@@ -470,7 +470,7 @@ if __name__ == '__main__':
     func.KPATH_MAX_ALLOWED_TIME = 1.2
     func.K_MAX = 4
 
-    for i in range(1):
+    for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.2_{}_".format(i+1)
         print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
                                                                          func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
@@ -483,8 +483,10 @@ if __name__ == '__main__':
     sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database2.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.4
 
-    for i in range(1):
+    for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.4_{}_".format(i+1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
@@ -496,6 +498,8 @@ if __name__ == '__main__':
 
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.6_{}_".format(i+1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
@@ -507,6 +511,8 @@ if __name__ == '__main__':
 
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.8_{}_".format(i+1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
@@ -518,6 +524,8 @@ if __name__ == '__main__':
 
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=4,K_MAX=2.0_{}_".format(i+1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
@@ -548,6 +556,8 @@ if __name__ == '__main__':
 
     for i in range(1):
         sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.4_{}_".format(i + 1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
                  instantStart=True, quitOnEnd=True)
@@ -559,6 +569,8 @@ if __name__ == '__main__':
 
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.6_{}_".format(i + 1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
                  instantStart=True, quitOnEnd=True)
@@ -570,6 +582,8 @@ if __name__ == '__main__':
 
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.8_{}_".format(i + 1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
                  instantStart=True, quitOnEnd=True)
@@ -581,6 +595,8 @@ if __name__ == '__main__':
 
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=5,K_MAX=2.0_{}_".format(i + 1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
                  instantStart=True, quitOnEnd=True)
