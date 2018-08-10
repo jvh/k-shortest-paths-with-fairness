@@ -38,7 +38,7 @@ from src.code import Database as db
 #############
 
 # True when testing the database functionality
-databaseTestingBool = False
+databaseTestingBool = True
 
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
@@ -1986,8 +1986,9 @@ class SmallSouthamptonTests(unittest.TestCase):
         # Setting up vehicle
         traci.route.add("startNode", ["499172074#4"])
         traci.vehicle.addFull("testVeh", "startNode", typeID="car")
-        traci.gui.trackVehicle("View #0", "testVeh")
-        traci.gui.setZoom("View #0", traci.gui.getZoom() * sumo.ZOOM_FACTOR)
+        if sumo.SUMO_GUI:
+            traci.gui.trackVehicle("View #0", "testVeh")
+            traci.gui.setZoom("View #0", traci.gui.getZoom() * sumo.ZOOM_FACTOR)
         traci.vehicle.changeTarget("testVeh", "499172074#9")
 
         traci.vehicle.rerouteTraveltime("testVeh")

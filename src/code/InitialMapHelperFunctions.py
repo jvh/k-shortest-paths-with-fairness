@@ -79,12 +79,15 @@ def endSim(i, manual=True, database=False):
         database = db.Database()
         database.populateDBVehicleTable()
 
-    if manual:
-        sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
-                                                                                         sumo.timerStart))
-    else:
-        sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
-                                                                                         sumo.timerStart))
+    if sim.timeTaken:
+        print('Mean time taken for rerouting: {}'.format(sum(sim.timeTaken) / len(sim.timeTaken)))
+
+    # if manual:
+    #     sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
+    #                                                                                      sumo.timerStart))
+    # else:
+    #     sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
+    #                                                                                      sumo.timerStart))
 
 
 def endSimWithError(error):

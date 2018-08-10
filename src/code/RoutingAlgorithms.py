@@ -87,11 +87,11 @@ class ReroutingAlgorithms:
                 else:
                     print("***** EDGE {} REROUTE ********".format(road))
 
-            if sumo.SNAP_TO_CONGESTION:
+            # Only snaps to congestion given that the GUI is enabled and the SNAP_TO_CONGESTION option is also enabled
+            if sumo.SNAP_TO_CONGESTION and sumo.SUMO_GUI:
                 if roadBool:
                     edge = initialFunc.lanesNetwork[road]
                     sim.getEdge2DCoordinates(edge)
-
                 else:
                     sim.getEdge2DCoordinates(road)
 
@@ -110,11 +110,6 @@ class ReroutingAlgorithms:
         traci.simulationStep()
         # Checks for vehicle departure and arrival into the simulation
         sim.vehiclesDepartedAndArrived(i)
-
-        # After 3 hours have elapsed
-        if i == sumo.END_TIME:
-            initialFunc.endSim(i)
-            print('Mean time taken for rerouting: {}'.format(sum(sim.timeTaken)/len(sim.timeTaken)))
 
         # Every REROUTING_PERIOD
         if i % func.REROUTING_PERIOD == 0 and i >= 1:
@@ -153,9 +148,6 @@ class ReroutingAlgorithms:
 
             # Working out fairness index + standard deviation of QOE values
             fairnessIndex, standardDeviation = sim.fairnessIndex()
-            # Working out the mean congestion level for each of the edges
-
-            why = sumo.SIMULATION_REFERENCE
 
             # Update the database with the up-to-date values
             database.populateDBSimulationTable(i, fairnessIndex, standardDeviation, sumo.SIMULATION_REFERENCE,
@@ -164,3 +156,7 @@ class ReroutingAlgorithms:
 
             # Reset
             sim.vehiclesInNetwork = []
+
+        # After 3 hours have elapsed
+        if i == sumo.END_TIME:
+            initialFunc.endSim(i)

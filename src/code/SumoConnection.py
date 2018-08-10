@@ -41,6 +41,7 @@ from src.code import Database as db
 # USER-DEFINED OPTIONS #
 ########################
 
+SUMO_GUI = False
 # This enables major print statements for diagnostic purposes
 PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
@@ -49,7 +50,7 @@ PRINT_ROAD_REROUTED = True
 SNAP_TO_CONGESTION = True
 
 # This is the unique reference for the simulation in progress
-SIMULATION_REFERENCE = "testing_"
+SIMULATION_REFERENCE = ""
 
 # Specifies the scenario (map)
 #   0: Testing (small_manhattan)
@@ -73,7 +74,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 10800
+END_TIME = 3000
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -162,7 +163,10 @@ if COMPUTER:
     DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database.sqlite"
 else:
     MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
-    SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
+    if SUMO_GUI:
+        SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo-gui"
+    else:
+        SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo"
     OUTPUT_DIRECTORY = "/Users/jonathan/Documents/comp3200/sumo_output/"
     DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
 
@@ -428,7 +432,7 @@ class Main:
             test.beforeLoop(functionName)
 
             for i in range(START_TIME, END_TIME):
-                test.duringLoop(i)
+                test.duringLoop(i+1)
         else:
             # No rerouting
             if ALGORITHM == 0:
@@ -438,7 +442,7 @@ class Main:
                 # Initialising the database
                 database = db.Database()
                 for i in range(START_TIME, END_TIME):
-                    reroutingAlgorithm.main(i, database)
+                    reroutingAlgorithm.main(i+1, database)
 
         # If not running test cases close when the END_TIME is reached
         if not testCase:
@@ -452,12 +456,39 @@ if __name__ == '__main__':
     """
     # main = Main()
     # main.run(instantStart=True)
-    main = Main()
-    main.run(routeFile='{}routes_{}.xml'.format(SCENARIO_DIRECTORY, 1), instantStart=True, quitOnEnd=True)
-    # import src.code.SumoConnection as sumo
-    # import time
-    # for i in range(2):
-    #     sumo.SIMULATION_REFERENCE = "testing_{}_".format(i+1)
-    #     main = Main()
-    #     main.run(routeNumber=i+1, instantStart=True)
-    #     time.sleep(10)
+
+    import src.code.SumoConnection as sumo
+    import time
+    import src.code.RoutingFunctions as func
+
+    func.KPATH_MAX_ALLOWED_TIME = 1.4
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.4_{}_".format(i+1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    func.KPATH_MAX_ALLOWED_TIME = 1.6
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.6_{}_".format(i+1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    func.KPATH_MAX_ALLOWED_TIME = 1.8
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.8_{}_".format(i+1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    func.KPATH_MAX_ALLOWED_TIME = 2.0
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=2.0_{}_".format(i+1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)

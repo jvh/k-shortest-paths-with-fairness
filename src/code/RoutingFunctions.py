@@ -52,7 +52,7 @@ CONGESTION_THRESHOLD = 0.5
 # This specifies the number of incoming edges away (the range) from the original edge to search
 MAX_EDGE_RECURSIONS_RANGE = 3
 # Specifies the number of up to k-alternative routes
-K_MAX = 4
+K_MAX = 2
 
 ########################
 # SIMULATION VARIABLES #
@@ -308,10 +308,6 @@ def rerouteSelectedVehicles(roadSegmentID, kPathsBool=False, fairness=False):
             reroutedVehicles.add(vehicle)
             # Incrementing vehicle reroute number
             vehicleReroutedAmount[vehicle] += 1
-            # if vehicle in vehicleReroutedAmount:
-            #     vehicleReroutedAmount[vehicle] += 1
-            # else:
-            #     vehicleReroutedAmount[vehicle] = 1
 
     return vehiclesUndergoneRerouting
 
@@ -524,8 +520,7 @@ def kPaths(veh, currentEdge):
                 break
 
     # Selecting a random route
-    # ranNum = random.randint(1, len(routes))
-    ranNum = len(routes)
+    ranNum = random.randint(1, len(routes))
 
     routeChoice = routes['{}_best'.format(ranNum)]
 

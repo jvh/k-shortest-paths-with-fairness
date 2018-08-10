@@ -40,7 +40,8 @@ class Testing:
         traci.route.add(routeName, startPos)
         traci.vehicle.add(name, routeName, typeID="car")
 
-        if zoom:
+        # Only zooms into the vehicle if SUMO_GUI is enabled
+        if zoom and sumo.SUMO_GUI:
             # GUI tracking vehicle and zoom
             traci.gui.trackVehicle("View #0", name)
             traci.gui.setZoom("View #0", traci.gui.getZoom() * sumo.ZOOM_FACTOR)
