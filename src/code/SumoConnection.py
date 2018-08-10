@@ -14,6 +14,7 @@ __author__ = "Jonathan Harper"
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
 COMPUTER = False
+MAIN_COMP = True
 
 #############
 # IMPORTING #
@@ -156,11 +157,15 @@ timerEnd = 0
 
 # Settings main working directory
 if COMPUTER:
-    # Main computer project configuration location
-    MAIN_PROJECT = "D:/Users/Jonathan/Desktop/Work/sumo/ReroutingWithFairness/src/configuration_files/"
-    SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
-    OUTPUT_DIRECTORY = "D:/Users/Jonathan/Desktop/Work/sumo/sumo_output/"
-    DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database.sqlite"
+    if MAIN_COMP:
+        # Main computer project configuration location
+        MAIN_PROJECT = "D:/Users/Jonathan/Desktop/Work/sumo/ReroutingWithFairness/src/configuration_files/"
+        if SUMO_GUI:
+            SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
+        else:
+            SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo.exe"
+        OUTPUT_DIRECTORY = "D:/Users/Jonathan/Desktop/Work/sumo/sumo_output/"
+        DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database.sqlite"
 else:
     MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
     if SUMO_GUI:
@@ -461,11 +466,12 @@ if __name__ == '__main__':
     import time
     import src.code.RoutingFunctions as func
 
-    sumo.DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database1.sqlite"
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database1.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.2
+    func.K_MAX = 4
 
     for i in range(1):
-        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.2_{}_".format(i+1)
+        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.2_{}_".format(i+1)
         print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
                                                                          func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
         main = Main()
@@ -474,45 +480,109 @@ if __name__ == '__main__':
         time.sleep(10)
 
     time.sleep(60)
-    sumo.DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database2.sqlite"
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database2.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.4
 
     for i in range(1):
-        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.4_{}_".format(i+1)
+        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.4_{}_".format(i+1)
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
 
     time.sleep(60)
-    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database3.sqlite"
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database3.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.6
 
     for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.6_{}_".format(i+1)
+        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.6_{}_".format(i+1)
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
 
     time.sleep(60)
-    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database4.sqlite"
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database4.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.8
 
     for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.8_{}_".format(i+1)
+        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.8_{}_".format(i+1)
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
 
     time.sleep(60)
-    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database5.sqlite"
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database5.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 2.0
 
     for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=2.0_{}_".format(i+1)
+        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=2.0_{}_".format(i+1)
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
+
+    time.sleep(120)
+
+    #############
+    # K_MAX = 5 #
+    #############
+
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database6.sqlite"
+    func.KPATH_MAX_ALLOWED_TIME = 1.2
+    func.K_MAX = 5
+
+    for i in range(1):
+        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.2_{}_".format(i + 1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    time.sleep(60)
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database7.sqlite"
+    func.KPATH_MAX_ALLOWED_TIME = 1.4
+
+    for i in range(1):
+        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.4_{}_".format(i + 1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    time.sleep(60)
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database8.sqlite"
+    func.KPATH_MAX_ALLOWED_TIME = 1.6
+
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.6_{}_".format(i + 1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    time.sleep(60)
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database9.sqlite"
+    func.KPATH_MAX_ALLOWED_TIME = 1.8
+
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.8_{}_".format(i + 1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    time.sleep(60)
+    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database10.sqlite"
+    func.KPATH_MAX_ALLOWED_TIME = 2.0
+
+    for i in range(10):
+        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=2.0_{}_".format(i + 1)
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
