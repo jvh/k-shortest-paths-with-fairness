@@ -461,15 +461,33 @@ if __name__ == '__main__':
     import time
     import src.code.RoutingFunctions as func
 
+    sumo.DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database1.sqlite"
+    func.KPATH_MAX_ALLOWED_TIME = 1.2
+
+    for i in range(1):
+        sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.2_{}_".format(i+1)
+        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
+                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
+        main = Main()
+        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
+                 instantStart=True, quitOnEnd=True)
+        time.sleep(10)
+
+    time.sleep(60)
+    sumo.DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database2.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.4
-    for i in range(10):
+
+    for i in range(1):
         sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.4_{}_".format(i+1)
         main = Main()
         main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
 
+    time.sleep(60)
+    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database3.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.6
+
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.6_{}_".format(i+1)
         main = Main()
@@ -477,7 +495,10 @@ if __name__ == '__main__':
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
 
+    time.sleep(60)
+    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database4.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 1.8
+
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=2,K_MAX=1.8_{}_".format(i+1)
         main = Main()
@@ -485,7 +506,10 @@ if __name__ == '__main__':
                  instantStart=True, quitOnEnd=True)
         time.sleep(10)
 
+    time.sleep(60)
+    DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database5.sqlite"
     func.KPATH_MAX_ALLOWED_TIME = 2.0
+
     for i in range(10):
         sumo.SIMULATION_REFERENCE = "k=2,K_MAX=2.0_{}_".format(i+1)
         main = Main()
