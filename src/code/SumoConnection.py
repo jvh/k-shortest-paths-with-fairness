@@ -166,6 +166,15 @@ if COMPUTER:
             SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo.exe"
         OUTPUT_DIRECTORY = "D:/Users/Jonathan/Desktop/Work/sumo/sumo_output/"
         DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database.sqlite"
+    else:
+        MAIN_PROJECT = 'D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/' \
+                       'ReroutingWithFairness/src/configuration_files/'
+        if SUMO_GUI:
+            SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo-gui.exe"
+        else:
+            SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo.exe"
+        OUTPUT_DIRECTORY = "D:/Nina/Desktop/new_sumo/sumo_output/"
+        DATABASE_LOCATION = "D:/Nina/Desktop/new_sumo/database/output_database.sqlite"
 else:
     MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
     if SUMO_GUI:
