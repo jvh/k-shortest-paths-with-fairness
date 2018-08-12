@@ -43,7 +43,7 @@ from src.code import Database as db
 ########################
 
 # If SUMO should be ran with a GUI or ran in headless mode
-SUMO_GUI = True
+SUMO_GUI = False
 # If the polyfile should be loaded into the simulation (if the simulation should be given colour).
 POLYFILE = True
 # This enables major print statements for diagnostic purposes
@@ -67,7 +67,7 @@ SIMULATION_REFERENCE = ""
 #   5: Luton
 #   6: Bristol
 #   7: Bournemouth
-SCENARIO = 7
+SCENARIO = 5
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)

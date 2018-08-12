@@ -332,8 +332,11 @@ def vehiclesDepartedAndArrived(i):
             func.cumulativeExtraTime[vehicle] = 0
         # This is reset every time the simulation is restarted and doesn't need to be tracked between simulations
         timeSpentStopped[vehicle] = 0
-        # Setting the vehicle rerouting method to be 'smoothed'
-        traci.vehicle.setRoutingMode(vehicle, traci.constants.ROUTING_MODE_AGGREGATED)
+        if not sumo.COMPUTER:
+            # Setting the vehicle rerouting method to be 'smoothed'
+            traci.vehicle.setRoutingMode(vehicle, traci.constants.ROUTING_MODE_AGGREGATED)
+        else:
+            traci.vehicle.setParameter(vehicle, '0x89', '1')
 
     """ Checking for vehicle's which have finished their trip in the system """
     # Checking which vehicles have left the system during this timestep
