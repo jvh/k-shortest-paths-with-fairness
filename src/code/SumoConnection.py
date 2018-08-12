@@ -13,7 +13,7 @@ __author__ = "Jonathan Harper"
 ###############
 
 # True if using main computer (allows for easy switching between laptop and main home computer)
-COMPUTER = True
+COMPUTER = False
 MAIN_COMP = True
 
 #############
@@ -42,11 +42,16 @@ from src.code import Database as db
 # USER-DEFINED OPTIONS #
 ########################
 
-SUMO_GUI = False
+# If SUMO should be ran with a GUI or ran in headless mode
+SUMO_GUI = True
+# If the polyfile should be loaded into the simulation (if the simulation should be given colour).
+POLYFILE = False
 # This enables major print statements for diagnostic purposes
 PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
 PRINT_ROAD_REROUTED = True
+# Prints the reroute period
+PRINT_REROUTE_PERIOD = True
 # True if the camera should snap to the congested zone
 SNAP_TO_CONGESTION = True
 
@@ -75,7 +80,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 3000
+END_TIME = 13000
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -183,6 +188,7 @@ else:
         SUMO_BINARY = "/Users/jonathan/Documents/comp3200/sumo/bin/sumo"
     OUTPUT_DIRECTORY = "/Users/jonathan/Documents/comp3200/sumo_output/"
     DATABASE_LOCATION = "/Users/jonathan/Documents/comp3200/database/output_database.sqlite"
+    DATABASE_DIR = "/Users/jonathan/Documents/comp3200/database/"
 
 # SUMO Configuration files
 SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
@@ -209,6 +215,7 @@ try:
     elif SCENARIO == 4:
         net = sumolib.net.readNet(NET_FILE_SOUTHAMPTON)
         SCENARIO_DIRECTORY = SOUTHAMPTON_DIRECTORY
+        POLYFILE_LOCATION = SOUTHAMPTON_DIRECTORY + 'southampton.poly.xml'
     else:
         sys.exit("Please enter a valid SCENARIO number")
 except TypeError:
@@ -403,11 +410,24 @@ class Main:
            --device.rerouting.probability: Defines the probability that a vehicle in the simulation will automatically
              reroute
            --device.rerouting.threads: The number of threads used for rerouting purposes
-           --depart
+           --ignore-junction-blocker: After 90 seconds, vehicles will attempt to bypass a vehicle which is blocking a
+             junction, in a similar fashion to how a driver may overtake a vehicle which has stopped at a junction.
         """
-        sumoConfigInitial = [SUMO_BINARY, '--step-length', STEP_LENGTH, '--additional-files',
-                             VEHICLES_FILE, '--routing-algorithm', 'astar', '--gui-settings-file', GUI_SETTINGS,
-                             '--device.rerouting.probability', '1.0', '--device.rerouting.threads', '3']
+        sumoConfigInitial = [SUMO_BINARY,
+                             '--step-length', STEP_LENGTH,
+                             '--routing-algorithm', 'astar',
+                             '--gui-settings-file', GUI_SETTINGS,
+                             '--device.rerouting.probability', '1.0',
+                             '--device.rerouting.threads', '3',
+                             '--ignore-junction-blocker', '90',
+                             '-W', 'true']
+
+        # If the polyfile should be loaded into the simulation (if the simulation should be given colour).
+        if POLYFILE and SUMO_GUI:
+            sumoConfigInitial.extend(['--additional-files', '{vehicles_file},{polyfile}'.
+                                     format(vehicles_file=VEHICLES_FILE, polyfile=POLYFILE_LOCATION)])
+        else:
+            sumoConfigInitial.extend(['--additional-files', VEHICLES_FILE])
 
         # Additional SUMO config options
         if instantStart:
@@ -464,150 +484,57 @@ class Main:
             traci.close(False)
 
 
+def createSim(routeFile, instantStart=True, quitOnEnd=True):
+    main = Main()
+    routeFileLocation = "{}{}".format(SCENARIO_DIRECTORY, routeFile)
+    main.run(routeFile=routeFileLocation,
+             instantStart=instantStart, quitOnEnd=quitOnEnd)
+
+def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax, kPathMaxAllowedTime, loopNumber=10):
+
+    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                   reference=databaseReference)
+    func.KPATH_MAX_ALLOWED_TIME = kPathMaxAllowedTime
+    func.K_MAX = kMax
+
+    for i in range(loopNumber):
+        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference=simulationReference, simNum=(i+1))
+
+        print('########################')
+        print('Simulation reference: {}'.format(simulationReference))
+        print('kMax: {} and kPathMaxAllowedTime: {}'.format(func.K_MAX, func.KPATH_MAX_ALLOWED_TIME))
+        print('Loop {} out of {}'.format(i+1, loopNumber))
+        print('########################')
+
+        routeFile = '{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1)
+        createSim(routeFile)
+
+        time.sleep(10)
+
+    print("bleos")
+    print(func.K_MAX)
+    print(func.KPATH_MAX_ALLOWED_TIME)
+    print("bleo")
+
+    time.sleep(60)
+
 if __name__ == '__main__':
     """
     The main method for all running
     """
-    # main = Main()
-    # main.run(instantStart=True)
-
     import src.code.SumoConnection as sumo
     import time
     import src.code.RoutingFunctions as func
 
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database1.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.2
-    func.K_MAX = 4
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.2_{}_".format(i+1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database2.sqlite"
+    k=3
+    #
+    sumo.DATABASE_LOCATION = "{location}{reference}meep.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                   reference='ref')
     func.KPATH_MAX_ALLOWED_TIME = 1.4
+    func.K_MAX = 3
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
+    #                                 kMax=k, kPathMaxAllowedTime=1.2)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4)
 
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.4_{}_".format(i+1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database3.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.6
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.6_{}_".format(i+1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database4.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.8
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=1.8_{}_".format(i+1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database5.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 2.0
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=4,K_MAX=2.0_{}_".format(i+1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i+1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(120)
-
-    #############
-    # K_MAX = 5 #
-    #############
-
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database6.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.2
-    func.K_MAX = 5
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.2_{}_".format(i + 1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database7.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.4
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.4_{}_".format(i + 1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database8.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.6
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.6_{}_".format(i + 1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database9.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 1.8
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=1.8_{}_".format(i + 1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
-    time.sleep(60)
-    sumo.DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database10.sqlite"
-    func.KPATH_MAX_ALLOWED_TIME = 2.0
-
-    for i in range(10):
-        sumo.SIMULATION_REFERENCE = "k=5,K_MAX=2.0_{}_".format(i + 1)
-        print("\n\n{} with KPATH_MAX_ALLOWED={} and K_MAX={}\n\n".format(sumo.SIMULATION_REFERENCE,
-                                                                         func.KPATH_MAX_ALLOWED_TIME, func.K_MAX))
-        main = Main()
-        main.run(routeFile='{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1),
-                 instantStart=True, quitOnEnd=True)
-        time.sleep(10)
-
+    createSim('routes_southampton_10.xml')

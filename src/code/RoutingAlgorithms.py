@@ -113,7 +113,8 @@ class ReroutingAlgorithms:
 
         # Every REROUTING_PERIOD
         if i % func.REROUTING_PERIOD == 0 and i >= 1:
-            print("\n***** REROUTING PERIOD {} ********\n".format(i / func.REROUTING_PERIOD))
+            if sumo.PRINT_REROUTE_PERIOD:
+                print("\n***** REROUTING PERIOD {} ********\n".format(i / func.REROUTING_PERIOD))
 
             # This is the updating of the time spent in the system for each vehicle
             sim.updateVehicleTotalEstimatedTimeSpentInSystem(func.REROUTING_PERIOD)

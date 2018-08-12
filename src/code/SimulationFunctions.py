@@ -146,7 +146,6 @@ def getEdge2DCoordinates(edge):
     x, y = sumo.net.getNode(node).getCoord()
     # Changes the GUI offset to the coordinates of the node
     traci.gui.setOffset("View #0", x, y)
-    # print("Edge {} has congestion level {}".format(edge, returnCongestionLevelEdge(edge)))
 
     # Creating a named tuple to store (x, y) information
     coord = collections.namedtuple('coord', ['x', 'y'])
