@@ -45,7 +45,7 @@ from src.code import Database as db
 # If SUMO should be ran with a GUI or ran in headless mode
 SUMO_GUI = True
 # If the polyfile should be loaded into the simulation (if the simulation should be given colour).
-POLYFILE = False
+POLYFILE = True
 # This enables major print statements for diagnostic purposes
 PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
@@ -64,7 +64,10 @@ SIMULATION_REFERENCE = ""
 #   2: newark
 #   3: Testing (newark)
 #   4: Southampton
-SCENARIO = 4
+#   5: Luton
+#   6: Bristol
+#   7: Bournemouth
+SCENARIO = 7
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
@@ -80,7 +83,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 13000
+END_TIME = 3000
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -195,14 +198,22 @@ SM_CONFIG = MAIN_PROJECT + "small_manhattan/normal/small_manhattan_config.cfg"
 TEST_SM_CONFIG = MAIN_PROJECT + "small_manhattan/testing/small_manhattan_test.cfg"
 NEWARK_CONFIG = MAIN_PROJECT + "newark/normal/newark_config.cfg"
 TEST_NEWARK_CONFIG = MAIN_PROJECT + "newark/testing/newark_test_config.cfg"
-SOUTHAMPTON_CONFIG = MAIN_PROJECT + "new_stuff/southampton/southampton.cfg"
 NET_FILE_SM = MAIN_PROJECT + "small_manhattan/small_manhattan.net.xml"
 NET_FILE_NEWARK = MAIN_PROJECT + "newark/newark_square.net.xml"
-NET_FILE_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/southampton/southampton.net.xml"
 VEHICLES_FILE = MAIN_PROJECT + "vehicles.xml"
 GUI_SETTINGS = MAIN_PROJECT + "gui.settings.xml"
+
+NET_FILE_SOUTHAMPTON = MAIN_PROJECT + "new_stuff/southampton/southampton.net.xml"
 SOUTHAMPTON_DIRECTORY = MAIN_PROJECT + 'new_stuff/southampton/'
 
+NET_FILE_LUTON = MAIN_PROJECT + "new_stuff/luton/luton.net.xml"
+LUTON_DIRECTORY = MAIN_PROJECT + 'new_stuff/luton/'
+
+NET_FILE_BRISTOL = MAIN_PROJECT + "new_stuff/bristol/bristol.net.xml"
+BRISTOL_DIRECTORY = MAIN_PROJECT + 'new_stuff/bristol/'
+
+NET_FILE_BOURNEMOUTH = MAIN_PROJECT + "new_stuff/bournemouth/bournemouth.net.xml"
+BOURNEMOUTH_DIRECTORY = MAIN_PROJECT + 'new_stuff/bournemouth/'
 
 try:
     # Small manhattan
@@ -217,6 +228,21 @@ try:
         SCENARIO_DIRECTORY = SOUTHAMPTON_DIRECTORY
         POLYFILE_LOCATION = SOUTHAMPTON_DIRECTORY + 'southampton.poly.xml'
         SCENARIO_NAME = 'southampton'
+    elif SCENARIO == 5:
+        net = sumolib.net.readNet(NET_FILE_LUTON)
+        SCENARIO_DIRECTORY = LUTON_DIRECTORY
+        POLYFILE_LOCATION = LUTON_DIRECTORY + 'luton.poly.xml'
+        SCENARIO_NAME = 'luton'
+    elif SCENARIO == 6:
+        net = sumolib.net.readNet(NET_FILE_BRISTOL)
+        SCENARIO_DIRECTORY = BRISTOL_DIRECTORY
+        POLYFILE_LOCATION = BRISTOL_DIRECTORY + 'bristol.poly.xml'
+        SCENARIO_NAME = 'bristol'
+    elif SCENARIO == 7:
+        net = sumolib.net.readNet(NET_FILE_BOURNEMOUTH)
+        SCENARIO_DIRECTORY = BOURNEMOUTH_DIRECTORY
+        POLYFILE_LOCATION = BOURNEMOUTH_DIRECTORY + 'bournemouth.poly.xml'
+        SCENARIO_NAME = 'bournemouth'
     else:
         sys.exit("Please enter a valid SCENARIO number")
 except TypeError:
@@ -251,7 +277,8 @@ class Main:
             str[]: The new configuration of SUMO based upon the options selected
         """
         # Input validation
-        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4) and not (0 <= ALGORITHM <= 4):
+        if (SCENARIO == 1 or SCENARIO == 2 or SCENARIO == 4 or SCENARIO == 5 or SCENARIO == 6 or SCENARIO == 7) \
+                and not (0 <= ALGORITHM <= 4):
             sys.exit("Please enter a valid ALGORITHM number.")
 
         # Current date-time
@@ -267,7 +294,7 @@ class Main:
         tripInfo = OUTPUT_DIRECTORY + '{}/trips_info/trip_info_{}.xml'
 
         # Choosing the scenario
-        if SCENARIO == 4:
+        if SCENARIO == 4 or SCENARIO == 5 or SCENARIO == 6 or SCENARIO == 7:
             sumoConfig.insert(1, '--net-file')
         else:
             sumoConfig.insert(1, "-c")
@@ -386,6 +413,72 @@ class Main:
                     sumoConfig.append("--tripinfo-output")
                     sumoConfig.append(tripInfo.format('southampton', windowsDateTime))
 
+        # Luton
+        elif SCENARIO == 5:
+            sumoConfig.insert(2, NET_FILE_LUTON)
+
+            # Outputs
+            if OUTPUTS:
+                if SUMMARY_OUTPUT:
+                    sumoConfig.append("--summary")
+                    sumoConfig.append(summaryOut.format('luton', windowsDateTime))
+                if VEHICLE_FULL_OUTPUT:
+                    sumoConfig.append("--full-output")
+                    sumoConfig.append(vehicleFullOut.format('luton', windowsDateTime))
+                if VTK_OUTPUT:
+                    sumoConfig.append("--vtk-output")
+                    sumoConfig.append(vtkOut.format('luton', windowsDateTime))
+                if FLOATING_CAR_DATA_OUTPUT:
+                    sumoConfig.append("--fcd-output")
+                    sumoConfig.append(floatingCarData.format('luton', windowsDateTime))
+                if TRIPS_OUTPUT:
+                    sumoConfig.append("--tripinfo-output")
+                    sumoConfig.append(tripInfo.format('luton', windowsDateTime))
+
+        # Bristol
+        elif SCENARIO == 6:
+            sumoConfig.insert(2, NET_FILE_BRISTOL)
+
+            # Outputs
+            if OUTPUTS:
+                if SUMMARY_OUTPUT:
+                    sumoConfig.append("--summary")
+                    sumoConfig.append(summaryOut.format('bristol', windowsDateTime))
+                if VEHICLE_FULL_OUTPUT:
+                    sumoConfig.append("--full-output")
+                    sumoConfig.append(vehicleFullOut.format('bristol', windowsDateTime))
+                if VTK_OUTPUT:
+                    sumoConfig.append("--vtk-output")
+                    sumoConfig.append(vtkOut.format('bristol', windowsDateTime))
+                if FLOATING_CAR_DATA_OUTPUT:
+                    sumoConfig.append("--fcd-output")
+                    sumoConfig.append(floatingCarData.format('bristol', windowsDateTime))
+                if TRIPS_OUTPUT:
+                    sumoConfig.append("--tripinfo-output")
+                    sumoConfig.append(tripInfo.format('bristol', windowsDateTime))
+
+        # Bournemouth
+        elif SCENARIO == 7:
+            sumoConfig.insert(2, NET_FILE_BOURNEMOUTH)
+
+            # Outputs
+            if OUTPUTS:
+                if SUMMARY_OUTPUT:
+                    sumoConfig.append("--summary")
+                    sumoConfig.append(summaryOut.format('bournemouth', windowsDateTime))
+                if VEHICLE_FULL_OUTPUT:
+                    sumoConfig.append("--full-output")
+                    sumoConfig.append(vehicleFullOut.format('bournemouth', windowsDateTime))
+                if VTK_OUTPUT:
+                    sumoConfig.append("--vtk-output")
+                    sumoConfig.append(vtkOut.format('bournemouth', windowsDateTime))
+                if FLOATING_CAR_DATA_OUTPUT:
+                    sumoConfig.append("--fcd-output")
+                    sumoConfig.append(floatingCarData.format('bournemouth', windowsDateTime))
+                if TRIPS_OUTPUT:
+                    sumoConfig.append("--tripinfo-output")
+                    sumoConfig.append(tripInfo.format('bournemouth', windowsDateTime))
+
         return sumoConfig
 
     def run(self, testCase=False, instantStart=False, quitOnEnd=False, routeFile="", functionName=""):
@@ -491,6 +584,7 @@ def createSim(routeFile, instantStart=True, quitOnEnd=True):
     main.run(routeFile=routeFileLocation,
              instantStart=instantStart, quitOnEnd=quitOnEnd)
 
+
 def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax, kPathMaxAllowedTime, loopNumber=10):
 
     sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
@@ -507,15 +601,10 @@ def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax
         print('Loop {} out of {}'.format(i+1, loopNumber))
         print('########################')
 
-        routeFile = '{}routes_{}_20mins_{}.xml'.format(SCENARIO_DIRECTORY, SCENARIO_NAME, i + 1)
+        routeFile = 'routes_{}_testing_{}.xml'.format(SCENARIO_NAME, i + 1)
         createSim(routeFile)
 
         time.sleep(10)
-
-    print("bleos")
-    print(func.K_MAX)
-    print(func.KPATH_MAX_ALLOWED_TIME)
-    print("bleo")
 
     time.sleep(60)
 
@@ -527,15 +616,54 @@ if __name__ == '__main__':
     import time
     import src.code.RoutingFunctions as func
 
-    k=3
-    #
-    sumo.DATABASE_LOCATION = "{location}{reference}meep.sqlite".format(location=sumo.DATABASE_DIR,
-                                                                   reference='ref')
-    func.KPATH_MAX_ALLOWED_TIME = 1.4
-    func.K_MAX = 3
-    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
-    #                                 kMax=k, kPathMaxAllowedTime=1.2)
-    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
-    #                                 kMax=k, kPathMaxAllowedTime=1.4)
+    k=2
 
-    createSim('routes_southampton_10.xml')
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
+                                    kMax=k, kPathMaxAllowedTime=1.2)
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
+                                    kMax=k, kPathMaxAllowedTime=1.4)
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.6", databaseReference='k_max=2,kPaths=1.6',
+                                    kMax=k, kPathMaxAllowedTime=1.6)
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.8", databaseReference='k_max=2,kPaths=1.8',
+                                    kMax=k, kPathMaxAllowedTime=1.8)
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=2.0", databaseReference='k_max=2,kPaths=2.0',
+                                    kMax=k, kPathMaxAllowedTime=2.0)
+
+    k=3
+
+    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.2", databaseReference='k_max=3,kPaths=1.2',
+                                    kMax=k, kPathMaxAllowedTime=1.2)
+    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.4", databaseReference='k_max=3,kPaths=1.4',
+                                    kMax=k, kPathMaxAllowedTime=1.4)
+    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.6", databaseReference='k_max=3,kPaths=1.6',
+                                    kMax=k, kPathMaxAllowedTime=1.6)
+    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.8", databaseReference='k_max=3,kPaths=1.8',
+                                    kMax=k, kPathMaxAllowedTime=1.8)
+    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=2.0", databaseReference='k_max=3,kPaths=2.0',
+                                    kMax=k, kPathMaxAllowedTime=2.0)
+
+    k=4
+
+    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.2", databaseReference='k_max=4,kPaths=1.2',
+                                    kMax=k, kPathMaxAllowedTime=1.2)
+    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.4", databaseReference='k_max=4,kPaths=1.4',
+                                    kMax=k, kPathMaxAllowedTime=1.4)
+    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.6", databaseReference='k_max=4,kPaths=1.6',
+                                    kMax=k, kPathMaxAllowedTime=1.6)
+    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.8", databaseReference='k_max=4,kPaths=1.8',
+                                    kMax=k, kPathMaxAllowedTime=1.8)
+    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=2.0", databaseReference='k_max=4,kPaths=2.0',
+                                    kMax=k, kPathMaxAllowedTime=2.0)
+
+    k=5
+
+    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
+                                    kMax=k, kPathMaxAllowedTime=1.2)
+    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.4", databaseReference='k_max=5,kPaths=1.4',
+                                    kMax=k, kPathMaxAllowedTime=1.4)
+    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.6", databaseReference='k_max=5,kPaths=1.6',
+                                    kMax=k, kPathMaxAllowedTime=1.6)
+    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.8", databaseReference='k_max=5,kPaths=1.8',
+                                    kMax=k, kPathMaxAllowedTime=1.8)
+    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=2.0", databaseReference='k_max=5,kPaths=2.0',
+                                    kMax=k, kPathMaxAllowedTime=2.0)
