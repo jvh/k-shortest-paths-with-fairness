@@ -216,6 +216,7 @@ try:
         net = sumolib.net.readNet(NET_FILE_SOUTHAMPTON)
         SCENARIO_DIRECTORY = SOUTHAMPTON_DIRECTORY
         POLYFILE_LOCATION = SOUTHAMPTON_DIRECTORY + 'southampton.poly.xml'
+        SCENARIO_NAME = 'southampton'
     else:
         sys.exit("Please enter a valid SCENARIO number")
 except TypeError:
@@ -506,7 +507,7 @@ def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax
         print('Loop {} out of {}'.format(i+1, loopNumber))
         print('########################')
 
-        routeFile = '{}routes_southampton_20mins_{}.xml'.format(SCENARIO_DIRECTORY, i + 1)
+        routeFile = '{}routes_{}_20mins_{}.xml'.format(SCENARIO_DIRECTORY, SCENARIO_NAME, i + 1)
         createSim(routeFile)
 
         time.sleep(10)
