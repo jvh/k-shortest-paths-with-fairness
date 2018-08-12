@@ -49,9 +49,9 @@ POLYFILE = True
 # This enables major print statements for diagnostic purposes
 PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
-PRINT_ROAD_REROUTED = True
+PRINT_ROAD_REROUTED = False
 # Prints the reroute period
-PRINT_REROUTE_PERIOD = True
+PRINT_REROUTE_PERIOD = False
 # True if the camera should snap to the congested zone
 SNAP_TO_CONGESTION = True
 
@@ -174,6 +174,7 @@ if COMPUTER:
             SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo.exe"
         OUTPUT_DIRECTORY = "D:/Users/Jonathan/Desktop/Work/sumo/sumo_output/"
         DATABASE_LOCATION = "D:/Users/Jonathan/Desktop/Work/sumo/database/output_database.sqlite"
+        DATABASE_DIR = "D:/Users/Jonathan/Desktop/Work/sumo/database/"
     else:
         MAIN_PROJECT = 'D:/Nina/Dropbox/UNIVERSITY/YEAR 3/COMP3200 - 3rd Year Individual Project/' \
                        'ReroutingWithFairness/src/configuration_files/'
@@ -183,6 +184,7 @@ if COMPUTER:
             SUMO_BINARY = "D:/Program Files/SUMO/bin/sumo.exe"
         OUTPUT_DIRECTORY = "D:/Nina/Desktop/new_sumo/sumo_output/"
         DATABASE_LOCATION = "D:/Nina/Desktop/new_sumo/database/output_database.sqlite"
+        DATABASE_DIR = "D:/Nina/Desktop/new_sumo/database/"
 else:
     MAIN_PROJECT = "/Users/jonathan/Documents/comp3200/ReroutingWithFairness/src/configuration_files/"
     if SUMO_GUI:
