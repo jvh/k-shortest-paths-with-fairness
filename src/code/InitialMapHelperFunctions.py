@@ -70,7 +70,7 @@ freeFlowSpeed = {}
 database_pointer = None
 
 
-def endSim(i, manual=True, database=False):
+def endSim(i, manual=True, database=False, closeDB=True):
     """
     Ends the simulation, prints the time taken, and updates the database with information about the simulation
 
@@ -84,7 +84,8 @@ def endSim(i, manual=True, database=False):
     if database:
         database = database_pointer
         database.populateDBVehicleTable()
-        db.Database.closeDB()
+        if closeDB:
+            db.Database.closeDB()
 
     if sim.timeTaken:
         print('Mean time taken for rerouting: {}'.format(sum(sim.timeTaken) / len(sim.timeTaken)))

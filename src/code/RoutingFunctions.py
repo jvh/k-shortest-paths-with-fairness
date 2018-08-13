@@ -54,7 +54,7 @@ MAX_EDGE_RECURSIONS_RANGE = 3
 # Specifies the number of up to k-alternative routes
 K_MAX = 2
 # This is the number of rerouting periods before a vehicle can be considered for rerouting again
-REROUTING_PERIOD_CONSIDERATION = 3
+REROUTING_PERIOD_CONSIDERATION = 1
 
 ########################
 # SIMULATION VARIABLES #

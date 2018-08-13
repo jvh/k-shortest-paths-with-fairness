@@ -57,6 +57,7 @@ class SmallSouthamptonTestsRoute(unittest.TestCase):
             # Resetting
             func.vehicleReroutedAmount = {}
             func.reroutedVehicles = set()
+            func.periodSinceLastRerouted = {}
 
     def tearDown(self):
         traci.close(False)
@@ -212,6 +213,8 @@ class DatabaseTests(unittest.TestCase):
             func.reroutedVehicles = set()  # Resetting
             sumo.SCENARIO = 0
             sumo.net = sumolib.net.readNet(sumo.NET_FILE_SM)
+            # Resetting so that rerouting may occur
+            func.periodSinceLastRerouted = {}
 
     def tearDown(self):
         """
@@ -243,6 +246,7 @@ class DatabaseTests(unittest.TestCase):
 
         # Resetting
         func.reroutedVehicles = set()
+        func.periodSinceLastRerouted = {}
 
         for i in range(30):
             traci.simulationStep()
@@ -257,6 +261,7 @@ class DatabaseTests(unittest.TestCase):
 
         # Resetting
         func.reroutedVehicles = set()
+        func.periodSinceLastRerouted = {}
 
         # Vehicle has rerouted twice and therefore should show up as being 2
         self.assertEqual(func.vehicleReroutedAmount["999"], 2)
@@ -346,6 +351,8 @@ class DatabaseTests(unittest.TestCase):
         # Running kPaths until the new route does not match the best route
         while newRoute == currentRoute:
             func.reroutedVehicles = set()  # Resetting
+            func.periodSinceLastRerouted = {}
+
             func.rerouteSelectedVehicles(nextEdge, kPathsBool=True)
             newRoute = traci.vehicle.getRoute('999')
             if newRoute == currentRoute:
@@ -377,6 +384,8 @@ class DatabaseTests(unittest.TestCase):
 
         while newRoute == currentRoute:
             func.reroutedVehicles = set()  # Resetting
+            func.periodSinceLastRerouted = {}
+
             func.rerouteSelectedVehicles(nextEdge, kPathsBool=True)
             newRoute = traci.vehicle.getRoute('999')
             if newRoute == currentRoute:
@@ -491,7 +500,7 @@ class DatabaseTests(unittest.TestCase):
         database.clearTable(db.VEHICLE_OUTPUT_TABLE)
 
         with self.assertRaises(SystemExit):
-            initialFunc.endSim(0, database=True)
+            initialFunc.endSim(0, database=True, closeDB=False)
 
         # Should be only a single tuple in the table
         self.assertEqual(len(database.getDBTableContents(db.VEHICLE_OUTPUT_TABLE)), 1)
@@ -510,6 +519,7 @@ class DatabaseTests(unittest.TestCase):
         self.test_smallManhattan_vehicleReroutingAmount()
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         database = db.Database()
         if clearDB:
@@ -588,6 +598,7 @@ class DatabaseTests(unittest.TestCase):
         func.rerouteSelectedVehicles(nextEdge)
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         """
         Vehicle 999
@@ -611,6 +622,7 @@ class DatabaseTests(unittest.TestCase):
         func.rerouteSelectedVehicles(nextEdge)
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         for i in range(30):
             traci.simulationStep()
@@ -628,6 +640,7 @@ class DatabaseTests(unittest.TestCase):
         func.rerouteSelectedVehicles(nextEdge)
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         database.populateDBVehicleTable()
 
@@ -651,6 +664,7 @@ class DatabaseTests(unittest.TestCase):
         self.test_smallManhattan_vehicleReroutingAmount()
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         # Adding the results of the previous test to the db
         database = db.Database()
@@ -692,6 +706,7 @@ class DatabaseTests(unittest.TestCase):
         self.test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(True, False)
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         # Resetting fairness metrics to ensure no carry-over
         func.vehicleReroutedAmount.clear()
@@ -706,6 +721,7 @@ class DatabaseTests(unittest.TestCase):
         self.test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(False)
 
         func.reroutedVehicles = set()  # Resetting
+        func.periodSinceLastRerouted = {}
 
         # At this point, vehicle 999 has been rerouted 4 times, vehicle 9999 has been rerouted twice
         self.assertEqual(func.vehicleReroutedAmount['999'], 4)
@@ -969,6 +985,9 @@ class SmallSouthamptonTests(unittest.TestCase):
         """
         self.test_smallManhattan_reroutedVehicles_unpopulated()
 
+        # Resetting so that rerouting may occur
+        func.periodSinceLastRerouted = {}
+
         # For testing purposes the rerouting period is set as 50
         func.REROUTING_PERIOD = 50
 
@@ -1035,6 +1054,9 @@ class SmallSouthamptonTests(unittest.TestCase):
         testing.Testing().setupGenericCarSM(name="testVeh4", zoom=False, routeName="veh4Route", initialise=True)
         for i in range(10):
             traci.simulationStep()
+
+        # Resetting so that rerouting may occur
+        func.periodSinceLastRerouted = {}
 
         traci.vehicle.setRoute('testVeh4', nonOptimalRoute)
         nextVehicleList, _, _, _ = func.selectVehiclesForRerouting('46538375#6', fairness=False)
@@ -1442,6 +1464,8 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         Pass if 'testVeh' is not included in the vehicle list which has been rerouted
         """
+        # Resetting so that rerouting may occur
+        func.periodSinceLastRerouted = {}
         testing.Testing().setupGenericCarSM()
         sim.getGlobalEdgeWeights()
         traci.vehicle.rerouteTraveltime("testVeh")
@@ -1461,6 +1485,9 @@ class SmallSouthamptonTests(unittest.TestCase):
             reroutingEdge, _, _, _ = func.selectVehiclesForRerouting('420908138#1')
             self.assertTrue("testVeh" in reroutingEdge)
 
+            # Resetting so that rerouting may occur
+            func.periodSinceLastRerouted = {}
+
             # This is selecting the vehicle with a SPECIFIC lane, the vehicle shall pass through the edge but DOESN'T
             # need to pass through this specific lane to get to it's destination, therefore the vehicle should not be
             # selected
@@ -1477,6 +1504,8 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         Pass if 'testVeh' belongs to the list of vehicle's that were rerouted from rerouteSelectedVehicles
         """
+        # Resetting so that rerouting may occur
+        func.periodSinceLastRerouted = {}
         testing.Testing().setupGenericCarSM(initialise=True)
 
         for i in range(sumo.END_TIME):
@@ -2023,6 +2052,8 @@ class SmallSouthamptonTests(unittest.TestCase):
         No vehicles are selected as there are no vehicles which are incoming to the road segment from
         MAX_EDGE_RECURSIONS_RANGE away
         """
+        # Resetting so that rerouting may occur
+        func.periodSinceLastRerouted = {}
         # Maximum range is 3
         src.code.RoutingFunctions.MAX_EDGE_RECURSIONS_RANGE = 3
 
