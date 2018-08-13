@@ -32,11 +32,15 @@ from src.code import Database as db
 from src.code import SimulationFunctions as sim
 
 #############
-# VARIABLES #
+# CONSTANTS #
 #############
 
 # This is the minimum edge/lane length to be considered for possible rerouting
 MIN_EDGE_LENGTH = 25
+
+#############
+# VARIABLES #
+#############
 
 # Stores the entire road network, with {edge: [lanes]}
 edgesNetwork = {}
@@ -80,15 +84,17 @@ def endSim(i, manual=True, database=False):
     if database:
         database = database_pointer
         database.populateDBVehicleTable()
+        db.Database.closeDB()
 
     if sim.timeTaken:
         print('Mean time taken for rerouting: {}'.format(sum(sim.timeTaken) / len(sim.timeTaken)))
 
-    if manual and not sumo.AUTOMATED_TESTING:
-        sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
-                                                                                         sumo.timerStart))
-    else:
-        sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
+    if not sumo.AUTOMATED_TESTING:
+        if manual:
+            sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
+                                                                                             sumo.timerStart))
+        else:
+            sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
                                                                                          sumo.timerStart))
 
 

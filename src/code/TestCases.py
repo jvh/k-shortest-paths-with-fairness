@@ -34,11 +34,11 @@ from src.code import SimulationFunctions as sim
 from src.code import Database as db
 
 #############
-# VARIABLES #
+# CONSTANTS #
 #############
 
 # True when testing the database functionality
-databaseTestingBool = True
+DATABASE_TESTING_COOL = True
 
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
@@ -47,7 +47,7 @@ class SmallSouthamptonTestsRoute(unittest.TestCase):
     """
 
     def setUp(self):
-        if databaseTestingBool:
+        if DATABASE_TESTING_COOL:
             raise unittest.SkipTest("Skipping all tests, databases are being tested (databaseTestingBool = True)")
         else:
             testing.TESTING_NUMBER = 0
@@ -205,7 +205,7 @@ class DatabaseTests(unittest.TestCase):
         """
         Ensures that the scenario is that of 'Testing (small_manhattan)'
         """
-        if not databaseTestingBool:
+        if not DATABASE_TESTING_COOL:
             raise unittest.SkipTest("Skipping database tests, these must be ran individually.")
         else:
             testing.TESTING_NUMBER = 0
@@ -891,7 +891,7 @@ class SmallSouthamptonTests(unittest.TestCase):
         """
         Ensures that the scenario is that of 'Testing (small_manhattan)'
         """
-        if databaseTestingBool:
+        if DATABASE_TESTING_COOL:
             raise unittest.SkipTest("Skipping all tests, databases are being tested (databaseTestingBool = True)")
         else:
             testing.TESTING_NUMBER = 0

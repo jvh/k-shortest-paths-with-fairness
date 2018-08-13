@@ -37,6 +37,7 @@ import src.code.Testing
 from src.code import RoutingAlgorithms as routing
 from src.code import InitialMapHelperFunctions as initialFunc
 from src.code import Database as db
+from src.code import SimulationFunctions as sim
 
 ########################
 # USER-DEFINED OPTIONS #
@@ -85,7 +86,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 300
+END_TIME = 3000
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -580,7 +581,7 @@ class Main:
         # If not running test cases close when the END_TIME is reached
         if not testCase:
             # Close the Sumo-Traci connection once the simulation has elapsed
-            traci.close(False)
+            traci.close()
 
 
 def createSim(routeFile, instantStart=True, quitOnEnd=True):
@@ -588,6 +589,66 @@ def createSim(routeFile, instantStart=True, quitOnEnd=True):
     routeFileLocation = "{}{}".format(SCENARIO_DIRECTORY, routeFile)
     main.run(routeFile=routeFileLocation,
              instantStart=instantStart, quitOnEnd=quitOnEnd)
+
+
+def resetSimVariables():
+    """
+    Ensuring reset of simulation variables (as if by running for the first time)
+    """
+    # if func.cumulativeExtraTime:
+    func.cumulativeExtraTime = {}
+    func.vehicleReroutedAmount = {}
+    # if func.reroutedVehicles:
+    func.reroutedVehicles = set()
+    # if func.edgeSpeedGlobal:
+    func.edgeSpeedGlobal = {}
+    # if func.adjustedEdgeSpeedGlobal:
+    func.adjustedEdgeSpeedGlobal = {}
+    func.periodSinceLastRerouted = {}
+
+    # if sim.stoppedStateLastPeriod:
+    sim.stoppedStateLastPeriod = {}
+    # if sim.timeSpentInNetwork:
+    sim.timeSpentInNetwork = {}
+    # if sim.timeSpentStopped:
+    sim.timeSpentStopped = {}
+    # if sim.initialTimeSpentInNetwork:
+    sim.initialTimeSpentInNetwork = {}
+    # if sim.arrivalTime:
+    sim.arrivalTime = {}
+    # if sim.departureTime:
+    sim.departureTime = {}
+    # if sim.vehiclesInNetwork:
+    sim.vehiclesInNetwork = []
+    # if sim.roadCongestion:
+    sim.roadCongestion = {}
+    # if sim.timeTaken:
+    sim.timeTaken = []
+
+    # if initialFunc.edgesNetwork:
+    initialFunc.edgesNetwork = {}
+    # if initialFunc.lanesNetwork:
+    initialFunc.lanesNetwork = {}
+    # if initialFunc.fringeEdges:
+    initialFunc.fringeEdges = set()
+    # if initialFunc.laneLengths:
+    initialFunc.laneLengths = {}
+    # if initialFunc.edgeLengths:
+    initialFunc.edgeLengths = {}
+    # if initialFunc.directedGraphLanes:
+    initialFunc.directedGraphLanes = {}
+    # if initialFunc.directedGraphEdges:
+    initialFunc.directedGraphEdges = {}
+    # if initialFunc.singleOutgoingEdges:
+    initialFunc.singleOutgoingEdges = set()
+    # if initialFunc.reroutingLanes:
+    initialFunc.reroutingLanes = set()
+    # if initialFunc.multiIncomingEdges:
+    initialFunc.multiIncomingEdges = {}
+    # if initialFunc.freeFlowSpeed:
+    initialFunc.freeFlowSpeed = {}
+    # # if initialFunc.database_pointer:
+    # initialFunc.database_pointer = None
 
 
 def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax, kPathMaxAllowedTime, loopNumber=10):
@@ -611,10 +672,7 @@ def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax
 
         time.sleep(10)
 
-    # Ensuring reset of variables
-    func.vehicleReroutedAmount = {}
-    func.cumulativeExtraTime = {}
-    func.reroutedVehicles = set()
+        resetSimVariables()
 
     # time.sleep(60)
 
@@ -631,68 +689,68 @@ if __name__ == '__main__':
     k=4
 
     createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2, loopNumber=1)
-    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
-    #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
+                                    kMax=k, kPathMaxAllowedTime=1.2, loopNumber=2)
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
+                                    kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
     # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.6", databaseReference='k_max=2,kPaths=1.6',
     #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
 
     k = 5
 
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2, loopNumber=1)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
+    #                                 kMax=k, kPathMaxAllowedTime=1.2, loopNumber=1)
     # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.4", databaseReference='k_max=5,kPaths=1.4',
     #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
     # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.6", databaseReference='k_max=5,kPaths=1.6',
     #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
-    sys.exit(0)
-
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.6", databaseReference='k_max=2,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.8", databaseReference='k_max=2,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=2.0", databaseReference='k_max=2,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
-
-    k=3
-
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.2", databaseReference='k_max=3,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.4", databaseReference='k_max=3,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.6", databaseReference='k_max=3,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.8", databaseReference='k_max=3,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=2.0", databaseReference='k_max=3,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
-
-    k=4
-
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.2", databaseReference='k_max=4,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.4", databaseReference='k_max=4,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.6", databaseReference='k_max=4,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.8", databaseReference='k_max=4,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=2.0", databaseReference='k_max=4,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
-
-    k=5
-
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.4", databaseReference='k_max=5,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.6", databaseReference='k_max=5,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.8", databaseReference='k_max=5,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=2.0", databaseReference='k_max=5,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
+    # sys.exit(0)
+    #
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
+    #                                 kMax=k, kPathMaxAllowedTime=1.2)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.6", databaseReference='k_max=2,kPaths=1.6',
+    #                                 kMax=k, kPathMaxAllowedTime=1.6)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.8", databaseReference='k_max=2,kPaths=1.8',
+    #                                 kMax=k, kPathMaxAllowedTime=1.8)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=2.0", databaseReference='k_max=2,kPaths=2.0',
+    #                                 kMax=k, kPathMaxAllowedTime=2.0)
+    #
+    # k=3
+    #
+    # createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.2", databaseReference='k_max=3,kPaths=1.2',
+    #                                 kMax=k, kPathMaxAllowedTime=1.2)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.4", databaseReference='k_max=3,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.6", databaseReference='k_max=3,kPaths=1.6',
+    #                                 kMax=k, kPathMaxAllowedTime=1.6)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.8", databaseReference='k_max=3,kPaths=1.8',
+    #                                 kMax=k, kPathMaxAllowedTime=1.8)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=2.0", databaseReference='k_max=3,kPaths=2.0',
+    #                                 kMax=k, kPathMaxAllowedTime=2.0)
+    #
+    # k=4
+    #
+    # createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.2", databaseReference='k_max=4,kPaths=1.2',
+    #                                 kMax=k, kPathMaxAllowedTime=1.2)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.4", databaseReference='k_max=4,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.6", databaseReference='k_max=4,kPaths=1.6',
+    #                                 kMax=k, kPathMaxAllowedTime=1.6)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.8", databaseReference='k_max=4,kPaths=1.8',
+    #                                 kMax=k, kPathMaxAllowedTime=1.8)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=2.0", databaseReference='k_max=4,kPaths=2.0',
+    #                                 kMax=k, kPathMaxAllowedTime=2.0)
+    #
+    # k=5
+    #
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
+    #                                 kMax=k, kPathMaxAllowedTime=1.2)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.4", databaseReference='k_max=5,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.6", databaseReference='k_max=5,kPaths=1.6',
+    #                                 kMax=k, kPathMaxAllowedTime=1.6)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.8", databaseReference='k_max=5,kPaths=1.8',
+    #                                 kMax=k, kPathMaxAllowedTime=1.8)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=2.0", databaseReference='k_max=5,kPaths=2.0',
+    #                                 kMax=k, kPathMaxAllowedTime=2.0)

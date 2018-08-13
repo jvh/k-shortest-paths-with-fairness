@@ -17,7 +17,7 @@ from src.code import RoutingFunctions as func
 from src.code import SimulationFunctions as sim
 
 #############
-# VARIABLES #
+# CONSTANTS #
 #############
 
 VEHICLE_OUTPUT_TABLE = "vehicle_output"

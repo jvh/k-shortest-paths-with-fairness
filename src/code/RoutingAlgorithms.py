@@ -20,6 +20,7 @@ if not sumo.COMPUTER:
     os.environ["SUMO_HOME"] = "/Users/jonathan/Documents/comp3200/sumo"
 
 import traci
+from copy import deepcopy
 
 from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
@@ -115,6 +116,15 @@ class ReroutingAlgorithms:
         if i % func.REROUTING_PERIOD == 0 and i >= 1:
             if sumo.PRINT_REROUTE_PERIOD:
                 print("\n***** REROUTING PERIOD {} ********\n".format(i / func.REROUTING_PERIOD))
+
+            # Increment each vehicle who has since been rerouted
+            for vehicle in func.periodSinceLastRerouted.keys():
+                func.periodSinceLastRerouted[vehicle] += 1
+
+            # If the vehicle has been immune to rerouting for REROUTING_PERIOD_CONSIDERATION then remove from list
+            for vehicle in deepcopy(func.periodSinceLastRerouted):
+                if func.periodSinceLastRerouted[vehicle] >= func.REROUTING_PERIOD_CONSIDERATION:
+                    del func.periodSinceLastRerouted[vehicle]
 
             # This is the updating of the time spent in the system for each vehicle
             sim.updateVehicleTotalEstimatedTimeSpentInSystem(func.REROUTING_PERIOD)

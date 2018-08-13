@@ -53,6 +53,8 @@ CONGESTION_THRESHOLD = 0.5
 MAX_EDGE_RECURSIONS_RANGE = 3
 # Specifies the number of up to k-alternative routes
 K_MAX = 2
+# This is the number of rerouting periods before a vehicle can be considered for rerouting again
+REROUTING_PERIOD_CONSIDERATION = 3
 
 ########################
 # SIMULATION VARIABLES #
@@ -72,96 +74,59 @@ cumulativeExtraTime = {}
 # This stores the vehicles rerouted during the 'rerouting period' in which the vehicles are rerouted
 reroutedVehicles = set()
 
-
-def initialiseRerouteVehicles(edgeID):
-    """
-    Initialisation options used for all rerouting purposes (both edge and lane)
-
-    Args:
-        edgeID (str): The edge in which the congestion has occurred
-
-    Returns:
-        vehiclesList (str[]): The list of vehicle ID's which appear on the edges up to K_MAX from the congested edge
-        edgesList ({str: str[]}): The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
-        reroutedList (set()): The set of all of the vehicles to be rerouted
-        vehicleEdge ({str: str}): the vehicle ID with the corresponding edge ID
-    """
-
-    # The list of vehicles existing on the edges
-    vehiclesList = []
-    # The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
-    edgesList = {}
-    # This is the list of all of the vehicles which have been rerouted
-    reroutedList = []
-    # vehicle: edge (that the vehicle is on)
-    vehicleEdge = {}
-
-    # Going through the incoming edges and identifying vehicles on them
-    for edge in initialFunc.multiIncomingEdges[edgeID]:
-        vehiclesOnEdge = traci.edge.getLastStepVehicleIDs(edge)
-        # Appending the list of vehicles from edge onto vehiclesList
-        vehiclesList.extend(vehiclesOnEdge)
-
-        for vehicle in vehiclesOnEdge:
-            vehicleEdge[vehicle] = edge
-
-        # If vehicles exist on that edge
-        if vehiclesOnEdge:
-            edgesList[edge] = vehiclesOnEdge
-
-    # Removing vehicles from the list of vehicles for consideration of rerouting if they have already been rerouted
-    # in this rerouting period
-    for vehicle in vehiclesList:
-        if vehicle in reroutedVehicles:
-            vehiclesList.remove(vehicle)
-
-    return vehiclesList, edgesList, reroutedList, vehicleEdge
+# This holds the vehicle alongside how many rerouting periods they have gone without being rerouted
+periodSinceLastRerouted = {}
 
 
-def rerouteSelectedVehiclesEdge(edgeID, kPathsBool=False, fairness=False):
-    """
-    Selects the vehicles to be rerouted from edgeID (the edge which is currently congested) and reroutes them based
-    on current estimated travel times
-
-    Args:
-        edgeID (str): The edge in which the congestion is occurring
-        kPathsBool (bool): True if kPaths is being performed
-        fairness (bool): True if fairness should be considered for the vehicles
-
-    Returns:
-        str[]: The list of vehicles which have been rerouted
-    """
-    vehiclesList, edgesList, reroutedList, vehicleEdge = initialiseRerouteVehicles(edgeID)
-
-    # What vehicles have the edgeID
-    for vehicle in vehiclesList:
-        # The old/current path of the vehicle
-        oldPath = traci.vehicle.getRoute(vehicle)
-        # If the edgeID exists in the vehicles current route then reroute them
-        if edgeID in oldPath:
-            if kPathsBool:
-                kPaths(vehicle, vehicleEdge[vehicle])
-            else:
-                # Reroute vehicles based on current travel times
-                traci.vehicle.rerouteTraveltime(vehicle, currentTravelTimes=True)
-            # reroutedList.add(vehicle)
-            reroutedList.append(vehicle)
-            newPath = traci.vehicle.getRoute(vehicle)
-            # If the route has been changed
-            if oldPath != newPath:
-                # Incrementing vehicle reroute number
-                vehicleReroutedAmount[vehicle] += 1
-                # if vehicle in vehicleReroutedAmount:
-                #     vehicleReroutedAmount[vehicle] += 1
-                # else:
-                #     vehicleReroutedAmount[vehicle] = 1
-
-    if fairness:
-        sim.reroutedList = selectVehiclesBasedOnFairness(reroutedList)
-
-    reroutedVehicles.update(reroutedList)
-
-    return reroutedList
+# def initialiseRerouteVehicles(edgeID):
+#     """
+#     Initialisation options used for all rerouting purposes (both edge and lane)
+#
+#     Args:
+#         edgeID (str): The edge in which the congestion has occurred
+#
+#     Returns:
+#         vehiclesList (str[]): The list of vehicle ID's which appear on the edges up to K_MAX from the congested edge
+#         edgesList ({str: str[]}): The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
+#         reroutedList (set()): The set of all of the vehicles to be rerouted
+#         vehicleEdge ({str: str}): the vehicle ID with the corresponding edge ID
+#     """
+#
+#     # The list of vehicles existing on the edges
+#     vehiclesList = []
+#     # The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
+#     edgesList = {}
+#     # This is the list of all of the vehicles which have been rerouted
+#     reroutedList = []
+#     # vehicle: edge (that the vehicle is on)
+#     vehicleEdge = {}
+#
+#     # Going through the incoming edges and identifying vehicles on them
+#     for edge in initialFunc.multiIncomingEdges[edgeID]:
+#         vehiclesOnEdge = traci.edge.getLastStepVehicleIDs(edge)
+#         # Appending the list of vehicles from edge onto vehiclesList
+#         vehiclesList.extend(vehiclesOnEdge)
+#
+#         for vehicle in vehiclesOnEdge:
+#             vehicleEdge[vehicle] = edge
+#
+#         # If vehicles exist on that edge
+#         if vehiclesOnEdge:
+#             edgesList[edge] = vehiclesOnEdge
+#
+#     # Removing vehicles from the list of vehicles for consideration of rerouting if they have already been rerouted
+#     # in this rerouting period
+#     for vehicle in vehiclesList:
+#         if vehicle in reroutedVehicles:
+#             vehiclesList.remove(vehicle)
+#         # Removing vehicle if they have been rerouted too many times recently
+#         if vehicle in periodSinceLastRerouted:
+#             try:
+#                 vehiclesList.remove(vehicle)
+#             except Exception:
+#                 pass
+#
+#     return vehiclesList, edgesList, reroutedList, vehicleEdge
 
 
 def selectVehiclesForRerouting(roadSegmentID, fairness=False):
@@ -234,7 +199,10 @@ def selectVehiclesForRerouting(roadSegmentID, fairness=False):
             vehiclesList.remove(vehicle)
         # Removing any vehicle which is currently in the 'stopped' state (this is not the same as 'waiting', e.g.
         # waiting at a traffic light)
-        if traci.vehicle.isStopped(vehicle):
+        elif traci.vehicle.isStopped(vehicle):
+            vehiclesList.remove(vehicle)
+        # Removing vehicle if they have been rerouted too many times recently
+        elif vehicle in periodSinceLastRerouted:
             vehiclesList.remove(vehicle)
 
     """ Only selecting those vehicles which actually pass through the congested road segment (treated differently 
@@ -308,59 +276,9 @@ def rerouteSelectedVehicles(roadSegmentID, kPathsBool=False, fairness=False):
             reroutedVehicles.add(vehicle)
             # Incrementing vehicle reroute number
             vehicleReroutedAmount[vehicle] += 1
+            periodSinceLastRerouted[vehicle] = 0
 
     return vehiclesUndergoneRerouting
-
-
-def rerouteSelectedVehiclesLane(laneID, kPathsBool=False):
-    """
-    Selects the vehicles to be rerouted from the laneID (the lane which is currently congested) which belongs to edgeID
-    and reroutes them based on current estimated travel times
-
-    Args:
-        laneID (str): The lane in which the congestion is occurring
-        kPathsBool (bool): True if kPaths needs to be performed for each vehicle
-    Returns:
-        str[]: The list of vehicles which have been rerouted
-    """
-    # The edge in which the lane belongs
-    edgeID = initialFunc.lanesNetwork[laneID]
-
-    vehiclesList, edgesList, reroutedList, vehicleEdge = initialiseRerouteVehicles(edgeID)
-
-    # Effectively, we are testing if the vehicles need to occupy this specific lane to continue their journey, or if
-    # another lane on the edge could instead be used/is necessary
-    outgoingLanes = initialFunc.directedGraphLanes[laneID]
-
-    # What vehicles have the edgeID
-    for vehicle in vehiclesList:
-        # The old/current path of the vehicle
-        oldPath = traci.vehicle.getRoute(vehicle)
-        # If the edgeID exists in the vehicles current route then reroute them
-        if edgeID in oldPath:
-            congestionIndex = oldPath.index(edgeID)
-            # The edge intended to be taken by the vehicle directly after they have left the congested edge
-            nextEdge = oldPath[congestionIndex + 1]
-            lanesInNextEdge = initialFunc.edgesNetwork[nextEdge]
-
-            # Testing if lanes present in the edge after the congested edge (of the vehicle's route) are any of the
-            # outgoing lanes from the congested lane, otherwise do not reroute the vehicle as this congestion will not
-            # affect the vehicle.
-            if any(lane in lanesInNextEdge for lane in outgoingLanes):
-                # Incrementing vehicle reroute number
-                vehicleReroutedAmount[vehicle] += 1
-
-                if kPathsBool:
-                    kPaths(vehicle, vehicleEdge[vehicle])
-                else:
-                    # Reroute vehicle
-                    traci.vehicle.rerouteTraveltime(vehicle, currentTravelTimes=False)
-                # reroutedList.add(vehicle)
-                reroutedList.append(vehicle)
-
-    reroutedVehicles.update(reroutedList)
-
-    return reroutedList
 
 
 def kPaths(veh, currentEdge):
