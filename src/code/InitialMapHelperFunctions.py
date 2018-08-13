@@ -63,6 +63,8 @@ multiIncomingEdges = {}
 # This stores the free-flow speeds of all of the edges, {edge: freeFlowSpeed}
 freeFlowSpeed = {}
 
+database_pointer = None
+
 
 def endSim(i, manual=True, database=False):
     """
@@ -76,18 +78,18 @@ def endSim(i, manual=True, database=False):
     sumo.timerEnd = time.clock()
 
     if database:
-        database = db.Database()
+        database = database_pointer
         database.populateDBVehicleTable()
 
     if sim.timeTaken:
         print('Mean time taken for rerouting: {}'.format(sum(sim.timeTaken) / len(sim.timeTaken)))
 
-    # if manual:
-    #     sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
-    #                                                                                      sumo.timerStart))
-    # else:
-    #     sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
-    #                                                                                      sumo.timerStart))
+    if manual and not sumo.AUTOMATED_TESTING:
+        sys.exit("\nSystem has been ended manually at timestep {}, time taken {}".format(i, sumo.timerEnd -
+                                                                                         sumo.timerStart))
+    else:
+        sys.exit("\nSimulation time has elapsed with {} timesteps, time taken {}".format(i, sumo.timerEnd -
+                                                                                         sumo.timerStart))
 
 
 def endSimWithError(error):
@@ -101,10 +103,15 @@ def endSimWithError(error):
     sys.exit(error)
 
 
-def initialisation():
+def initialisation(database):
     """
     This initialises the simulation with settings which are relevant to all scenarios
+
+    :param database: The database pointer
     """
+    global database_pointer
+    database_pointer = database
+
     # Puts the map into memory so that access to SUMO through TraCI is not necessary for building other map
     # initialisation variables
     loadMap()
@@ -202,7 +209,7 @@ def loadFairnessMetrics():
     Collects the fairness metrics (for each vehicle) from the database and deposits them into the relevant variables
     for use during simulation
     """
-    database = db.Database()
+    database = database_pointer
     fairnessMetrics = database.fairnessMetricsIntoDictionary()
 
     for key in fairnessMetrics:

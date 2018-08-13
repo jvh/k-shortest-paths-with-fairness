@@ -38,7 +38,7 @@ from src.code import Database as db
 #############
 
 # True when testing the database functionality
-databaseTestingBool = False
+databaseTestingBool = True
 
 
 class SmallSouthamptonTestsRoute(unittest.TestCase):
@@ -550,7 +550,7 @@ class DatabaseTests(unittest.TestCase):
         self.assertEqual(database.fairnessMetricsIntoDictionary()[9999], (1, 0, 0))
         database.closeDB()
 
-    def test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(self, clearDB=True):
+    def test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(self, clearDB=True, closeDB=True):
         """
         Checking that multiple tuples are inserted for each vehicle when all vehicles are present in the instance (and
         subsequently rerouted)
@@ -638,7 +638,9 @@ class DatabaseTests(unittest.TestCase):
             # Vehicle 999 rerouted once, 9999 rerouted twice
             self.assertEqual(database.fairnessMetricsIntoDictionary()[999], (2, 0, 0))
             self.assertEqual(database.fairnessMetricsIntoDictionary()[9999], (1, 0, 0))
-        database.closeDB()
+
+        if closeDB:
+            database.closeDB()
 
     def test_smallManhattan_vehicleReroutingAmount_updating_singleVehicle(self):
         """
@@ -687,7 +689,7 @@ class DatabaseTests(unittest.TestCase):
         simulation(s) and place them in their corresponding variables.
         """
         # 2 simulations have been ran with 2 vehicles (initialise to begin with)
-        self.test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(True)
+        self.test_smallManhattan_vehicleReroutingAmount_multipleVehiclesSameInstance(True, False)
 
         func.reroutedVehicles = set()  # Resetting
 
@@ -773,6 +775,7 @@ class DatabaseTests(unittest.TestCase):
         """
         # Resetting
         database = db.Database()
+        initialFunc.database_pointer = database
         if clearDB:
             database.clearDB()
             func.vehicleReroutedAmount.clear()
@@ -814,6 +817,7 @@ class DatabaseTests(unittest.TestCase):
         """
         # Resetting
         database = db.Database()
+        initialFunc.database_pointer = database
         if clearDB:
             database.clearDB()
             func.vehicleReroutedAmount.clear()
@@ -2044,7 +2048,8 @@ class SmallSouthamptonTests(unittest.TestCase):
         expectedOutput = {'511924978#0', '497165756#3', '441405436', '569345515#0', '497165753#5', '569345508#1',
                           '5673497', '458180186#0', '497165756#2', '497165756#1'}
 
-        initialFunc.initialisation()
+        database = db.Database()
+        initialFunc.initialisation(database)
         self.assertEqual(initialFunc.multiIncomingEdges[targetEdge], expectedOutput)
 
     def test_calculateAverageRoadCongestion(self):

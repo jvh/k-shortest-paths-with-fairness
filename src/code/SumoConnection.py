@@ -54,6 +54,8 @@ PRINT_ROAD_REROUTED = False
 PRINT_REROUTE_PERIOD = False
 # True if the camera should snap to the congested zone
 SNAP_TO_CONGESTION = True
+# If tests are automated, select as True
+AUTOMATED_TESTING = False
 
 # This is the unique reference for the simulation in progress
 SIMULATION_REFERENCE = ""
@@ -83,7 +85,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 3000
+END_TIME = 300
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -539,10 +541,13 @@ class Main:
 
         traci.start(sumoConfig)
 
+        # Initialising the database
+        database = db.Database()
+
         test = src.code.Testing.Testing()
         reroutingAlgorithm = routing.ReroutingAlgorithms()
         # Initialise data regarding the map into memory for quick real-time access
-        initialFunc.initialisation()
+        initialFunc.initialisation(database)
 
         algorithm = ''
         if ALGORITHM == 0:
@@ -569,8 +574,6 @@ class Main:
                 for i in range(START_TIME, END_TIME):
                     traci.simulationStep()
             else:
-                # Initialising the database
-                database = db.Database()
                 for i in range(START_TIME, END_TIME):
                     reroutingAlgorithm.main(i+1, database)
 
@@ -608,7 +611,12 @@ def createSimLoopWithkPathArguments(simulationReference, databaseReference, kMax
 
         time.sleep(10)
 
-    time.sleep(60)
+    # Ensuring reset of variables
+    func.vehicleReroutedAmount = {}
+    func.cumulativeExtraTime = {}
+    func.reroutedVehicles = set()
+
+    # time.sleep(60)
 
 if __name__ == '__main__':
     """
@@ -618,7 +626,26 @@ if __name__ == '__main__':
     import time
     import src.code.RoutingFunctions as func
 
-    k=2
+    sumo.AUTOMATED_TESTING = True
+
+    k=4
+
+    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
+                                    kMax=k, kPathMaxAllowedTime=1.2, loopNumber=1)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.6", databaseReference='k_max=2,kPaths=1.6',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
+
+    k = 5
+
+    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
+                                    kMax=k, kPathMaxAllowedTime=1.2, loopNumber=1)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.4", databaseReference='k_max=5,kPaths=1.4',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
+    # createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.6", databaseReference='k_max=5,kPaths=1.6',
+    #                                 kMax=k, kPathMaxAllowedTime=1.4, loopNumber=1)
+    sys.exit(0)
 
     createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
                                     kMax=k, kPathMaxAllowedTime=1.2)
