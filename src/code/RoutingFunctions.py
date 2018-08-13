@@ -78,57 +78,6 @@ reroutedVehicles = set()
 periodSinceLastRerouted = {}
 
 
-# def initialiseRerouteVehicles(edgeID):
-#     """
-#     Initialisation options used for all rerouting purposes (both edge and lane)
-#
-#     Args:
-#         edgeID (str): The edge in which the congestion has occurred
-#
-#     Returns:
-#         vehiclesList (str[]): The list of vehicle ID's which appear on the edges up to K_MAX from the congested edge
-#         edgesList ({str: str[]}): The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
-#         reroutedList (set()): The set of all of the vehicles to be rerouted
-#         vehicleEdge ({str: str}): the vehicle ID with the corresponding edge ID
-#     """
-#
-#     # The list of vehicles existing on the edges
-#     vehiclesList = []
-#     # The edges and their corresponding vehicles in the order {edge : vehicle (str[])}
-#     edgesList = {}
-#     # This is the list of all of the vehicles which have been rerouted
-#     reroutedList = []
-#     # vehicle: edge (that the vehicle is on)
-#     vehicleEdge = {}
-#
-#     # Going through the incoming edges and identifying vehicles on them
-#     for edge in initialFunc.multiIncomingEdges[edgeID]:
-#         vehiclesOnEdge = traci.edge.getLastStepVehicleIDs(edge)
-#         # Appending the list of vehicles from edge onto vehiclesList
-#         vehiclesList.extend(vehiclesOnEdge)
-#
-#         for vehicle in vehiclesOnEdge:
-#             vehicleEdge[vehicle] = edge
-#
-#         # If vehicles exist on that edge
-#         if vehiclesOnEdge:
-#             edgesList[edge] = vehiclesOnEdge
-#
-#     # Removing vehicles from the list of vehicles for consideration of rerouting if they have already been rerouted
-#     # in this rerouting period
-#     for vehicle in vehiclesList:
-#         if vehicle in reroutedVehicles:
-#             vehiclesList.remove(vehicle)
-#         # Removing vehicle if they have been rerouted too many times recently
-#         if vehicle in periodSinceLastRerouted:
-#             try:
-#                 vehiclesList.remove(vehicle)
-#             except Exception:
-#                 pass
-#
-#     return vehiclesList, edgesList, reroutedList, vehicleEdge
-
-
 def selectVehiclesForRerouting(roadSegmentID, fairness=False):
     """
     This selects the vehicles which are eligible to be rerouted, eligibility in determined by a number of factors.
