@@ -36,7 +36,7 @@ from src.code.SimulationFunctions import selectVehiclesBasedOnFairness
 # This is the penalisation factor given to the edge estimated travel time
 PENALISATION = 2
 # This ensures that the route chosen in kPaths() doesn't exceed the bestPath * KPATH_MAX_ALLOWED_TIME
-KPATH_MAX_ALLOWED_TIME = 1.2
+KPATH_MAX_ALLOWED_TIME = 1.4
 # The maximum amount of retries for kPaths until it's decided to take the current routes in the possible route list
 KPATH_TIMEOUT = 15
 # This is the percentage of vehicles in the top percentile range which will be considered for rerouting based on their
@@ -52,9 +52,9 @@ CONGESTION_THRESHOLD = 0.5
 # This specifies the number of incoming edges away (the range) from the original edge to search
 MAX_EDGE_RECURSIONS_RANGE = 3
 # Specifies the number of up to k-alternative routes
-K_MAX = 2
+K_MAX = 3
 # This is the number of rerouting periods before a vehicle can be considered for rerouting again
-REROUTING_PERIOD_CONSIDERATION = 1
+REROUTING_PERIOD_CONSIDERATION = 2
 
 ########################
 # SIMULATION VARIABLES #
