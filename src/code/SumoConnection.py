@@ -687,13 +687,35 @@ if __name__ == '__main__':
     sumo.AUTOMATED_TESTING = True
 
     sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
-                                                                   reference='luton_2_hours')
+                                                                   reference='luton_2_hours_fairness')
 
     for i in range(15):
-        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='luton_2_hours', simNum=(i+1))
+        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='luton_2_hours_fairness', simNum=(i+1))
 
         print('########################')
-        print('Simulation reference: {}'.format('luton_2_hours'))
+        print('Simulation reference: {}'.format('luton_2_hours_fairness'))
+        print('Loop {} out of {}'.format(i+1, 15))
+        print('########################')
+
+        routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
+        createSim(routeFile)
+
+        time.sleep(30)
+        resetSimVariables()
+
+
+
+
+    sumo.ALGORITHM = 2
+
+    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                   reference='luton_2_hours_kPaths')
+
+    for i in range(15):
+        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='luton_2_hours_kPaths', simNum=(i+1))
+
+        print('########################')
+        print('Simulation reference: {}'.format('luton_2_hours_kPaths'))
         print('Loop {} out of {}'.format(i+1, 15))
         print('########################')
 
