@@ -86,7 +86,7 @@ A_STAR_DISTANCES = True
 #################
 
 START_TIME = 0
-END_TIME = 3000
+END_TIME = 10800
 ZOOM_FACTOR = 12
 # Each step is 1 second
 STEP_LENGTH = '1.0'
@@ -686,54 +686,20 @@ if __name__ == '__main__':
 
     sumo.AUTOMATED_TESTING = True
 
-    k=2
+    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                   reference='luton_2_hours')
 
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.2", databaseReference='k_max=2,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.4", databaseReference='k_max=2,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.6", databaseReference='k_max=2,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=1.8", databaseReference='k_max=2,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=2,kPaths=2.0", databaseReference='k_max=2,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
+    for i in range(15):
+        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='luton_2_hours', simNum=(i+1))
 
-    k=3
+        print('########################')
+        print('Simulation reference: {}'.format('luton_2_hours'))
+        print('Loop {} out of {}'.format(i+1, 15))
+        print('########################')
 
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.2", databaseReference='k_max=3,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.4", databaseReference='k_max=3,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.6", databaseReference='k_max=3,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=1.8", databaseReference='k_max=3,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=3,kPaths=2.0", databaseReference='k_max=3,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
+        routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
+        createSim(routeFile)
 
-    k=4
+        time.sleep(30)
+        resetSimVariables()
 
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.2", databaseReference='k_max=4,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.4", databaseReference='k_max=4,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.6", databaseReference='k_max=4,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=1.8", databaseReference='k_max=4,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=4,kPaths=2.0", databaseReference='k_max=4,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
-
-    k=5
-
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.2", databaseReference='k_max=5,kPaths=1.2',
-                                    kMax=k, kPathMaxAllowedTime=1.2)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.4", databaseReference='k_max=5,kPaths=1.4',
-                                    kMax=k, kPathMaxAllowedTime=1.4)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.6", databaseReference='k_max=5,kPaths=1.6',
-                                    kMax=k, kPathMaxAllowedTime=1.6)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=1.8", databaseReference='k_max=5,kPaths=1.8',
-                                    kMax=k, kPathMaxAllowedTime=1.8)
-    createSimLoopWithkPathArguments(simulationReference="k_max=5,kPaths=2.0", databaseReference='k_max=5,kPaths=2.0',
-                                    kMax=k, kPathMaxAllowedTime=2.0)
