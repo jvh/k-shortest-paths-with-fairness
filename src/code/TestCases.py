@@ -2098,27 +2098,5 @@ class SmallSouthamptonTests(unittest.TestCase):
 
         self.assertEqual(manualCalculation, functionCalculation)
 
-
-class NewarkTests(unittest.TestCase):
-    """
-    Tests ran when the scenario is 'Testing (newark)'
-    """
-
-    def setUp(self):
-        """
-        Ensures that the scenario is that of 'Testing (newark)'
-        """
-        if sumo.SCENARIO != 3:
-            raise unittest.SkipTest("Scenario is {}, Newark unit tests shall not be executed.".format(sumo.SCENARIO))
-
-    def test_newark_multiIncomingRecursion_3Recursions(self):
-        """
-        Tests that multiIncomingRecursion (and consequently recursiveIncomingEdges) returns the correct edges list when
-        number of recursions (MAX_EDGE_RECURSIONS_RANGE) is equal to 3
-        """
-        output = initialFunc.getMultiIncomingEdges("511924978#1")
-        self.assertEqual(output, ['497165756#3', '511924978#0', '441405436', '569345515#0', '497165753#5',
-                                  '569345508#1', '5673497', '458180186#0', '497165756#2', '497165756#1'])
-
 if __name__=="__main__":
     unittest.main(exit=False, warnings='ignore')

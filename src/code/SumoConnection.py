@@ -44,17 +44,17 @@ from src.code import SimulationFunctions as sim
 ########################
 
 # If SUMO should be ran with a GUI or ran in headless mode
-SUMO_GUI = False
+SUMO_GUI = True
 # If the polyfile should be loaded into the simulation (if the simulation should be given colour).
 POLYFILE = True
 # This enables major print statements for diagnostic purposes
 PRINT = False
 # Prints out the lanes/edges which have been rerouted for that period
-PRINT_ROAD_REROUTED = False
+PRINT_ROAD_REROUTED = True
 # Prints the reroute period
-PRINT_REROUTE_PERIOD = False
+PRINT_REROUTE_PERIOD = True
 # True if the camera should snap to the congested zone
-SNAP_TO_CONGESTION = True
+SNAP_TO_CONGESTION = False
 # If tests are automated, select as True
 AUTOMATED_TESTING = False
 
@@ -70,7 +70,7 @@ SIMULATION_REFERENCE = ""
 #   5: Luton
 #   6: Bristol
 #   7: Bournemouth
-SCENARIO = 5
+SCENARIO = 4
 # Specifies the rerouting algorithm to be ran
 #   0: No rerouting
 #   1: Dynamic shortest path (DSP)
@@ -97,7 +97,7 @@ STEP_LENGTH = '1.0'
 
 # Specifies output file (.xml), True = output generated
 # An easy way to turn off all outputs, False = No outputs generated
-OUTPUTS = True
+OUTPUTS = False
 #   --summary: Prints out a summary of the information
 SUMMARY_OUTPUT = True
 #   --full-output: Builds a file containing the full dump of various information regarding the positioning of vehicles
@@ -684,106 +684,108 @@ if __name__ == '__main__':
     import time
     import src.code.RoutingFunctions as func
 
-    sumo.AUTOMATED_TESTING = True
+    if sumo.AUTOMATED_TESTING:
+
+        ########################
+        # kPaths With Fairness #
+        ########################
 
 
-    ########################
-    # kPaths With Fairness #
-    ########################
+        sumo.ALGORITHM = 4
 
+        sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                       reference='{}_2_hours_fairness'.
+                                                                       format(sumo.SCENARIO_NAME))
 
-    sumo.ALGORITHM = 4
+        for i in range(40):
+            sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_fairness'.
+                                                                       format(sumo.SCENARIO_NAME), simNum=(i+1))
 
-    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
-                                                                   reference='{}_2_hours_fairness'.
-                                                                   format(sumo.SCENARIO_NAME))
+            print('########################')
+            print('Simulation reference: {}'.format('{}_2_hours_fairness'.format(sumo.SCENARIO_NAME)))
+            print('Loop {} out of {}'.format(i+1, 40))
+            print('########################')
 
-    for i in range(15):
-        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_fairness'.
-                                                                   format(sumo.SCENARIO_NAME), simNum=(i+1))
+            routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
+            createSim(routeFile)
 
-        print('########################')
-        print('Simulation reference: {}'.format('{}_2_hours_fairness'.format(sumo.SCENARIO_NAME)))
-        print('Loop {} out of {}'.format(i+1, 15))
-        print('########################')
+            time.sleep(30)
+            resetSimVariables()
 
-        routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
-        createSim(routeFile)
+        ##########
+        # kPaths #
+        ##########
 
-        time.sleep(30)
-        resetSimVariables()
+        sumo.ALGORITHM = 2
 
-    ##########
-    # kPaths #
-    ##########
+        sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                       reference='{}_2_hours_kPaths'.
+                                                                       format(sumo.SCENARIO_NAME))
 
-    sumo.ALGORITHM = 2
+        for i in range(40):
+            sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_kPaths'.
+                                                                       format(sumo.SCENARIO_NAME), simNum=(i+1))
 
-    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
-                                                                   reference='{}_2_hours_kPaths'.
-                                                                   format(sumo.SCENARIO_NAME))
+            print('########################')
+            print('Simulation reference: {}'.format('{}_2_hours_kPaths'.format(sumo.SCENARIO_NAME)))
+            print('Loop {} out of {}'.format(i+1, 40))
+            print('########################')
 
-    for i in range(15):
-        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_kPaths'.
-                                                                   format(sumo.SCENARIO_NAME), simNum=(i+1))
+            routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
+            createSim(routeFile)
 
-        print('########################')
-        print('Simulation reference: {}'.format('{}_2_hours_kPaths'.format(sumo.SCENARIO_NAME)))
-        print('Loop {} out of {}'.format(i+1, 15))
-        print('########################')
+            time.sleep(30)
+            resetSimVariables()
 
-        routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
-        createSim(routeFile)
+        #######
+        # DSP #
+        #######
 
-        time.sleep(30)
-        resetSimVariables()
+        sumo.ALGORITHM = 1
 
-    #######
-    # DSP #
-    #######
+        sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                       reference='{}_2_hours_DSP'.
+                                                                       format(sumo.SCENARIO_NAME))
 
-    sumo.ALGORITHM = 1
+        for i in range(40):
+            sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_DSP'.
+                                                                       format(sumo.SCENARIO_NAME), simNum=(i+1))
 
-    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
-                                                                   reference='{}_2_hours_DSP'.
-                                                                   format(sumo.SCENARIO_NAME))
+            print('########################')
+            print('Simulation reference: {}'.format('{}_2_hours_DSP'.format(sumo.SCENARIO_NAME)))
+            print('Loop {} out of {}'.format(i+1, 40))
+            print('########################')
 
-    for i in range(15):
-        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_DSP'.
-                                                                   format(sumo.SCENARIO_NAME), simNum=(i+1))
+            routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
+            createSim(routeFile)
 
-        print('########################')
-        print('Simulation reference: {}'.format('{}_2_hours_DSP'.format(sumo.SCENARIO_NAME)))
-        print('Loop {} out of {}'.format(i+1, 15))
-        print('########################')
+            time.sleep(30)
+            resetSimVariables()
 
-        routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
-        createSim(routeFile)
+        ################
+        # No Rerouting #
+        ################
 
-        time.sleep(30)
-        resetSimVariables()
+        sumo.ALGORITHM = 0
 
-    ################
-    # No Rerouting #
-    ################
+        sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
+                                                                       reference='{}_2_hours_noRerouting'.
+                                                                       format(sumo.SCENARIO_NAME))
 
-    sumo.ALGORITHM = 0
+        for i in range(40):
+            sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_noRerouting'.
+                                                                       format(sumo.SCENARIO_NAME), simNum=(i + 1))
 
-    sumo.DATABASE_LOCATION = "{location}{reference}.sqlite".format(location=sumo.DATABASE_DIR,
-                                                                   reference='{}_2_hours_noRerouting'.
-                                                                   format(sumo.SCENARIO_NAME))
+            print('########################')
+            print('Simulation reference: {}'.format('{}_2_hours_noRerouting'.format(sumo.SCENARIO_NAME)))
+            print('Loop {} out of {}'.format(i + 1, 40))
+            print('########################')
 
-    for i in range(15):
-        sumo.SIMULATION_REFERENCE = "{reference}_{simNum}_".format(reference='{}_2_hours_noRerouting'.
-                                                                   format(sumo.SCENARIO_NAME), simNum=(i + 1))
+            routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
+            createSim(routeFile)
 
-        print('########################')
-        print('Simulation reference: {}'.format('{}_2_hours_noRerouting'.format(sumo.SCENARIO_NAME)))
-        print('Loop {} out of {}'.format(i + 1, 15))
-        print('########################')
-
-        routeFile = 'routes_{}_2hours_{}.xml'.format(SCENARIO_NAME, i + 1)
-        createSim(routeFile)
-
-        time.sleep(30)
-        resetSimVariables()
+            time.sleep(30)
+            resetSimVariables()
+    else:
+        routeFile = 'routes_{}_2hours_1.xml'.format(SCENARIO_NAME)
+        createSim(routeFile, instantStart=False, quitOnEnd=False)

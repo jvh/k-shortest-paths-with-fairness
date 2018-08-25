@@ -24,6 +24,7 @@ import collections
 import numpy as np
 import sys
 import traci
+import time
 
 from src.code import RoutingFunctions as func
 from src.code import InitialMapHelperFunctions as initialFunc
