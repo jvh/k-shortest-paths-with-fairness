@@ -7,7 +7,7 @@ Congestion cost U.K drivers over £37.7 billion in 2017, additionally to massive
 ### Setup Guide
 
 1. Ensure that you have Python 3.7 installed on your computer.
-2. Install SUMO simulation software onto your computer. If using Windows, download the latest stable for Windows from http://sumo.dlr.de/wiki/Downloads. If using Mac, please refer to the below section *macOS SUMO Installation & Usage Guide* as this process is much more involved than a Windows installation. If using Linux, please refer to the Linux guide given on http://sumo.dlr.de/wiki/Installing in order to build your SUMO installation.
+2. Install SUMO simulation software onto your computer. If using Windows, download the latest stable for Windows from http://sumo.dlr.de/wiki/Downloads. If using Mac, please refer to the below section **macOS SUMO Installation & Usage Guide** as this process is much more involved than a Windows installation. If using Linux, please refer to the Linux guide given on http://sumo.dlr.de/wiki/Installing in order to build your SUMO installation.
 
 ### macOS SUMO Installation & Usage Guide 
 1. If you come from a previous macports installation you need to uninstall _SUMO_ and _fox_ toolkit first:  
