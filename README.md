@@ -1,15 +1,6 @@
-# Intelligent Congestion Management Incorporating Fair Re-Routing
+# Fair _k_-Shortest Paths Re-Routing for Congestion Management
 
 ### Abstract
-Traffic congestion in large cities is on the rise as urbanisation and economic growth
-rapidly increases, congestion costs billions of GBP annually and massive losses of time.
-Current congestion management techniques greedily shift drivers around the congested
-area with no concern regarding causing future congestion along the path. Furthermore,
-some drivers may be re-routed too often causing frustration and ignoring requests given
-by the system. This paper proposes a novel intelligent congestion management system
-which takes a centralised approach aiming to reduce congestion for the individual and the
-entire network. The system collects real-time data from vehicles to proactively navigate
-the user through congested areas with minimal interruption. The system shall aim to
-evenly distribute the density of vehicles across the network as to minimise and alleviate
-congestion. Additionally, my work shall focus on the fairness aspect of re-routing. Drivers
-should all equally see improvements in their travel time and average speed.
+Traffic congestion in large cities is on the rise as urbanisation and economic growth rapidly increase.
+Congestion cost U.K drivers over £37.7 billion in 2017, additionally to massive losses of time. Many congestion management techniques greedily shift drivers around congested areas with no concern of effects on future congestion on the road network. Furthermore, current systems may often cause frustration and are subsequently discontinued. This paper investigates the benefits of introducing fairness into congestion management systems and proposes a centralised approach to fairly alleviating congestion using existing prevalent path-finding algorithms, with the goal to reduce congestion over a road network. This project proposes a novel modification to existing $k$-shortest path algorithms, which doesn't currently take into account any measure of fairness. The system uses fairness metrics to proactively re-route vehicles through congested areas with minimal frustration for the driver.  Results gathered supported the conclusion that drivers experienced less re-routings and subsequently shorter journeys.
+
