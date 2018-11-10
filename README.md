@@ -32,8 +32,8 @@ Congestion cost U.K drivers over £37.7 billion in 2017, additionally to massive
 `brew install fox`  
 
 5. Set necessary environment variables  
-`export CPPFLAGS="$CPPFLAGS -I/opt/X11/include/"  
-export LDFLAGS="-L/opt/X11/lib"`  
+`export CPPFLAGS="$CPPFLAGS -I/opt/X11/include/"`  
+`export LDFLAGS="-L/opt/X11/lib"`  
 
 6. Get the source code and change to the appropriate directory  
 `cd sumo-<version>`  
