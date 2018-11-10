@@ -14,50 +14,49 @@ Congestion cost U.K drivers over £37.7 billion in 2017, additionally to massive
  `sudo port uninstall sumo`  
  `sudo port uninstall fox`  
 
-2. If you did not already install homebrew do it by invoking
-`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+2. If you did not already install homebrew do it by invoking  
+`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`  
 
-3. make sure your homebrew db is up-to-date
-`brew update`
+3. make sure your homebrew db is up-to-date  
+`brew update`  
 
-4. Install dependencies
-`brew install Caskroom/cask/xquartz
-brew install autoconf
-brew install automake
-brew install pkg-config
-brew install libtool
-brew install gdal
-brew install proj
-brew install xerces-c
-brew install fox`
+4. Install dependencies  
+`brew install Caskroom/cask/xquartz  
+brew install autoconf  
+brew install automake  
+brew install pkg-config  
+brew install libtool  
+brew install gdal  
+brew install proj  
+brew install xerces-c  
+brew install fox`  
 
-5. Set necessary environment variables
-`export CPPFLAGS="$CPPFLAGS -I/opt/X11/include/"
-export LDFLAGS="-L/opt/X11/lib"`
+5. Set necessary environment variables  
+`export CPPFLAGS="$CPPFLAGS -I/opt/X11/include/"  
+export LDFLAGS="-L/opt/X11/lib"`  
 
-6. Get the source code and change to the appropriate directory
-`cd sumo-<version>`
+6. Get the source code and change to the appropriate directory  
+`cd sumo-<version>`  
 
-7. Run autoreconf
-`autoreconf -i`
+7. Run autoreconf  
+`autoreconf -i`  
 
-8. Run configure
-`./configure CXX=clang++ CXXFLAGS="-stdlib=libc++ -std=gnu++11" --with-xerces=/usr/local --with-proj-gdal=/usr/local`
+8. Run configure  
+`./configure CXX=clang++ CXXFLAGS="-stdlib=libc++ -std=gnu++11" --with-xerces=/usr/local --with-proj-gdal=/usr/local`  
 
-9. Build
-``make -j`sysctl -n hw.ncpu``
+9. Build  
+``make -j`sysctl -n hw.ncpu``  
 
-10. Install
-`make install`
+10. Install  
+`make install`  
 
-11. After the installation you need to log out/in in order to let X11 start automatically, when calling a gui-based application like "sumo-gui". (Alternatively, you may start X11 manually by pressing cmd-space and entering "_XQuartz_").
+11. After the installation you need to log out/in in order to let X11 start automatically, when calling a gui-based application like "sumo-gui". (Alternatively, you may start X11 manually by pressing cmd-space and entering "_XQuartz_").  
 
-12. At this point, you’ll get an error when importing Traci, you must insert the SUMO tools into _PATH_ (or _PYTHONPATH_), this is done by putting the line … into the main Python module (where the main method is located)
-`sys.path.insert(1, ‘path_to_sumo_tools/sumo/tools')`.
+12. At this point, you’ll get an error when importing Traci, you must insert the SUMO tools into _PATH_ (or _PYTHONPATH_), this is done by putting the line … into the main Python module (where the main method is located)  
+`sys.path.insert(1, ‘path_to_sumo_tools/sumo/tools')`.  
 
-13. Set the _SUMO_HOME_ environment variable in Python code (same steps as 12).
+13. Set the _SUMO_HOME_ environment variable in Python code (same steps as 12).  
+`os.environ["SUMO_HOME"] = “path_to_sumo_home/sumo"`  
 
-`os.environ["SUMO_HOME"] = “path_to_sumo_home/sumo"`
-
-14. (Alternative step) in macOS you can change the environmental variables in `~/.bash_profile`, in this you can add in a _SUMO_HOME_ variable
+14. (Alternative step) in macOS you can change the environmental variables in `~/.bash_profile`, in this you can add in a _SUMO_HOME_ variable.  
 
