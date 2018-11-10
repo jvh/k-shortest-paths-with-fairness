@@ -21,15 +21,15 @@ Congestion cost U.K drivers over £37.7 billion in 2017, additionally to massive
 `brew update`  
 
 4. Install dependencies  
-`brew install Caskroom/cask/xquartz  
-brew install autoconf  
-brew install automake  
-brew install pkg-config  
-brew install libtool  
-brew install gdal  
-brew install proj  
-brew install xerces-c  
-brew install fox`  
+`brew install Caskroom/cask/xquartz`  
+`brew install autoconf`  
+`brew install automake`  
+`brew install pkg-config`  
+`brew install libtool`  
+`brew install gdal`  
+`brew install proj`  
+`brew install xerces-c`  
+`brew install fox`  
 
 5. Set necessary environment variables  
 `export CPPFLAGS="$CPPFLAGS -I/opt/X11/include/"  
